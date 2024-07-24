@@ -122,28 +122,25 @@ def get_player_info():
     }
 
 def start_game():
-    turns_until_end = randomise_game()
-    
+    title_scroll()
+    turns_until_end, location = initialise_game()
+    player_info = get_player_info()
+
+
+def initialise_game():
+    turns_until_end = random.randint(5, 15)
+
     x = 0
     y = 0
     location = (x, y)
 
-    return location, turns_until_end
-
-
-def randomise_game():
-    turns_until_end = random.randint(5, 15)
-
-    return turns_until_end
+    return turns_until_end, location
     
-
 def main():
     """
     Run all functions
     """
-    title_scroll()
-    player_info = get_player_info()
-    location, turns_until_end = start_game()
+    start_game()
 
 main()
 
