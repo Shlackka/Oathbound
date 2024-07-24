@@ -19,6 +19,9 @@ SHEET = GSPREAD_CLIENT.open('Oathbound')
 
 # Test for title
 def title_scroll():
+    """
+    Main title page and introduction
+    """
 
     title = r"""
       ____          _    _      _                               _ 
@@ -33,7 +36,25 @@ def title_scroll():
 
     for line in title_lines:
         print(line)
-        time.sleep(0.4) 
+        time.sleep(0.4)
+
+    introduction = r"""
+    Welcome to Oathbound,
+    
+    In this adventure, you will embark on a journey through a fantasy world filled with danger and mystery.
+    You will choose a character class, each with its own unique strengths and weaknesses. 
+    As you progress, you will encounter various challenges and make decisions that will shape your destiny.
+    
+    Are you ready to take the oath and begin your adventure?
+    
+    Press enter to proceed...
+    """
+
+    for char in introduction:
+        print(char, end='', flush=True)
+        time.sleep(0.02)
+
+    input('')
 
 def get_player_info():
     """
@@ -96,6 +117,8 @@ def get_player_info():
         "stats": player_stats
     }
 
+def start_game():
+    
 
 def main():
     """
