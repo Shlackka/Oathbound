@@ -2,6 +2,7 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
+import random
 import time
 import gspread
 from google.oauth2.service_account import Credentials
@@ -101,7 +102,10 @@ def get_player_info():
     player_stats = {
         "Health": stats[1],
         "Attack": stats[2],
-        "Speed": stats[3]
+        "Speed": stats[3],
+        "Weapon": stats[4],
+        "Armour": stats[5],
+        "Relic": stats[6]
     }
 
     # Display player info
@@ -118,6 +122,19 @@ def get_player_info():
     }
 
 def start_game():
+    turns_until_end = randomise_game()
+    
+    x = 0
+    y = 0
+    location = (x, y)
+
+    return location, turns_until_end
+
+
+def randomise_game():
+    turns_until_end = random.randint(5, 15)
+
+    return turns_until_end
     
 
 def main():
@@ -126,6 +143,7 @@ def main():
     """
     title_scroll()
     player_info = get_player_info()
+    location, turns_until_end = start_game()
 
 main()
 
