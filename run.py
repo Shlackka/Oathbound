@@ -33,7 +33,68 @@ def title_scroll():
 
     for line in title_lines:
         print(line)
-        time.sleep(0.4)
+        time.sleep(0.4) 
+
+def get_player_info():
+    """
+    Get player name and class
+    """
+    name = input("Enter your character's name:\n")
+
+    class_lookup = {
+        "1": "Warrior",
+        "2": "Archer",
+        "3": "Mage",
+        "4": "Peasant",
+        "warrior": "Warrior",
+        "archer": "Archer",
+        "mage": "Mage",
+        "peasant": "Peasant"
+    }
+    
+    print("Please pick a class from the following:\n")
+    print("1 - Warrior")
+    print("2 - Archer")
+    print("3 - Mage")
+    print("4 - Peasant (HARD)")
+
+    player_class = input("\n").strip().lower()
+
+    while player_class not in class_lookup:
+        print("Invalid class selected. Please try again.\n")
+        print("Please pick a class from the following:\n")
+        print("1 - Warrior")
+        print("2 - Archer")
+        print("3 - Mage")
+        print("4 - Peasant (HARD)")
+
+        player_class = input("\n").strip().lower()
+
+    class_name = class_lookup[player_class]
+
+    # Retrieve player stats from the Google Sheet
+    class_sheet = SHEET.worksheet('Classes')
+    headers = class_sheet.row_values(1)
+    stats = class_sheet.col_values(headers.index(class_name) + 1)
+
+    player_stats = {
+        "Health": stats[1],
+        "Attack": stats[2],
+        "Speed": stats[3]
+    }
+
+    # Display player info
+    print(f"\nPlayer Name: {name}")
+    print(f"Player Class: {class_name}")
+    print("Player Stats:")
+    for stat, value in player_stats.items():
+        print(f"  {stat}: {value}")
+
+    return {
+        "name": name,
+        "class": class_name,
+        "stats": player_stats
+    }
 
 
 def main():
@@ -41,6 +102,7 @@ def main():
     Run all functions
     """
     title_scroll()
+    player_info = get_player_info()
 
 main()
 
