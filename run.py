@@ -117,8 +117,9 @@ def get_player_info():
 
     # Display player info
     scroll_text(f"\nPlayer Name: {name}")
+    print("")
     scroll_text(f"Player Class: {class_name}")
-    scroll_text("\nPlayer Stats and Equipment:\n")
+    scroll_text("\nPlayer Stats and Equipment:")
     for stat, value in player_stats.items():
         scroll_text(f"{stat}: {value}")
 
