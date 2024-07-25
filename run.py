@@ -63,7 +63,7 @@ Press enter to proceed...
         print(char, end='', flush=True)
         time.sleep(0.02)
 
-    input('')
+    input('\n')
 
 def get_player_info():
     """
@@ -180,7 +180,7 @@ def move(location):
     Function to move the player in desired direction
     """
     x, y = location
-    direction = input("Move North, South, East, or West: ").strip().lower()
+    direction = input("Move North, South, East, or West: \n").strip().lower()
 
     if direction == "north":
         y += 1
