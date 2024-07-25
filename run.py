@@ -121,12 +121,6 @@ def get_player_info():
         "stats": player_stats
     }
 
-def start_game():
-    title_scroll()
-    turns_until_end, location = initialise_game()
-    player_info = get_player_info()
-
-
 def initialise_game():
     turns_until_end = random.randint(5, 15)
 
@@ -135,7 +129,64 @@ def initialise_game():
     location = (x, y)
 
     return turns_until_end, location
+
+def start_game():
+    title_scroll()
+    turns_until_end, location = initialise_game()
+    player_info = get_player_info()
+    game_loop(player_info, location, turns_until_end)
+
+def game_loop(player_info, location, turns_until_end):
+    """
+    Main game loop where the player will take actions
+    """
+
+    while turns_until_end > 0:
+        print("\nCurrent Location:", location)
+        print("Turns Remaining", turns_until_end)
+        print("1. Move")
+        print("2. Inventory")
+        print("3. View Stats")
+        print("4. Quit Game")
+
+        action = input("Choose and action: \n").strip()
+
+        if action == "1":
+            location = move(location)
+            turns_until_end -= 1
+            """
+        elif action == "2":
+            inventory()
+        elif action == "3":
+            view_stats(player_info)
+        """
+        elif action == "4":
+            print("Thank you for playing!")
+            break
+        else:
+            print("Invalid action. Please try again.")
     
+def move(location):
+    """
+    Function to move the player in desired direction
+    """
+    x, y = location
+    direction = input("Move North, South, East, or West: ").strip().lower()
+
+    if direction == "north":
+        y += 1
+    elif direction == "south":
+        y -= 1
+    elif direction == "east":
+        x += 1
+    elif direction == "west":
+        x -= 1
+    else:
+        print("Invalid direction.")
+    
+    return (x, y)
+
+
 def main():
     """
     Run all functions
