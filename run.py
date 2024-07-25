@@ -18,7 +18,15 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('Oathbound')
 
-# Test for title
+def scroll_text(text, delay=0.02):
+    """
+    Print text with a scrolling effect.
+    """
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(delay)
+    print()
+
 def title_scroll():
     """
     Main title page and introduction
@@ -74,11 +82,11 @@ def get_player_info():
         "peasant": "Peasant"
     }
     
-    print("Please pick a class from the following:\n")
-    print("1 - Warrior")
-    print("2 - Archer")
-    print("3 - Mage")
-    print("4 - Peasant (HARD)")
+    scroll_text("Please pick a class from the following:\n")
+    scroll_text("1 - Warrior")
+    scroll_text("2 - Archer")
+    scroll_text("3 - Mage")
+    scroll_text("4 - Peasant (HARD)")
 
     player_class = input("\n").strip().lower()
 
@@ -109,11 +117,11 @@ def get_player_info():
     }
 
     # Display player info
-    print(f"\nPlayer Name: {name}")
-    print(f"Player Class: {class_name}")
-    print("\nPlayer Stats and Equipment:\n")
+    scroll_text(f"\nPlayer Name: {name}")
+    scroll_text(f"Player Class: {class_name}")
+    scroll_text("\nPlayer Stats and Equipment:\n")
     for stat, value in player_stats.items():
-        print(f"{stat}: {value}")
+        scroll_text(f"{stat}: {value}")
 
     return {
         "name": name,
@@ -143,12 +151,12 @@ def game_loop(player_info, location, turns_until_end, inventory):
     """
 
     while turns_until_end > 0:
-        print("\nCurrent Location:", location)
-        print("\nTurns Remaining", turns_until_end)
-        print("\n1. Move")
-        print("2. View Inventory")
-        print("3. View Stats")
-        print("4. Quit Game")
+        scroll_text(f"\nCurrent Location: {location}")
+        scroll_text(f"\nTurns Remaining: {turns_until_end}")
+        scroll_text("\n1. Move")
+        scroll_text("2. View Inventory")
+        scroll_text("3. View Stats")
+        scroll_text("4. Quit Game")
 
         action = input("Choose an action: \n").strip()
 
@@ -206,21 +214,21 @@ def initialise_inventory(player_info):
     }
 
 def view_inventory(inventory):
-    print("Your inventory contains:")
+    scroll_text("Your inventory contains:")
     for category, items in inventory.items():
         if category != "Currently Equipped":
-            print(f"{category}: {', '.join(items)}")
+            scroll_text(f"{category}: {', '.join(items)}")
         else:
-            print("\nCurrently Equipped:")
+            scroll_text("\nCurrently Equipped:")
             for equip_category, item in items.items():
-                print(f"{equip_category}: {item if item else 'None'}")
+                scroll_text(f"{equip_category}: {item if item else 'None'}")
 
 def view_stats(player_info):
-    print(f"Player Name: {player_info['name']}")
-    print(f"Player Class: {player_info['class']}")
-    print("\nPlayer Stats:")
+    scroll_text(f"Player Name: {player_info['name']}")
+    scroll_text(f"Player Class: {player_info['class']}")
+    scroll_text("\nPlayer Stats:")
     for stat, value in player_info['stats'].items():
-        print(f"{stat}: {value}")
+        scroll_text(f"{stat}: {value}")
 
 def main():
     """
