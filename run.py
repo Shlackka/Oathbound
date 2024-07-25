@@ -25,31 +25,31 @@ def title_scroll():
     """
 
     title = r"""
-      ____          _    _      _                               _ 
-     / __ \        | |  | |    | |                             | |
-    | |  | |  __ _ | |_ | |__  | |__    ___   _   _  _ __    __| |
-    | |  | | / _` || __|| '_ \ | '_ \  / _ \ | | | || '_ \  / _` |
-    | |__| || (_| || |_ | | | || |_) || (_) || |_| || | | || (_| |
-     \____/  \__,_| \__||_| |_||_.__/  \___/  \__,_||_| |_| \__,_|
-                                                                """
+  ____          _    _      _                               _ 
+ / __ \        | |  | |    | |                             | |
+| |  | |  __ _ | |_ | |__  | |__    ___   _   _  _ __    __| |
+| |  | | / _` || __|| '_ \ | '_ \  / _ \ | | | || '_ \  / _` |
+| |__| || (_| || |_ | | | || |_) || (_) || |_| || | | || (_| |
+ \____/  \__,_| \__||_| |_||_.__/  \___/  \__,_||_| |_| \__,_|
+                                                            """
                                                                 
     title_lines = title.split('\n')
 
     for line in title_lines:
         print(line)
-        time.sleep(0.4)
+        time.sleep(0.01)
 
     introduction = r"""
-    Welcome to Oathbound,
+Welcome to Oathbound,
     
-    In this adventure, you will embark on a journey through a fantasy world filled with danger and mystery.
-    You will choose a character class, each with its own unique strengths and weaknesses. 
-    As you progress, you will encounter various challenges and make decisions that will shape your destiny.
+In this adventure, you will embark on a journey through a fantasy world filled with danger and mystery.
+You will choose a character class, each with its own unique strengths and weaknesses. 
+As you progress, you will encounter various challenges and make decisions that will shape your destiny.
     
-    Are you ready to take the oath and begin your adventure?
+Are you ready to take the oath and begin your adventure?
     
-    Press enter to proceed...
-    """
+Press enter to proceed...
+"""
 
     for char in introduction:
         print(char, end='', flush=True)
@@ -111,9 +111,9 @@ def get_player_info():
     # Display player info
     print(f"\nPlayer Name: {name}")
     print(f"Player Class: {class_name}")
-    print("Player Stats:")
+    print("\nPlayer Stats and Equipment:\n")
     for stat, value in player_stats.items():
-        print(f"  {stat}: {value}")
+        print(f"{stat}: {value}")
 
     return {
         "name": name,
@@ -134,32 +134,33 @@ def start_game():
     title_scroll()
     turns_until_end, location = initialise_game()
     player_info = get_player_info()
-    game_loop(player_info, location, turns_until_end)
+    inventory = initialise_inventory(player_info)
+    game_loop(player_info, location, turns_until_end, inventory)
 
-def game_loop(player_info, location, turns_until_end):
+def game_loop(player_info, location, turns_until_end, inventory):
     """
     Main game loop where the player will take actions
     """
 
     while turns_until_end > 0:
         print("\nCurrent Location:", location)
-        print("Turns Remaining", turns_until_end)
-        print("1. Move")
-        print("2. Inventory")
+        print("\nTurns Remaining", turns_until_end)
+        print("\n1. Move")
+        print("2. View Inventory")
         print("3. View Stats")
         print("4. Quit Game")
 
-        action = input("Choose and action: \n").strip()
+        action = input("Choose an action: \n").strip()
 
         if action == "1":
-            location = move(location)
-            turns_until_end -= 1
-            """
+            new_location, moved = move(location)
+            if moved:
+                location = new_location
+                turns_until_end -= 1
         elif action == "2":
-            inventory()
+            view_inventory(inventory)
         elif action == "3":
             view_stats(player_info)
-        """
         elif action == "4":
             print("Thank you for playing!")
             break
@@ -175,17 +176,51 @@ def move(location):
 
     if direction == "north":
         y += 1
+        return (x, y), True
     elif direction == "south":
         y -= 1
+        return (x, y), True
     elif direction == "east":
         x += 1
+        return (x, y), True
     elif direction == "west":
         x -= 1
+        return (x, y), True
     else:
         print("Invalid direction.")
-    
-    return (x, y)
+        return location, False
 
+def initialise_inventory(player_info):
+    """
+    Initialise the players inventory
+    """
+    return {
+        "Weapons": [],
+        "Armours": [],
+        "Relics": [],
+        "Currently Equipped": {
+            "Weapon": player_info["stats"]["Weapon"],
+            "Armour": player_info["stats"]["Armour"],
+            "Relic": player_info["stats"]["Relic"]
+        }
+    }
+
+def view_inventory(inventory):
+    print("Your inventory contains:")
+    for category, items in inventory.items():
+        if category != "Currently Equipped":
+            print(f"{category}: {', '.join(items)}")
+        else:
+            print("\nCurrently Equipped:")
+            for equip_category, item in items.items():
+                print(f"{equip_category}: {item if item else 'None'}")
+
+def view_stats(player_info):
+    print(f"Player Name: {player_info['name']}")
+    print(f"Player Class: {player_info['class']}")
+    print("\nPlayer Stats:")
+    for stat, value in player_info['stats'].items():
+        print(f"{stat}: {value}")
 
 def main():
     """
