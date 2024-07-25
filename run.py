@@ -47,17 +47,16 @@ def title_scroll():
         print(line)
         time.sleep(0.01)
 
-    introduction = r"""
-Welcome to Oathbound,
-    
-In this adventure, you will embark on a journey through a fantasy world filled with danger and mystery.
-You will choose a character class, each with its own unique strengths and weaknesses. 
-As you progress, you will encounter various challenges and make decisions that will shape your destiny.
-    
-Are you ready to take the oath and begin your adventure?
-    
-Press enter to proceed...
-"""
+    introduction = (
+        "Welcome to Oathbound,\n\n"
+        "In this adventure, you will embark on a journey through a fantasy world\n"
+        "filled with danger and mystery. You will choose a character class, each\n"
+        "with its own unique strengths and weaknesses. As you progress, you will\n"
+        "encounter various challenges and make decisions that will shape your\n"
+        "destiny.\n\n"
+        "Are you ready to take the oath and begin your adventure?\n\n"
+        "Press enter to proceed...\n"
+    )
 
     for char in introduction:
         print(char, end='', flush=True)
