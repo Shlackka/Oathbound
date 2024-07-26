@@ -156,9 +156,10 @@ def start_game():
     player_info = get_player_info()
     inventory = initialise_inventory(player_info)
     location_area_map = {}
-    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters)
+    location_encounter_map = {}
+    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters, location_encounter_map)
 
-def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters):
+def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters, location_encounter_map):
     """
     Main game loop where the player will take actions
     """
@@ -190,9 +191,12 @@ def game_loop(player_info, location, turns_until_end, inventory, areas, location
                 turns_until_end -= 1
                 if new_location not in visited_locations:
                     visited_locations.append(new_location)
-                if check_for_encounter():
+                if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
+                    location_encounter_map[new_location] = encounter
                     handle_encounter(encounter, inventory)
+                elif new_location in location_encounter_map:
+                    scroll_text(f"You see the remains of a previous encounter: {location_encounter_map[new_location]}")
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -282,12 +286,22 @@ def handle_encounter(encounter, inventory):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
                 scroll_text("It's a mimic! A fight ensues!")
                 # Add logic to handle the fight with the mimic
+                fight_mimic()
             else:
                 scroll_text("You open the chest and find some treasure!")
                 # Add logic to add treasure to inventory
                 inventory['Relics'].append("Golden Necklace")
         else:
             scroll_text("You leave the chest alone and continue on your journey.")
+
+def fight_mimic():
+    """
+    Handle the fight with the mimic
+    """
+    scroll_text("The mimic attacks you! Prepare for battle.")
+    # Add detailed fight mechanics here
+    # Assume mimic is defeated for now
+    scroll_text("You defeat the mimic and continue on your journey.")
 
 def initialise_inventory(player_info):
     """
