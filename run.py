@@ -27,6 +27,16 @@ def scroll_text(text, delay=0.015):
         time.sleep(delay)
     print()
 
+def normalise_and_check_input(input_text, keywords):
+    """
+    Normalise the input text and check if it contains any of the specified keywords
+    """
+    normalised_input = input_text.strip().lower()
+    for keyword in keywords:
+        if keyword in normalised_input:
+            return True
+    return False
+
 def title_scroll():
     """
     Main title page and introduction
@@ -141,13 +151,14 @@ def initialise_game():
 def start_game():
     title_scroll()
     areas = get_areas()
+    encounters = get_encounter()
     turns_until_end, location = initialise_game()
     player_info = get_player_info()
     inventory = initialise_inventory(player_info)
     location_area_map = {}
-    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map)
+    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters)
 
-def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map):
+def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters):
     """
     Main game loop where the player will take actions
     """
@@ -179,6 +190,9 @@ def game_loop(player_info, location, turns_until_end, inventory, areas, location
                 turns_until_end -= 1
                 if new_location not in visited_locations:
                     visited_locations.append(new_location)
+                if check_for_encounter():
+                    encounter = get_random_encounter(encounters)
+                    handle_encounter(encounter, inventory)
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -219,7 +233,7 @@ def move(location, areas, location_area_map):
 
 def get_areas():
     """
-    Retrieve the list of areas from the Google Sheet.
+    Retrieve the list of areas from the Google Sheet
     """
     area_sheet = SHEET.worksheet('Areas')
     areas = area_sheet.col_values(1)
@@ -227,9 +241,53 @@ def get_areas():
 
 def get_random_area(areas):
     """
-    Get a random area from the provided list of areas.
+    Get a random area from the provided list of areas
     """
     return random.choice(areas)
+
+def get_encounter():
+    """
+    Get list of encounters from Google Sheet
+    """
+    encounter_sheet = SHEET.worksheet('Encounters')
+    encounters = encounter_sheet.col_values(1)
+    return encounters
+
+def get_random_encounter(encounters):
+    """
+    Get a random encounter from list of encounters
+    """
+    return random.choice(encounters)
+
+def check_for_encounter():
+    """
+    Determine if an encounter should occur (70% chance)
+    """
+    return random.random() < 0.7
+
+def handle_encounter(encounter, inventory):
+    """
+    Handle the encounter logic 
+    """
+    if encounter == "Chest":
+        scroll_text(f"You come across a chest in front of you, \nthere is no lock on the chest and nobody around, what will you do?")
+        scroll_text("1. Open the chest")
+        scroll_text("2. Leave the chest alone")
+
+        choice = input("")
+        
+        open_keywords = ["open", "open the chest", "open it", "open up", "look inside", "open chest", "1"]
+
+        if normalise_and_check_input(choice, open_keywords):
+            if random.random() < 0.1:  # 10% chance for the chest to be a mimic
+                scroll_text("It's a mimic! A fight ensues!")
+                # Add logic to handle the fight with the mimic
+            else:
+                scroll_text("You open the chest and find some treasure!")
+                # Add logic to add treasure to inventory
+                inventory['Relics'].append("Golden Necklace")
+        else:
+            scroll_text("You leave the chest alone and continue on your journey.")
 
 def initialise_inventory(player_info):
     """
