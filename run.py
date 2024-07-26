@@ -18,7 +18,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('Oathbound')
 
-def scroll_text(text, delay=0.02):
+def scroll_text(text, delay=0.015):
     """
     Print text with a scrolling effect.
     """
@@ -140,19 +140,30 @@ def initialise_game():
 
 def start_game():
     title_scroll()
+    areas = get_areas()
     turns_until_end, location = initialise_game()
     player_info = get_player_info()
     inventory = initialise_inventory(player_info)
-    game_loop(player_info, location, turns_until_end, inventory)
+    location_area_map = {}
+    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map)
 
-def game_loop(player_info, location, turns_until_end, inventory):
+def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map):
     """
     Main game loop where the player will take actions
     """
 
+    visited_locations = [(0,0)]
+
+    if location not in location_area_map:
+        location_area_map[location] = get_random_area(areas)
+    area = location_area_map[location]
+
     while turns_until_end > 0:
-        scroll_text(f"\nCurrent Location: {location}")
+        # TESTING
+        scroll_text(visited_locations)
+        scroll_text(f"\nCurrent Location: {location} ({area})")
         scroll_text(f"\nTurns Remaining: {turns_until_end}")
+        # TESTING
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
         scroll_text("3. View Stats")
@@ -161,10 +172,13 @@ def game_loop(player_info, location, turns_until_end, inventory):
         action = input("Choose an action: \n").strip()
 
         if action == "1":
-            new_location, moved = move(location)
+            new_location, new_area, moved = move(location, areas, location_area_map)
             if moved:
                 location = new_location
+                area = new_area
                 turns_until_end -= 1
+                if new_location not in visited_locations:
+                    visited_locations.append(new_location)
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -174,8 +188,10 @@ def game_loop(player_info, location, turns_until_end, inventory):
             break
         else:
             print("Invalid action. Please try again.")
+
+    return visited_locations
     
-def move(location):
+def move(location, areas, location_area_map):
     """
     Function to move the player in desired direction
     """
@@ -184,19 +200,36 @@ def move(location):
 
     if direction == "north":
         y += 1
-        return (x, y), True
     elif direction == "south":
         y -= 1
-        return (x, y), True
     elif direction == "east":
         x += 1
-        return (x, y), True
     elif direction == "west":
         x -= 1
-        return (x, y), True
     else:
-        print("Invalid direction.")
-        return location, False
+        scroll_text("Invalid direction.")
+        return location, None, False
+
+    new_location = (x, y)
+
+    if new_location not in location_area_map:
+        location_area_map[new_location] = get_random_area(areas)
+
+    return new_location, location_area_map[new_location], True
+
+def get_areas():
+    """
+    Retrieve the list of areas from the Google Sheet.
+    """
+    area_sheet = SHEET.worksheet('Areas')
+    areas = area_sheet.col_values(1)
+    return areas
+
+def get_random_area(areas):
+    """
+    Get a random area from the provided list of areas.
+    """
+    return random.choice(areas)
 
 def initialise_inventory(player_info):
     """
