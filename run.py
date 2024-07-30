@@ -152,6 +152,7 @@ def start_game():
     title_scroll()
     areas = get_areas()
     encounters = get_encounter()
+    enemies = get_enemies()
     drops = initialise_potential_drops()
     turns_until_end, location = initialise_game()
     player_info = get_player_info()
@@ -168,7 +169,8 @@ def start_game():
     location_area_map, 
     encounters, 
     location_encounter_map,
-    drops
+    drops,
+    enemies
     )
 
 def game_loop(
@@ -180,7 +182,8 @@ def game_loop(
     location_area_map, 
     encounters, 
     location_encounter_map,
-    drops
+    drops,
+    enemies
     ):
     """
     Main game loop where the player will take actions
@@ -216,7 +219,7 @@ def game_loop(
                 if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
                     location_encounter_map[new_location] = encounter
-                    handle_encounter(encounter, inventory, drops)
+                    handle_encounter(encounter, inventory, drops, enemies)
                 elif new_location in location_encounter_map:
                     scroll_text(f"You see the remains of a previous encounter: {location_encounter_map[new_location]}")
         elif action == "2":
@@ -291,7 +294,7 @@ def check_for_encounter():
     """
     return random.random() < 0.7
 
-def handle_encounter(encounter, inventory, drops):
+def handle_encounter(encounter, inventory, drops, enemies):
     """
     Handle the encounter logic 
     """
@@ -308,7 +311,7 @@ def handle_encounter(encounter, inventory, drops):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
                 scroll_text("It's a mimic! A fight ensues!")
                 # Add logic to handle the fight with the mimic
-                fight_mimic()
+                fight_enemy()
             else:
                 drop = get_random_drop(drops)
                 scroll_text(f"You open the chest and find: {drop['Item Name']}!")
@@ -316,15 +319,17 @@ def handle_encounter(encounter, inventory, drops):
                 inventory[drop['Category'] + 's'].append(drop['Item Name'])
         else:
             scroll_text("You leave the chest alone and continue on your journey.")
+    elif encounter == "Enemy":
+        fight_enemy()
 
-def fight_mimic():
+def fight_enemy(enemy):
     """
-    Handle the fight with the mimic
+    Handle the fight with enemy
     """
-    scroll_text("The mimic attacks you! Prepare for battle.")
+    scroll_text(f"The {enemy['Enemy']} attacks you! Prepare for battle.")
     # Add detailed fight mechanics here
     # Assume mimic is defeated for now
-    scroll_text("You defeat the mimic and continue on your journey.")
+    scroll_text(f"You defeat the {enemy['Enemy']} and continue on your journey.")
 
 def initialise_inventory(player_info):
     """
@@ -355,6 +360,15 @@ def get_random_drop(drops):
     Get a random drop from the list of drops
     """
     return random.choice(drops)
+
+
+def get_enemies():
+    """
+    Get list of enemies from worksheet
+    """
+    enemies_sheet = SHEET.worksheet('Enemies')
+    enemies_data - enemies_sheet.get_all_records()
+    return enemies_data
 
 
 def view_inventory(inventory):
