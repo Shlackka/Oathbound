@@ -5,6 +5,7 @@
 import random
 import time
 import gspread
+import os
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -17,6 +18,16 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('Oathbound')
+
+
+def clear_terminal():
+    """
+    Clear the terminal screen.
+    """
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 
 def scroll_text(text, delay=0.015):
@@ -75,11 +86,27 @@ def title_scroll():
 
     input('\n')
 
+def opening_text():
+    """
+    Display the opening narrative before the player makes their first move.
+    """
+    opening_narrative = (
+        "You awaken to the first light of dawn, your body still weary from restless dreams.\n"
+        "The world outside your shelter is still and quiet, the perfect moment to gather your thoughts.\n"
+        "You pack your belongings, ensuring you have everything you need for the journey ahead.\n"
+        "Taking a deep breath, you step outside, feeling the cool morning air fill your lungs.\n"
+        "With a sense of determination, you prepare to take your first step into the unknown...\n\n"
+        "Press Enter to begin your adventure."
+    )
+    scroll_text(opening_narrative, delay=0.02)
+    input("\n")
+
 
 def get_player_info():
     """
     Get player name and class
     """
+    clear_terminal()
     name = input("Enter your character's name:\n")
 
     class_lookup = {
@@ -171,6 +198,8 @@ def start_game():
     drops = initialise_potential_drops()
     location_area_map = {}
     location_encounter_map = {}
+    clear_terminal()
+    opening_text()
     game_loop(
         player_info,
         location,
@@ -211,9 +240,9 @@ def game_loop(
 
     while turns_until_end > 0:
         # TESTING
-        scroll_text(visited_locations)
-        scroll_text(f"\nCurrent Location: {location} ({area})")
-        scroll_text(f"\nTurns Remaining: {turns_until_end}")
+        #scroll_text(visited_locations)
+        #scroll_text(f"\nCurrent Location: {location} ({area})")
+        #scroll_text(f"\nTurns Remaining: {turns_until_end}")
         # TESTING
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
@@ -221,6 +250,7 @@ def game_loop(
         scroll_text("4. Quit Game")
 
         action = input("Choose an action: \n").strip()
+        clear_terminal()
 
         if action == "1":
             new_location, new_area, moved = move(location, areas, location_area_map)
@@ -246,6 +276,8 @@ def game_loop(
                         npc = previous_encounter["details"]
                         scroll_text(f"You see {npc['Name']} just up ahead but as you wave 'Hello' to them they turn and dissapear from sight.")
                         scroll_text("You continue on your way ignoring their rudeness.")
+                else:
+                    scroll_text(f"You find yourself at a {area} but there appears to be nothing of interest here...")
 
         elif action == "2":
             view_inventory(inventory)
@@ -331,8 +363,9 @@ def handle_encounter(encounter, inventory, drops, enemies, location_encounter_ma
     Handle the encounter logic
     """
     if encounter == "Chest":
+        print("\n")
         scroll_text(f"You come across a chest in front of you, \nthere is no lock on the chest and nobody around, what will you do?")
-        scroll_text("1. Open the chest")
+        scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
 
         choice = input("")
@@ -369,7 +402,7 @@ def fight_enemy(enemy, drops, inventory):
     # Add detailed fight mechanics here
     # Assume enemy is defeated for now
     drop = get_random_drop(drops)
-    scroll_text(f"You defeat the {enemy['Enemy']}, they drop a {drop['Item Name']}! You pick up the loot and continue on your journey.")
+    scroll_text(f"You defeat the {enemy['Enemy']}, they drop {drop['Item Name']}! You pick up the loot and continue on your journey.")
     inventory[drop['Category'] + 's'].append(drop['Item Name'])
 
 
