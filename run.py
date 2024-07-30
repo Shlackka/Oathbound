@@ -311,7 +311,8 @@ def handle_encounter(encounter, inventory, drops, enemies):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
                 scroll_text("It's a mimic! A fight ensues!")
                 # Add logic to handle the fight with the mimic
-                fight_enemy()
+                mimic = {"Enemy": "Mimic", "Health": 50, "Attack": 12, "Speed": 4} 
+                fight_enemy(mimic)
             else:
                 drop = get_random_drop(drops)
                 scroll_text(f"You open the chest and find: {drop['Item Name']}!")
@@ -320,7 +321,8 @@ def handle_encounter(encounter, inventory, drops, enemies):
         else:
             scroll_text("You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
-        fight_enemy()
+        enemy = get_random_enemy(enemies)
+        fight_enemy(enemy)
 
 def fight_enemy(enemy):
     """
@@ -367,8 +369,15 @@ def get_enemies():
     Get list of enemies from worksheet
     """
     enemies_sheet = SHEET.worksheet('Enemies')
-    enemies_data - enemies_sheet.get_all_records()
+    enemies_data = enemies_sheet.get_all_records()
     return enemies_data
+
+
+def get_random_enemy(enemies):
+    """
+    Get a random enemy from the list of enemies
+    """
+    return random.choice(enemies)
 
 
 def view_inventory(inventory):
