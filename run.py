@@ -246,7 +246,7 @@ def game_loop(
                         npc = previous_encounter["details"]
                         scroll_text(f"You see {npc['Name']} just up ahead but as you wave 'Hello' to them they turn and dissapear from sight.")
                         scroll_text("You continue on your way ignoring their rudeness.")
-                    
+
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -436,6 +436,7 @@ def get_random_npc(npcs):
     """
     return random.choice(npcs)
 
+
 def talk_to_npc(npc):
     """
     Handle the interaction with the NPC
@@ -448,7 +449,7 @@ def talk_to_npc(npc):
     choice = input("What will you do? \n").strip().lower()
 
     talk_keywords = ["talk", "talk more", "speak", "1"]
-    
+
     if normalise_and_check_input(choice, talk_keywords):
         scroll_text(f"{npc['Name']} says: {npc['More Dialogue']}")
         # Add more interactions if needed
