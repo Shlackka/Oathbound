@@ -140,7 +140,7 @@ def get_player_info():
     }
 
 def initialise_game():
-    turns_until_end = random.randint(5, 15)
+    turns_until_end = random.randint(10, 30)
 
     x = 0
     y = 0
@@ -219,9 +219,16 @@ def game_loop(
                 if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
                     location_encounter_map[new_location] = encounter
-                    handle_encounter(encounter, inventory, drops, enemies)
+                    handle_encounter(encounter, inventory, drops, enemies, location_encounter_map, new_location)
                 elif new_location in location_encounter_map:
-                    scroll_text(f"You see the remains of a previous encounter: {location_encounter_map[new_location]}")
+                    previous_encounter = location_encounter_map[new_location]
+                    if previous_encounter == "Chest":
+                        scroll_text(f"You see an empty chest. It seems someone has already looted it.")
+                    elif previous_encounter["type"] == "Enemy":
+                        enemy = previous_encounter["details"]
+                        scroll_text(f"You see signs of a previous battle with a {enemy['Enemy']}.")
+                    #elif previous_encounter == "NPC":
+                    #    sdfsf
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -290,11 +297,11 @@ def get_random_encounter(encounters):
 
 def check_for_encounter():
     """
-    Determine if an encounter should occur (70% chance)
+    Determine if an encounter should occur (80% chance)
     """
-    return random.random() < 0.7
+    return random.random() < 0.8
 
-def handle_encounter(encounter, inventory, drops, enemies):
+def handle_encounter(encounter, inventory, drops, enemies, location_encounter_map, location):
     """
     Handle the encounter logic 
     """
@@ -323,6 +330,7 @@ def handle_encounter(encounter, inventory, drops, enemies):
     elif encounter == "Enemy":
         enemy = get_random_enemy(enemies)
         fight_enemy(enemy)
+        location_encounter_map[location] = {"type": "Enemy", "details": enemy}
 
 def fight_enemy(enemy):
     """
