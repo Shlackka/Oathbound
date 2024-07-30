@@ -200,6 +200,7 @@ def start_game():
     location_encounter_map = {}
     clear_terminal()
     opening_text()
+    clear_terminal()
     game_loop(
         player_info,
         location,
@@ -353,9 +354,9 @@ def get_random_encounter(encounters):
 
 def check_for_encounter():
     """
-    Determine if an encounter should occur (80% chance)
+    Determine if an encounter should occur (65% chance)
     """
-    return random.random() < 0.8
+    return random.random() < 0.65
 
 
 def handle_encounter(encounter, inventory, drops, enemies, location_encounter_map, location, npcs):
@@ -363,7 +364,7 @@ def handle_encounter(encounter, inventory, drops, enemies, location_encounter_ma
     Handle the encounter logic
     """
     if encounter == "Chest":
-        print("\n")
+        print("")
         scroll_text(f"You come across a chest in front of you, \nthere is no lock on the chest and nobody around, what will you do?")
         scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
@@ -398,6 +399,7 @@ def fight_enemy(enemy, drops, inventory):
     """
     Handle the fight with enemy
     """
+    print("")
     scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
     # Add detailed fight mechanics here
     # Assume enemy is defeated for now
@@ -474,6 +476,7 @@ def talk_to_npc(npc):
     """
     Handle the interaction with the NPC
     """
+    print("")
     scroll_text(f"You encounter {npc['Name']}, {npc['Description']}.")
     scroll_text(f"{npc['Name']} says: {npc['Dialogue']}")
     scroll_text("1. Talk more")
