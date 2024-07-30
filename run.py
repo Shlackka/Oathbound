@@ -347,7 +347,7 @@ def handle_encounter(encounter, inventory, drops, enemies, location_encounter_ma
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
     elif encounter == "NPC":
         npc = get_random_npc(npcs)
-        talk_to_npc()
+        talk_to_npc(npc)
         location_encounter_map[location] = {"type": "NPC", "details": npc}
 
 
@@ -425,6 +425,25 @@ def get_random_npc(npcs):
     Get random NPC from list of NPCs
     """
     return random.choice(npcs)
+
+def talk_to_npc(npc):
+    """
+    Handle the interaction with the NPC
+    """
+    scroll_text(f"You encounter {npc['Name']}, {npc['Description']}.")
+    scroll_text(f"{npc['Name']} says: {npc['Dialogue']}")
+    scroll_text("1. Talk more")
+    scroll_text("2. Leave")
+
+    choice = input("What will you do? \n").strip().lower()
+
+    talk_keywords = ["talk", "talk more", "speak", "1"]
+    
+    if normalise_and_check_input(choice, talk_keywords):
+        scroll_text(f"{npc['Name']} says: {npc['More Dialogue']}")
+        # Add more interactions if needed
+    else:
+        scroll_text("You decide to leave and continue your journey.")
 
 
 def view_inventory(inventory):
