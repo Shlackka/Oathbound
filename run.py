@@ -86,6 +86,7 @@ def title_scroll():
 
     input('\n')
 
+
 def opening_text():
     """
     Display the opening narrative before the player makes their first move.
@@ -241,9 +242,9 @@ def game_loop(
 
     while turns_until_end > 0:
         # TESTING
-        #scroll_text(visited_locations)
-        #scroll_text(f"\nCurrent Location: {location} ({area})")
-        #scroll_text(f"\nTurns Remaining: {turns_until_end}")
+        # scroll_text(visited_locations)
+        # scroll_text(f"\nCurrent Location: {location} ({area})")
+        # scroll_text(f"\nTurns Remaining: {turns_until_end}")
         # TESTING
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
