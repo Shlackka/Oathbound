@@ -127,6 +127,8 @@ def get_player_info():
         "Relic": stats[6]
     }
 
+    scroll_text("Outfitting Character")
+
     # Display player info
     scroll_text(f"\nPlayer Name: {name}")
     print("")
@@ -155,12 +157,17 @@ def initialise_game():
 def start_game():
     title_scroll()
     player_info = get_player_info()
+    scroll_text("Planning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
+    scroll_text("Packing all the required provisions...\n")
     inventory = initialise_inventory(player_info)
+    scroll_text("Surveying the surrounding areas for potential dangers that lie ahead...\n")
     areas = get_areas()
     encounters = get_encounter()
+    scroll_text("Making preperations for each potential enemy you might face...\n")
     enemies = get_enemies()
     npcs = get_npcs()
+    scroll_text("Settling down for one last night before setting out...\n")
     drops = initialise_potential_drops()
     location_area_map = {}
     location_encounter_map = {}
@@ -235,8 +242,11 @@ def game_loop(
                         enemy = previous_encounter["details"]
                         scroll_text(f"You see signs of a previous battle with a {enemy['Enemy']}.")
                         scroll_text("You continue on your way as there is nothing else for you here.")
-                    #elif previous_encounter == "NPC":
-                    #    sdfsf
+                    elif previous_encounter['type'] == "NPC":
+                        npc = previous_encounter["details"]
+                        scroll_text(f"You see {npc['Name']} just up ahead but as you wave 'Hello' to them they turn and dissapear from sight.")
+                        scroll_text("You continue on your way ignoring their rudeness.")
+                    
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
@@ -255,7 +265,7 @@ def move(location, areas, location_area_map):
     Function to move the player in desired direction
     """
     x, y = location
-    direction = input("Move North, South, East, or West: \n").strip().lower()
+    direction = input("Will you go North, South, East, or West? \n").strip().lower()
 
     if direction == "north":
         y += 1
