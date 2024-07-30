@@ -152,14 +152,36 @@ def start_game():
     title_scroll()
     areas = get_areas()
     encounters = get_encounter()
+    drops = initialise_potential_drops()
     turns_until_end, location = initialise_game()
     player_info = get_player_info()
     inventory = initialise_inventory(player_info)
     location_area_map = {}
     location_encounter_map = {}
-    game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters, location_encounter_map)
+    
+    game_loop(
+    player_info, 
+    location, 
+    turns_until_end, 
+    inventory, 
+    areas, 
+    location_area_map, 
+    encounters, 
+    location_encounter_map,
+    drops
+    )
 
-def game_loop(player_info, location, turns_until_end, inventory, areas, location_area_map, encounters, location_encounter_map):
+def game_loop(
+    player_info, 
+    location, 
+    turns_until_end, 
+    inventory, 
+    areas, 
+    location_area_map, 
+    encounters, 
+    location_encounter_map,
+    drops
+    ):
     """
     Main game loop where the player will take actions
     """
@@ -194,7 +216,7 @@ def game_loop(player_info, location, turns_until_end, inventory, areas, location
                 if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
                     location_encounter_map[new_location] = encounter
-                    handle_encounter(encounter, inventory)
+                    handle_encounter(encounter, inventory, drops)
                 elif new_location in location_encounter_map:
                     scroll_text(f"You see the remains of a previous encounter: {location_encounter_map[new_location]}")
         elif action == "2":
@@ -269,7 +291,7 @@ def check_for_encounter():
     """
     return random.random() < 0.7
 
-def handle_encounter(encounter, inventory):
+def handle_encounter(encounter, inventory, drops):
     """
     Handle the encounter logic 
     """
@@ -288,9 +310,10 @@ def handle_encounter(encounter, inventory):
                 # Add logic to handle the fight with the mimic
                 fight_mimic()
             else:
-                scroll_text("You open the chest and find some treasure!")
-                # Add logic to add treasure to inventory
-                inventory['Relics'].append("Golden Necklace")
+                drop = get_random_drop(drops)
+                scroll_text(f"You open the chest and find: {drop['Item Name']}!")
+                # Add logic to add the drop to inventory
+                inventory[drop['Category'] + 's'].append(drop['Item Name'])
         else:
             scroll_text("You leave the chest alone and continue on your journey.")
 
@@ -317,6 +340,22 @@ def initialise_inventory(player_info):
             "Relic": player_info["stats"]["Relic"]
         }
     }
+
+
+def initialise_potential_drops():
+    """
+    Retrieve list of potential drops to use in game
+    """
+    drops_sheet = SHEET.worksheet('Drops')
+    drops_data = drops_sheet.get_all_records()
+    return drops_data
+
+def get_random_drop(drops):
+    """
+    Get a random drop from the list of drops
+    """
+    return random.choice(drops)
+
 
 def view_inventory(inventory):
     scroll_text("Your inventory contains:")
