@@ -68,9 +68,7 @@ def title_scroll():
         "Press enter to proceed...\n"
     )
 
-    for char in introduction:
-        print(char, end='', flush=True)
-        time.sleep(0.02)
+    scroll_text(introduction)
 
     input('\n')
 
@@ -227,6 +225,7 @@ def game_loop(
                     elif previous_encounter["type"] == "Enemy":
                         enemy = previous_encounter["details"]
                         scroll_text(f"You see signs of a previous battle with a {enemy['Enemy']}.")
+                        scroll_text("You continue on your way as there is nothing else for you here.")
                     #elif previous_encounter == "NPC":
                     #    sdfsf
         elif action == "2":
@@ -316,7 +315,6 @@ def handle_encounter(encounter, inventory, drops, enemies, location_encounter_ma
 
         if normalise_and_check_input(choice, open_keywords):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
-                scroll_text("It's a mimic! A fight ensues!")
                 # Add logic to handle the fight with the mimic
                 mimic = {"Enemy": "Mimic", "Health": 50, "Attack": 12, "Speed": 4} 
                 fight_enemy(mimic)
@@ -329,17 +327,19 @@ def handle_encounter(encounter, inventory, drops, enemies, location_encounter_ma
             scroll_text("You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
         enemy = get_random_enemy(enemies)
-        fight_enemy(enemy)
+        fight_enemy(enemy, drops, inventory)
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
 
-def fight_enemy(enemy):
+def fight_enemy(enemy, drops, inventory):
     """
     Handle the fight with enemy
     """
-    scroll_text(f"The {enemy['Enemy']} attacks you! Prepare for battle.")
+    scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
     # Add detailed fight mechanics here
-    # Assume mimic is defeated for now
-    scroll_text(f"You defeat the {enemy['Enemy']} and continue on your journey.")
+    # Assume enemy is defeated for now
+    drop = get_random_drop(drops)
+    scroll_text(f"You defeat the {enemy['Enemy']}, they drop a {drop['Item Name']}! You pick up the loot and continue on your journey.")
+    inventory[drop['Category'] + 's'].append(drop['Item Name'])
 
 def initialise_inventory(player_info):
     """
