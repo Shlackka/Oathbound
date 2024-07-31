@@ -513,7 +513,7 @@ def talk_to_npc(npc):
                 if talked_more:
                     print("")
                     scroll_text_slow(f"{npc['Name']} has nothing more to say, it would seem.")
-                print("")    
+                print("")
                 scroll_text_slow(npc['Exit Reason'])
                 print("")
                 scroll_text_slow(npc['Exit Dialogue'])
