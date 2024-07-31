@@ -185,6 +185,7 @@ def initialise_game():
 def start_game():
     title_scroll()
     player_info = get_player_info()
+    print("")
     scroll_text("Planning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
     scroll_text("Packing all the required provisions...\n")
@@ -480,18 +481,41 @@ def talk_to_npc(npc):
     print("")
     scroll_text(f"You encounter {npc['Name']}, {npc['Description']}.")
     scroll_text(f"{npc['Name']} says: {npc['Dialogue']}")
-    scroll_text("1. Talk more")
-    scroll_text("2. Leave")
 
-    choice = input("What will you do? \n").strip().lower()
+    has_more_to_say = True
+    talked_more = False
 
-    talk_keywords = ["talk", "talk more", "speak", "1"]
+    while True:
+        if has_more_to_say:
+            scroll_text("1. Talk more")
+            scroll_text("2. Leave\n")
 
-    if normalise_and_check_input(choice, talk_keywords):
-        scroll_text(f"{npc['Name']} says: {npc['More Dialogue']}")
-        # Add more interactions if needed
-    else:
-        scroll_text("You decide to leave and continue your journey.")
+            choice = input("What will you do? \n").strip().lower()
+
+            talk_keywords = ["talk", "talk more", "speak", "1"]
+            leave_keywords = ["leave", "go", "bye", "2"]
+
+            if normalise_and_check_input(choice, talk_keywords):
+                scroll_text(f"{npc['Name']} says: {npc['More Dialogue']}")
+                has_more_to_say = False
+                talked_more = True
+            elif normalise_and_check_input(choice, leave_keywords):
+                if talked_more:
+                    scroll_text(f"{npc['Name']} has nothing more to say, it would seem.")
+                scroll_text(npc['Exit Reason'])
+                scroll_text(npc['Exit Dialogue'])
+                break
+            else:
+                scroll_text("Invalid choice. Please try again.")
+        else:
+            if talked_more:
+                print("")
+                scroll_text(f"{npc['Name']} has nothing more to say, it would seem.")
+            print("")
+            scroll_text(npc['Exit Reason'])
+            print("")
+            scroll_text(npc['Exit Dialogue'])
+            break
 
 
 def view_inventory(inventory):
