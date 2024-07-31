@@ -32,7 +32,17 @@ def clear_terminal():
 
 def scroll_text(text, delay=0.015):
     """
-    Print text with a scrolling effect.
+    Print text with a scrolling effect
+    """
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(delay)
+    print()
+
+
+def scroll_text_slow(text, delay=0.05):
+    """
+    Print text with a scrolling effect slow
     """
     for char in text:
         print(char, end='', flush=True)
@@ -99,7 +109,7 @@ def opening_text():
         "With a sense of determination, you prepare to take your first step into the unknown...\n\n"
         "Press Enter to begin your adventure."
     )
-    scroll_text(opening_narrative, delay=0.02)
+    scroll_text_slow(opening_narrative, delay=0.03)
     input("\n")
 
 
@@ -186,17 +196,17 @@ def start_game():
     title_scroll()
     player_info = get_player_info()
     print("")
-    scroll_text("Planning how many days you'll be adventuring...\n")
+    scroll_text_slow("Planning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
     scroll_text("Packing all the required provisions...\n")
     inventory = initialise_inventory(player_info)
-    scroll_text("Surveying the surrounding areas for potential dangers that lie ahead...\n")
+    scroll_text_slow("Surveying the surrounding areas for potential dangers that lie ahead...\n")
     areas = get_areas()
     encounters = get_encounter()
-    scroll_text("Making preperations for each potential enemy you might face...\n")
+    scroll_text_slow("Making preperations for each potential enemy you might face...\n")
     enemies = get_enemies()
     npcs = get_npcs()
-    scroll_text("Settling down for one last night before setting out...\n")
+    scroll_text_slow("Settling down for one last night before setting out...\n")
     drops = initialise_potential_drops()
     location_area_map = {}
     location_encounter_map = {}
@@ -496,25 +506,28 @@ def talk_to_npc(npc):
             leave_keywords = ["leave", "go", "bye", "2"]
 
             if normalise_and_check_input(choice, talk_keywords):
-                scroll_text(f"{npc['Name']} says: {npc['More Dialogue']}")
+                scroll_text_slow(f"{npc['Name']} says: {npc['More Dialogue']}")
                 has_more_to_say = False
                 talked_more = True
             elif normalise_and_check_input(choice, leave_keywords):
                 if talked_more:
-                    scroll_text(f"{npc['Name']} has nothing more to say, it would seem.")
-                scroll_text(npc['Exit Reason'])
-                scroll_text(npc['Exit Dialogue'])
+                    print("")
+                    scroll_text_slow(f"{npc['Name']} has nothing more to say, it would seem.")
+                print("")    
+                scroll_text_slow(npc['Exit Reason'])
+                print("")
+                scroll_text_slow(npc['Exit Dialogue'])
                 break
             else:
                 scroll_text("Invalid choice. Please try again.")
         else:
             if talked_more:
                 print("")
-                scroll_text(f"{npc['Name']} has nothing more to say, it would seem.")
+                scroll_text_slow(f"{npc['Name']} has nothing more to say, it would seem.")
             print("")
-            scroll_text(npc['Exit Reason'])
+            scroll_text_slow(npc['Exit Reason'])
             print("")
-            scroll_text(npc['Exit Dialogue'])
+            scroll_text_slow(npc['Exit Dialogue'])
             break
 
 
