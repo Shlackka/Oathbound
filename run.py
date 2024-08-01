@@ -83,9 +83,12 @@ def title_scroll():
 
     introduction = (
      "Welcome to Oathbound,\n\n"
-     "In this adventure, you will embark on a journey through a fantasy world\n"
-     "filled with danger and mystery. You will choose a character class, each\n"
-     "with its own unique strengths and weaknesses. As you progress, you will\n"
+     "In this adventure, you will embark on a journey through a fantasy world"
+     "\n"
+     "filled with danger and mystery. You will choose a character class, each"
+     "\n"
+     "with its own unique strengths and weaknesses. As you progress, you will"
+     "\n"
      "encounter various challenges and make decisions that will shape your\n"
      "destiny.\n\n"
      "Are you ready to take the oath and begin your adventure?\n\n"
@@ -102,11 +105,17 @@ def opening_text():
     Display the opening narrative before the player makes their first move.
     """
     opening_narrative = (
-        "You awaken to the first light of dawn, your body still weary from restless dreams.\n"
-        "The world outside your shelter is still and quiet, the perfect moment to gather your thoughts.\n"
-        "You pack your belongings, ensuring you have everything you need for the journey ahead.\n"
-        "Taking a deep breath, you step outside, feeling the cool morning air fill your lungs.\n"
-        "With a sense of determination, you prepare to take your first step into the unknown...\n\n"
+        "You awaken to the first light of dawn, your body still weary from\n"
+        "restless dreams. The world outside your shelter is still and quiet,\n"
+        "the perfect moment to gather your thoughts. You pack your belongings,"
+        "\n"
+        "ensuring you have everything you need for the journey ahead. Taking a"
+        "\n"
+        "deep breath, you step outside, feeling the cool morning air fill your"
+        "\n"
+        "lungs. With a sense of determination, you prepare to take your first"
+        "\n"
+        "step into the unknown...\n\n"
         "Press Enter to begin your adventure."
     )
     scroll_text_slow(opening_narrative, delay=0.03)
@@ -198,15 +207,15 @@ def start_game():
     print("")
     scroll_text_slow("Planning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
-    scroll_text("Packing all the required provisions...\n")
+    scroll_text_slow("Packing all the required provisions...\n")
     inventory = initialise_inventory(player_info)
-    scroll_text_slow("Surveying the surrounding areas for potential dangers that lie ahead...\n")
+    scroll_text_slow("Surveying for potential dangers that lie ahead...\n")
     areas = get_areas()
     encounters = get_encounter()
-    scroll_text_slow("Making preperations for each potential enemy you might face...\n")
+    scroll_text_slow("Making preperations for combat...\n")
     enemies = get_enemies()
     npcs = get_npcs()
-    scroll_text_slow("Settling down for one last night before setting out...\n")
+    scroll_text_slow("Settling down for the night before setting out...\n")
     drops = initialise_potential_drops()
     location_area_map = {}
     location_encounter_map = {}
@@ -266,7 +275,8 @@ def game_loop(
         clear_terminal()
 
         if action == "1":
-            new_location, new_area, moved = move(location, areas, location_area_map)
+            new_location, new_area, moved = move(
+                location, areas, location_area_map)
             if moved:
                 location = new_location
                 area = new_area
@@ -276,21 +286,43 @@ def game_loop(
                 if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
                     location_encounter_map[new_location] = encounter
-                    handle_encounter(encounter, inventory, drops, enemies, location_encounter_map, new_location, npcs)
+                    handle_encounter(
+                        encounter,
+                        inventory,
+                        drops,
+                        enemies,
+                        location_encounter_map,
+                        new_location,
+                        npcs
+                    )
                 elif new_location in location_encounter_map:
                     previous_encounter = location_encounter_map[new_location]
                     if previous_encounter == "Chest":
-                        scroll_text(f"You see an empty chest. It seems someone has already looted it.")
+                        scroll_text(
+                            f"You see an empty chest. "
+                            "It seems someone has already looted it.")
                     elif previous_encounter["type"] == "Enemy":
                         enemy = previous_encounter["details"]
-                        scroll_text(f"You see signs of a previous battle with a {enemy['Enemy']}.")
-                        scroll_text("You continue on your way as there is nothing else for you here.")
+                        scroll_text(
+                            "You see signs of a previous "
+                            f"battle with a {enemy['Enemy']}.")
+                        scroll_text(
+                            "You continue on your way "
+                            "as there is nothing else for you here.")
                     elif previous_encounter['type'] == "NPC":
                         npc = previous_encounter["details"]
-                        scroll_text(f"You see {npc['Name']} just up ahead but as you wave 'Hello' to them they turn and dissapear from sight.")
-                        scroll_text("You continue on your way ignoring their rudeness.")
+                        scroll_text(
+                            f"You see {npc['Name']} just up ahead "
+                            "but as you wave 'Hello' to "
+                            "them they turn and dissapear from sight.")
+                        scroll_text(
+                            "You continue on your way "
+                            "ignoring their rudeness.")
                 else:
-                    scroll_text(f"You find yourself at a {area} but there appears to be nothing of interest here...")
+                    scroll_text(
+                        f"You find yourself at a "
+                        f"{area} but there appears to be "
+                        "nothing of interest here...")
 
         elif action == "2":
             view_inventory(inventory)
@@ -310,7 +342,9 @@ def move(location, areas, location_area_map):
     Function to move the player in desired direction
     """
     x, y = location
-    direction = input("Will you go North, South, East, or West? \n").strip().lower()
+    direction = input(
+        "Will you go North, South, "
+        "East, or West? \n").strip().lower()
 
     if direction == "north":
         y += 1
@@ -371,32 +405,52 @@ def check_for_encounter():
     return random.random() < 0.65
 
 
-def handle_encounter(encounter, inventory, drops, enemies, location_encounter_map, location, npcs):
+def handle_encounter(
+    encounter,
+    inventory,
+    drops,
+    enemies,
+    location_encounter_map,
+    location,
+    npcs
+        ):
     """
     Handle the encounter logic
     """
     if encounter == "Chest":
         print("")
-        scroll_text(f"You come across a chest in front of you, \nthere is no lock on the chest and nobody around, what will you do?")
+        scroll_text(
+            f"You come across a chest in front of "
+            "you, \nthere is no lock on the chest "
+            "and nobody around, what will you do?")
         scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
 
         choice = input("")
 
-        open_keywords = ["open", "open the chest", "open it", "open up", "look inside", "open chest", "1"]
+        open_keywords = [
+            "open",
+            "open the chest",
+            "open it", "open up", "look inside", "open chest", "1"]
 
         if normalise_and_check_input(choice, open_keywords):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
                 # Add logic to handle the fight with the mimic
-                mimic = {"Enemy": "Mimic", "Health": 50, "Attack": 12, "Speed": 4}
+                mimic = {
+                    "Enemy": "Mimic",
+                    "Health": 50,
+                    "Attack": 12,
+                    "Speed": 4}
                 fight_enemy(mimic, drops, inventory)
             else:
                 drop = get_random_drop(drops)
-                scroll_text(f"You open the chest and find: {drop['Item Name']}!")
+                scroll_text(
+                    f"You open the chest and find: {drop['Item Name']}!")
                 # Add logic to add the drop to inventory
                 inventory[drop['Category'] + 's'].append(drop['Item Name'])
         else:
-            scroll_text("You leave the chest alone and continue on your journey.")
+            scroll_text(
+                "You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
         enemy = get_random_enemy(enemies)
         fight_enemy(enemy, drops, inventory)
@@ -416,7 +470,10 @@ def fight_enemy(enemy, drops, inventory):
     # Add detailed fight mechanics here
     # Assume enemy is defeated for now
     drop = get_random_drop(drops)
-    scroll_text(f"You defeat the {enemy['Enemy']}, they drop {drop['Item Name']}! You pick up the loot and continue on your journey.")
+    scroll_text(
+        f"You defeat the {enemy['Enemy']}, they drop "
+        f"{drop['Item Name']}! "
+        "You pick up the loot and continue on your journey.")
     inventory[drop['Category'] + 's'].append(drop['Item Name'])
 
 
@@ -512,7 +569,9 @@ def talk_to_npc(npc):
             elif normalise_and_check_input(choice, leave_keywords):
                 if talked_more:
                     print("")
-                    scroll_text_slow(f"{npc['Name']} has nothing more to say, it would seem.")
+                    scroll_text_slow(
+                        f"{npc['Name']} has nothing "
+                        "more to say, it would seem.")
                 print("")
                 scroll_text_slow(npc['Exit Reason'])
                 print("")
@@ -523,7 +582,8 @@ def talk_to_npc(npc):
         else:
             if talked_more:
                 print("")
-                scroll_text_slow(f"{npc['Name']} has nothing more to say, it would seem.")
+                scroll_text_slow(
+                    f"{npc['Name']} has nothing more to say, it would seem.")
             print("")
             scroll_text_slow(npc['Exit Reason'])
             print("")
