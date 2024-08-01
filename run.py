@@ -327,6 +327,10 @@ def game_loop(
                         scroll_text(
                             "You continue on your way "
                             "ignoring their rudeness.")
+                    elif previous_encounter == "No Encounter":
+                        scroll_text(
+                            "You have been here before but there is still "
+                            "nothing of interest here...")
                 else:
                     scroll_text(
                         f"You find yourself at a "
@@ -655,9 +659,9 @@ def view_map(current_location, visited_locations, location_area_map, location_en
             x_idx, y_idx = translate_coords_to_index(loc)
             if encounter == "Chest":
                 map_grid[y_idx][x_idx] = 'C'
-            elif encounter["type"] == "Enemy":
+            elif isinstance(encounter, dict) and encounter["type"] == "Enemy":
                 map_grid[y_idx][x_idx] = 'E'
-            elif encounter["type"] == "NPC":
+            elif isinstance(encounter, dict) and encounter["type"] == "NPC":
                 map_grid[y_idx][x_idx] = 'N'
 
     # Mark the player's current location
