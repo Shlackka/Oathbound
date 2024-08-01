@@ -261,6 +261,7 @@ def game_loop(
     """
 
     visited_locations = [(0, 0)]
+    encountered_npcs = set()
 
     if location not in location_area_map:
         location_area_map[location] = get_random_area(areas)
@@ -299,7 +300,8 @@ def game_loop(
                         enemies,
                         location_encounter_map,
                         new_location,
-                        npcs
+                        npcs,
+                        encountered_npcs
                     )
                 elif new_location in location_encounter_map:
                     previous_encounter = location_encounter_map[new_location]
@@ -418,7 +420,8 @@ def handle_encounter(
     enemies,
     location_encounter_map,
     location,
-    npcs
+    npcs,
+    encountered_npcs
         ):
     """
     Handle the encounter logic
@@ -462,9 +465,15 @@ def handle_encounter(
         fight_enemy(enemy, drops, inventory)
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
     elif encounter == "NPC":
-        npc = get_random_npc(npcs)
-        talk_to_npc(npc)
-        location_encounter_map[location] = {"type": "NPC", "details": npc}
+        npc = get_unique_npc(npcs, encountered_npcs)
+        if npc:
+            talk_to_npc(npc)
+            location_encounter_map[location] = {"type": "NPC", "details": npc}
+            encountered_npcs.add(npc['Name'])
+        else:
+            scroll_text(
+                "There appears to be nothing here, "
+                "you carry on your way.")
 
 
 def fight_enemy(enemy, drops, inventory):
@@ -540,11 +549,15 @@ def get_npcs():
     return npcs_data
 
 
-def get_random_npc(npcs):
+def get_unique_npc(npcs, encountered_npcs):
     """
-    Get random NPC from list of NPCs
+    Get a unique NPC that has not been encountered yet
     """
-    return random.choice(npcs)
+    remaining_npcs = [npc for npc in npcs if npc['Name'] not in encountered_npcs]
+    if remaining_npcs:
+        return random.choice(remaining_npcs)
+    else:
+        return None
 
 
 def talk_to_npc(npc):
