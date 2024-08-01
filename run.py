@@ -546,8 +546,10 @@ def talk_to_npc(npc):
     Handle the interaction with the NPC
     """
     print("")
-    scroll_text(f"You encounter {npc['Name']}, {npc['Description']}.")
-    scroll_text(f"{npc['Name']} says: {npc['Dialogue']}")
+    scroll_text_slow(
+        f"You encounter {npc['Name']}, {npc['Description']}.")
+    scroll_text_slow(
+        f"{npc['Name']} says: {npc['Dialogue']}")
 
     has_more_to_say = True
     talked_more = False
@@ -600,6 +602,92 @@ def view_inventory(inventory):
             scroll_text("\nCurrently Equipped:")
             for equip_category, item in items.items():
                 scroll_text(f"{equip_category}: {item if item else 'None'}")
+    
+    scroll_text("\n1. Equip Item")
+    scroll_text("2. Unequip Item")
+    scroll_text("3. Exit")
+
+    choice = input("Choose an action: \n").strip().lower()
+
+    if choice == "1":
+        equip_item(inventory)
+    elif choice == "2":
+        unequip_item(inventory)
+    else:
+        scroll_text("Exiting inventory.")
+
+
+def equip_item(inventory):
+    scroll_text("\nChoose a category to equip from:")
+    scroll_text("1. Weapons")
+    scroll_text("2. Armours")
+    scroll_text("3. Relics")
+
+    category_choice = input("Choose a category: \n").strip().lower()
+
+    if category_choice == "1":
+        category = "Weapons"
+        equip_slot = "Weapon"
+    elif category_choice == "2":
+        category = "Armours"
+        equip_slot = "Armour"
+    elif category_choice == "3":
+        category = "Relics"
+        equip_slot = "Relic"
+    else:
+        scroll_text("Invalid category.")
+        return
+
+    if inventory[category]:
+        scroll_text(f"\n{category} available to equip:")
+        for idx, item in enumerate(inventory[category], 1):
+            scroll_text(f"{idx}. {item}")
+
+        item_choice = int(input("Choose an item to equip: \n").strip()) - 1
+
+        if 0 <= item_choice < len(inventory[category]):
+            new_item = inventory[category][item_choice]
+            currently_equipped_item = inventory["Currently Equipped"][equip_slot]
+
+            if currently_equipped_item:
+                inventory[category].append(currently_equipped_item)
+
+            inventory["Currently Equipped"][equip_slot] = new_item
+            inventory[category].pop(item_choice)
+            scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
+        else:
+            scroll_text("Invalid item choice.")
+    else:
+        scroll_text(f"No items available in {category} to equip.")
+
+def unequip_item(inventory):
+    scroll_text("\nChoose a category to unequip from:")
+    scroll_text("1. Weapons")
+    scroll_text("2. Armours")
+    scroll_text("3. Relics")
+
+    category_choice = input("Choose a category: \n").strip().lower()
+
+    if category_choice == "1":
+        equip_slot = "Weapon"
+        category = "Weapons"
+    elif category_choice == "2":
+        equip_slot = "Armour"
+        category = "Armours"
+    elif category_choice == "3":
+        equip_slot = "Relic"
+        category = "Relics"
+    else:
+        scroll_text("Invalid category.")
+        return
+
+    if inventory["Currently Equipped"][equip_slot]:
+        item_to_unequip = inventory["Currently Equipped"][equip_slot]
+        inventory[category].append(item_to_unequip)
+        inventory["Currently Equipped"][equip_slot] = None
+        scroll_text(f"{item_to_unequip} has been unequipped.")
+    else:
+        scroll_text(f"No item equipped in {equip_slot} slot.")
 
 
 def view_stats(player_info):
