@@ -276,7 +276,8 @@ def game_loop(
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
         scroll_text("3. View Stats")
-        scroll_text("4. Quit Game")
+        scroll_text("4. View Map")
+        scroll_text("5. Quit Game")
 
         action = input("Choose an action: \n").strip()
         clear_terminal()
@@ -309,7 +310,7 @@ def game_loop(
                         scroll_text(
                             f"You see an empty chest. "
                             "It seems someone has already looted it.")
-                    elif previous_encounter["type"] == "Enemy":
+                    elif isinstance(previous_encounter, dict) and previous_encounter["type"] == "Enemy":
                         enemy = previous_encounter["details"]
                         scroll_text(
                             "You see signs of a previous "
@@ -317,7 +318,7 @@ def game_loop(
                         scroll_text(
                             "You continue on your way "
                             "as there is nothing else for you here.")
-                    elif previous_encounter['type'] == "NPC":
+                    elif isinstance(previous_encounter, dict) and previous_encounter['type'] == "NPC":
                         npc = previous_encounter["details"]
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
@@ -331,12 +332,15 @@ def game_loop(
                         f"You find yourself at a "
                         f"{area} but there appears to be "
                         "nothing of interest here...")
+                    location_encounter_map[new_location] = "No Encounter"
 
         elif action == "2":
             view_inventory(inventory)
         elif action == "3":
             view_stats(player_info)
         elif action == "4":
+            view_map(location, visited_locations, location_area_map, location_encounter_map)
+        elif action == "5":
             print("Thank you for playing!")
             break
         else:
@@ -610,6 +614,63 @@ def talk_to_npc(npc):
             print("")
             scroll_text_slow(npc['Exit Dialogue'])
             break
+
+
+def view_map(current_location, visited_locations, location_area_map, location_encounter_map):
+    """
+    Display a dynamic map showing the player's current location and visited locations.
+    """
+
+    scroll_text("Map Legend:")
+    scroll_text("P: Player's current location")
+    scroll_text("V: Visited location")
+    scroll_text("C: Chest")
+    scroll_text("E: Enemy encounter")
+    scroll_text("N: NPC encounter")
+    scroll_text("")
+
+    map_radius = 5  # Adjust the radius of the visible map area
+    map_size = map_radius * 2 + 1
+    map_grid = [[' ' for _ in range(map_size)] for _ in range(map_size)]
+    
+    cx, cy = current_location
+
+    def translate_coords_to_index(coords):
+        x, y = coords
+        return x - cx + map_radius, map_radius - (y - cy)
+    
+    def is_within_map(coords):
+        x, y = translate_coords_to_index(coords)
+        return 0 <= x < map_size and 0 <= y < map_size
+    
+    # Mark visited locations
+    for loc in visited_locations:
+        if is_within_map(loc):
+            x_idx, y_idx = translate_coords_to_index(loc)
+            map_grid[y_idx][x_idx] = 'V'
+
+    # Mark encounters
+    for loc, encounter in location_encounter_map.items():
+        if is_within_map(loc):
+            x_idx, y_idx = translate_coords_to_index(loc)
+            if encounter == "Chest":
+                map_grid[y_idx][x_idx] = 'C'
+            elif encounter["type"] == "Enemy":
+                map_grid[y_idx][x_idx] = 'E'
+            elif encounter["type"] == "NPC":
+                map_grid[y_idx][x_idx] = 'N'
+
+    # Mark the player's current location
+    px, py = translate_coords_to_index(current_location)
+    map_grid[py][px] = 'P'
+
+    # Display the map with borders
+    print(' ' + '-' * map_size * 2)
+    for row in map_grid:
+        print('|' + ' '.join(row) + '|')
+    print(' ' + '-' * map_size * 2)
+    
+    input("Press Enter to continue...")
 
 
 def view_inventory(inventory):
