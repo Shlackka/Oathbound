@@ -40,7 +40,7 @@ def scroll_text(text, delay=0.015):
     print()
 
 
-def scroll_text_slow(text, delay=0.05):
+def scroll_text_slow(text, delay=0.035):
     """
     Print text with a scrolling effect slow
     """
@@ -127,7 +127,13 @@ def get_player_info():
     Get player name and class
     """
     clear_terminal()
-    name = input("Enter your character's name:\n")
+
+    while True:
+        name = input("Enter your character's name:\n").strip()
+        if name:
+            break
+        else:
+            scroll_text("Name cannot be empty. Please enter a valid name.")
 
     class_lookup = {
         "1": "Warrior",
