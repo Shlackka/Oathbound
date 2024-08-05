@@ -626,17 +626,17 @@ def view_map(current_location, visited_locations, location_area_map, location_en
     map_radius = 5  # Adjust the radius of the visible map area
     map_size = map_radius * 2 + 1
     map_grid = [[' ' for _ in range(map_size)] for _ in range(map_size)]
-    
+
     cx, cy = current_location
 
     def translate_coords_to_index(coords):
         x, y = coords
         return x - cx + map_radius, map_radius - (y - cy)
-    
+
     def is_within_map(coords):
         x, y = translate_coords_to_index(coords)
         return 0 <= x < map_size and 0 <= y < map_size
-    
+
     # Mark visited locations
     for loc in visited_locations:
         if is_within_map(loc):
@@ -663,7 +663,7 @@ def view_map(current_location, visited_locations, location_area_map, location_en
     for row in map_grid:
         print('|' + ' '.join(row) + '|')
     print(' ' + '-' * map_size * 2)
-    
+
     input("Press Enter to continue...")
 
 
@@ -699,7 +699,7 @@ def view_inventory(inventory, player_stats):
             scroll_text("\nCurrently Equipped:")
             for equip_category, item in items.items():
                 scroll_text(f"{equip_category}: {item if item else 'None'}")
-    
+
     scroll_text("\n1. Equip Item")
     scroll_text("2. Unequip Item")
     scroll_text("3. Exit")
@@ -855,6 +855,7 @@ def apply_item_stats(player_stats, item_stats):
         if "Effects" not in player_stats:
             player_stats["Effects"] = []
         player_stats["Effects"].append(item_stats["Effect"])
+
 
 def remove_item_stats(player_stats, item_stats):
     """
