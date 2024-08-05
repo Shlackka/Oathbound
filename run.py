@@ -534,10 +534,16 @@ def get_random_enemy(enemies):
 
 def get_npcs():
     """
-    Get list of npcs from worksheet
+    Get list of npcs from worksheet.
     """
     npcs_sheet = SHEET.worksheet("NPCs")
     npcs_data = npcs_sheet.get_all_records()
+    for npc in npcs_data:
+        npc['Description'] = npc['Description'].replace('\\n', '\n')
+        npc['Dialogue'] = npc['Dialogue'].replace('\\n', '\n')
+        npc['More Dialogue'] = npc['More Dialogue'].replace('\\n', '\n')
+        npc['Exit Reason'] = npc['Exit Reason'].replace('\\n', '\n')
+        npc['Exit Dialogue'] = npc['Exit Dialogue'].replace('\\n', '\n')
     return npcs_data
 
 
