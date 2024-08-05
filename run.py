@@ -759,6 +759,7 @@ def equip_item(inventory, player_stats):
                         remove_item_stats(player_stats, get_item_stats(currently_equipped_item))
 
                     inventory["Currently Equipped"][equip_slot] = new_item
+                    player_stats[equip_slot] = new_item  # Update player stats with the new item name
                     inventory[category].pop(item_choice)
                     apply_item_stats(player_stats, get_item_stats(new_item))
                     scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
@@ -813,6 +814,7 @@ def unequip_item(inventory, player_stats):
         item_to_unequip = inventory["Currently Equipped"][equip_slot]
         inventory[category].append(item_to_unequip)
         inventory["Currently Equipped"][equip_slot] = None
+        player_stats[equip_slot] = "None"  # Update player stats with the unequipped state
         remove_item_stats(player_stats, get_item_stats(item_to_unequip))
         scroll_text(f"{item_to_unequip} has been unequipped.")
     else:
