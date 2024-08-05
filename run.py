@@ -172,9 +172,9 @@ def get_player_info():
     stats = class_sheet.col_values(headers.index(class_name) + 1)
 
     player_stats = {
-        "Health": stats[1],
-        "Attack": stats[2],
-        "Speed": stats[3],
+        "Health": int(stats[1]),
+        "Attack": int(stats[2]),
+        "Speed": int(stats[3]),
         "Weapon": stats[4],
         "Armour": stats[5],
         "Relic": stats[6]
@@ -339,7 +339,7 @@ def game_loop(
                     location_encounter_map[new_location] = "No Encounter"
 
         elif action == "2":
-            view_inventory(inventory)
+            view_inventory(inventory, player_info["stats"])
         elif action == "3":
             view_stats(player_info)
         elif action == "4":
@@ -498,22 +498,6 @@ def fight_enemy(enemy, drops, inventory):
         f"{drop['Item Name']}! "
         "You pick up the loot and continue on your journey.")
     inventory[drop['Category'] + 's'].append(drop['Item Name'])
-
-
-def initialise_inventory(player_info):
-    """
-    Initialise the players inventory
-    """
-    return {
-        "Weapons": [],
-        "Armours": [],
-        "Relics": [],
-        "Currently Equipped": {
-            "Weapon": player_info["stats"]["Weapon"],
-            "Armour": player_info["stats"]["Armour"],
-            "Relic": player_info["stats"]["Relic"]
-        }
-    }
 
 
 def initialise_potential_drops():
@@ -677,7 +661,30 @@ def view_map(current_location, visited_locations, location_area_map, location_en
     input("Press Enter to continue...")
 
 
-def view_inventory(inventory):
+def initialise_inventory(player_info):
+    """
+    Initialise the players inventory
+    """
+    inventory = {
+        "Weapons": [],
+        "Armours": [],
+        "Relics": [],
+        "Currently Equipped": {
+            "Weapon": player_info["stats"]["Weapon"],
+            "Armour": player_info["stats"]["Armour"],
+            "Relic": player_info["stats"]["Relic"]
+        }
+    }
+
+    # Apply the stats of the default equipment to the player's stats
+    for equip_slot, item_name in inventory["Currently Equipped"].items():
+        if item_name:
+            apply_item_stats(player_info["stats"], get_item_stats(item_name))
+
+    return inventory
+
+
+def view_inventory(inventory, player_stats):
     scroll_text("Your inventory contains:")
     for category, items in inventory.items():
         if category != "Currently Equipped":
@@ -694,14 +701,14 @@ def view_inventory(inventory):
     choice = input("Choose an action: \n").strip().lower()
 
     if choice == "1":
-        equip_item(inventory)
+        equip_item(inventory, player_stats)
     elif choice == "2":
-        unequip_item(inventory)
+        unequip_item(inventory, player_stats)
     else:
         scroll_text("Exiting inventory.")
 
 
-def equip_item(inventory):
+def equip_item(inventory, player_stats):
     scroll_text("\nChoose a category to equip from:")
     scroll_text("1. Weapons")
     scroll_text("2. Armours")
@@ -735,16 +742,19 @@ def equip_item(inventory):
 
             if currently_equipped_item:
                 inventory[category].append(currently_equipped_item)
+                remove_item_stats(player_stats, get_item_stats(currently_equipped_item))
 
             inventory["Currently Equipped"][equip_slot] = new_item
             inventory[category].pop(item_choice)
+            apply_item_stats(player_stats, get_item_stats(new_item))
             scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
         else:
             scroll_text("Invalid item choice.")
     else:
         scroll_text(f"No items available in {category} to equip.")
 
-def unequip_item(inventory):
+
+def unequip_item(inventory, player_stats):
     scroll_text("\nChoose a category to unequip from:")
     scroll_text("1. Weapons")
     scroll_text("2. Armours")
@@ -769,9 +779,52 @@ def unequip_item(inventory):
         item_to_unequip = inventory["Currently Equipped"][equip_slot]
         inventory[category].append(item_to_unequip)
         inventory["Currently Equipped"][equip_slot] = None
+        remove_item_stats(player_stats, get_item_stats(item_to_unequip))
         scroll_text(f"{item_to_unequip} has been unequipped.")
     else:
         scroll_text(f"No item equipped in {equip_slot} slot.")
+
+
+def get_item_stats(item_name):
+    """
+    Retrieve the stats for a given item, including a description
+    """
+    drops_sheet = SHEET.worksheet('Drops')
+    item_row = drops_sheet.find(item_name).row
+    item_stats = drops_sheet.row_values(item_row)
+    return {
+        "Health": int(item_stats[2]),
+        "Attack": int(item_stats[3]),
+        "Speed": int(item_stats[4]),
+        "Effect": item_stats[5],
+        "Description": item_stats[6]
+    }
+
+
+def apply_item_stats(player_stats, item_stats):
+    """
+    Apply the stats of an item to the player's stats.
+    """
+    player_stats["Health"] += item_stats["Health"]
+    player_stats["Attack"] += item_stats["Attack"]
+    player_stats["Speed"] += item_stats["Speed"]
+    # Apply any additional effects based on the item's effect description
+    if item_stats["Effect"]:
+        if "Effects" not in player_stats:
+            player_stats["Effects"] = []
+        player_stats["Effects"].append(item_stats["Effect"])
+
+def remove_item_stats(player_stats, item_stats):
+    """
+    Remove the stats of an item from the player's stats.
+    """
+    player_stats["Health"] -= item_stats["Health"]
+    player_stats["Attack"] -= item_stats["Attack"]
+    player_stats["Speed"] -= item_stats["Speed"]
+    # Remove any additional effects based on the item's effect description
+    if item_stats["Effect"] and "Effects" in player_stats:
+        if item_stats["Effect"] in player_stats["Effects"]:
+            player_stats["Effects"].remove(item_stats["Effect"])
 
 
 def view_stats(player_info):
@@ -779,7 +832,8 @@ def view_stats(player_info):
     scroll_text(f"Player Class: {player_info['class']}")
     scroll_text("\nPlayer Stats:")
     for stat, value in player_info['stats'].items():
-        scroll_text(f"{stat}: {value}")
+        if stat != "Effects":
+            scroll_text(f"{stat}: {value}")
 
 
 def main():
