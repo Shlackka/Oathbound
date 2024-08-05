@@ -730,26 +730,60 @@ def equip_item(inventory, player_stats):
         return
 
     if inventory[category]:
-        scroll_text(f"\n{category} available to equip:")
-        for idx, item in enumerate(inventory[category], 1):
-            scroll_text(f"{idx}. {item}")
+        while True:
+            scroll_text(f"\n{category} available to equip:")
+            for item in inventory[category]:
+                scroll_text(item)
 
-        item_choice = int(input("Choose an item to equip: \n").strip()) - 1
+            scroll_text("\nOptions:")
+            scroll_text("1. Equip an item")
+            scroll_text("2. View item description")
+            scroll_text("3. Exit")
 
-        if 0 <= item_choice < len(inventory[category]):
-            new_item = inventory[category][item_choice]
-            currently_equipped_item = inventory["Currently Equipped"][equip_slot]
+            option = input("Choose an option: \n").strip().lower()
 
-            if currently_equipped_item:
-                inventory[category].append(currently_equipped_item)
-                remove_item_stats(player_stats, get_item_stats(currently_equipped_item))
+            if option == "1":
+                scroll_text(f"\n{category} available to equip:")
+                for idx, item in enumerate(inventory[category], 1):
+                    scroll_text(f"{idx}. {item}")
 
-            inventory["Currently Equipped"][equip_slot] = new_item
-            inventory[category].pop(item_choice)
-            apply_item_stats(player_stats, get_item_stats(new_item))
-            scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
-        else:
-            scroll_text("Invalid item choice.")
+                item_choice = input("Choose an item to equip (number): \n").strip()
+
+                if item_choice.isdigit() and 1 <= int(item_choice) <= len(inventory[category]):
+                    item_choice = int(item_choice) - 1
+                    new_item = inventory[category][item_choice]
+                    currently_equipped_item = inventory["Currently Equipped"][equip_slot]
+
+                    if currently_equipped_item:
+                        inventory[category].append(currently_equipped_item)
+                        remove_item_stats(player_stats, get_item_stats(currently_equipped_item))
+
+                    inventory["Currently Equipped"][equip_slot] = new_item
+                    inventory[category].pop(item_choice)
+                    apply_item_stats(player_stats, get_item_stats(new_item))
+                    scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
+                    break
+                else:
+                    scroll_text("Invalid item choice.")
+            elif option == "2":
+                scroll_text(f"\n{category} available to equip:")
+                for idx, item in enumerate(inventory[category], 1):
+                    scroll_text(f"{idx}. {item}")
+
+                item_choice = input("Choose an item to view description (number): \n").strip()
+
+                if item_choice.isdigit() and 1 <= int(item_choice) <= len(inventory[category]):
+                    item_choice = int(item_choice) - 1
+                    item_name = inventory[category][item_choice]
+                    item_stats = get_item_stats(item_name)
+                    scroll_text(f"Description of {item_name}: {item_stats['Description']}")
+                else:
+                    scroll_text("Invalid item choice.")
+            elif option == "3":
+                scroll_text("Exiting equip menu.")
+                break
+            else:
+                scroll_text("Invalid option. Please try again.")
     else:
         scroll_text(f"No items available in {category} to equip.")
 
