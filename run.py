@@ -19,6 +19,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('Oathbound')
 
+
 # Utility functions
 def clear_terminal():
     """
@@ -200,7 +201,6 @@ def get_player_info():
             "Relic": stats[6]
         }
     }
-
 
 
 def initialise_game():
@@ -389,12 +389,11 @@ def move(location, areas, location_area_map, player_info):
     # Heal the player by 10% of their max health each move
     heal_amount = int(player_info["current_stats"]["MaxHealth"] * 0.10)
     player_info["current_stats"]["Health"] = min(
-        player_info["current_stats"]["MaxHealth"], 
+        player_info["current_stats"]["MaxHealth"],
         player_info["current_stats"]["Health"] + heal_amount
     )
 
     return new_location, location_area_map[new_location], True
-
 
 
 def get_areas():
@@ -511,7 +510,7 @@ def fight_enemy(player_stats, enemy, drops, inventory):
     """
     print("")
     scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
-    
+
     while player_stats["Health"] > 0 and enemy["Health"] > 0:
         # Display player and enemy stats
         scroll_text("\nPlayer Stats:")
@@ -571,6 +570,7 @@ def player_attack(player_stats, enemy):
 
     scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage.")
     enemy["Health"] -= damage
+
 
 def enemy_attack(player_stats, enemy):
     """
@@ -969,6 +969,7 @@ def apply_item_stats(player_stats, item_stats):
         if "Effects" not in player_stats:
             player_stats["Effects"] = []
         player_stats["Effects"].append(item_stats["Effect"])
+
 
 def remove_item_stats(player_stats, item_stats):
     """
