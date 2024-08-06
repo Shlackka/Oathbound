@@ -516,7 +516,7 @@ def fight_enemy(player_stats, enemy, drops, inventory):
         # Display player and enemy stats
         scroll_text("\nPlayer Stats:")
         for stat, value in player_stats.items():
-            if stat != "Effects":
+            if stat != "Effects" and stat != "MaxHealth":
                 scroll_text(f"{stat}: {value}")
 
         print("\n")
