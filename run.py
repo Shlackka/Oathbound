@@ -22,7 +22,7 @@ SHEET = GSPREAD_CLIENT.open('Oathbound')
 
 def clear_terminal():
     """
-    Clear the terminal screen.
+    Clear the terminal screen
     """
     if os.name == 'nt':
         os.system('cls')
@@ -52,8 +52,7 @@ def scroll_text_slow(text, delay=0.035):
 
 def normalise_and_check_input(input_text, keywords):
     """
-    Normalise the input text
-    and check if it contains any of the specified keywords
+    Normalise the input text and check if it contains any of the specified keywords
     """
     normalised_input = input_text.strip().lower()
     for keyword in keywords:
@@ -102,7 +101,7 @@ def title_scroll():
 
 def opening_text():
     """
-    Display the opening narrative before the player makes their first move.
+    Display the opening narrative before the player makes their first move
     """
     opening_narrative = (
         "You awaken to the first light of dawn, your body still weary from\n"
@@ -534,7 +533,7 @@ def get_random_enemy(enemies):
 
 def get_npcs():
     """
-    Get list of npcs from worksheet.
+    Get list of npcs from worksheet
     """
     npcs_sheet = SHEET.worksheet("NPCs")
     npcs_data = npcs_sheet.get_all_records()
@@ -612,7 +611,7 @@ def talk_to_npc(npc):
 
 def view_map(current_location, visited_locations, location_area_map, location_encounter_map):
     """
-    Display a dynamic map showing the player's current location and visited locations.
+    Display a dynamic map showing the player's current location and visited locations
     """
 
     scroll_text("Map Legend:")
@@ -669,7 +668,7 @@ def view_map(current_location, visited_locations, location_area_map, location_en
 
 def initialise_inventory(player_info):
     """
-    Initialise the player's inventory.
+    Initialise the player's inventory
     """
     # Retrieve all item stats from the Google Sheet
     drops_sheet = SHEET.worksheet('Drops')
