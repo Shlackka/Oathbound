@@ -154,12 +154,12 @@ def get_player_info():
     player_class = input("\n").strip().lower()
 
     while player_class not in class_lookup:
-        print("Invalid class selected. Please try again.\n")
-        print("Please pick a class from the following:\n")
-        print("1 - Warrior")
-        print("2 - Archer")
-        print("3 - Mage")
-        print("4 - Peasant (HARD)")
+        scroll_text("Invalid class selected. Please try again.\n")
+        scroll_text("Please pick a class from the following:\n")
+        scroll_text("1 - Warrior")
+        scroll_text("2 - Archer")
+        scroll_text("3 - Mage")
+        scroll_text("4 - Peasant (HARD)")
 
         player_class = input("\n").strip().lower()
 
@@ -170,30 +170,37 @@ def get_player_info():
     headers = class_sheet.row_values(1)
     stats = class_sheet.col_values(headers.index(class_name) + 1)
 
-    player_stats = {
+    base_stats = {
+        "MaxHealth": int(stats[1]),
         "Health": int(stats[1]),
         "Attack": int(stats[2]),
-        "Speed": int(stats[3]),
-        "Weapon": stats[4],
-        "Armour": stats[5],
-        "Relic": stats[6]
+        "Speed": int(stats[3])
     }
+
+    current_stats = base_stats.copy()
 
     scroll_text("Outfitting Character")
 
     # Display player info
     scroll_text(f"\nPlayer Name: {name}")
-    print("")
     scroll_text(f"Player Class: {class_name}")
     scroll_text("\nPlayer Stats and Equipment:")
-    for stat, value in player_stats.items():
-        scroll_text(f"{stat}: {value}")
+    for stat, value in base_stats.items():
+        if stat != "MaxHealth":
+            scroll_text(f"{stat}: {value}")
 
     return {
         "name": name,
         "class": class_name,
-        "stats": player_stats
+        "base_stats": base_stats,
+        "current_stats": current_stats,
+        "equipment": {
+            "Weapon": stats[4],
+            "Armour": stats[5],
+            "Relic": stats[6]
+        }
     }
+
 
 
 def initialise_game():
@@ -256,7 +263,7 @@ def game_loop(
         npcs
 ):
     """
-    Main game loop where the player will take actions
+    Main game loop where the player will take actions.
     """
 
     visited_locations = [(0, 0)]
@@ -283,7 +290,7 @@ def game_loop(
 
         if action == "1":
             new_location, new_area, moved = move(
-                location, areas, location_area_map)
+                location, areas, location_area_map, player_info)
             if moved:
                 location = new_location
                 area = new_area
@@ -323,7 +330,7 @@ def game_loop(
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
                             "but as you wave 'Hello' to "
-                            "them they turn and dissapear from sight.")
+                            "them they turn and disappear from sight.")
                         scroll_text(
                             "You continue on your way "
                             "ignoring their rudeness.")
@@ -339,7 +346,7 @@ def game_loop(
                     location_encounter_map[new_location] = "No Encounter"
 
         elif action == "2":
-            view_inventory(inventory, player_info["stats"])
+            view_inventory(inventory, player_info["current_stats"])
         elif action == "3":
             view_stats(player_info)
         elif action == "4":
@@ -353,7 +360,7 @@ def game_loop(
     return visited_locations
 
 
-def move(location, areas, location_area_map):
+def move(location, areas, location_area_map, player_info):
     """
     Function to move the player in desired direction
     """
@@ -379,7 +386,15 @@ def move(location, areas, location_area_map):
     if new_location not in location_area_map:
         location_area_map[new_location] = get_random_area(areas)
 
+    # Heal the player by 10% of their max health each move
+    heal_amount = int(player_info["current_stats"]["MaxHealth"] * 0.10)
+    player_info["current_stats"]["Health"] = min(
+        player_info["current_stats"]["MaxHealth"], 
+        player_info["current_stats"]["Health"] + heal_amount
+    )
+
     return new_location, location_area_map[new_location], True
+
 
 
 def get_areas():
@@ -471,11 +486,11 @@ def handle_encounter(
                 "You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
         enemy = get_random_enemy(enemies)
-        result = fight_enemy(player_info["stats"], enemy, drops, inventory)
+        result = fight_enemy(player_info["current_stats"], enemy, drops, inventory)
         if result == "Victory":
             drop = get_random_drop(drops)
             scroll_text(f"The enemy dropped {drop['Item Name']}!"
-            "You pick up the item and continue on your journey.")
+            "\nYou pick up the item and continue on your journey.")
             inventory[drop['Category'] + 's'].append(drop['Item Name'])
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
     elif encounter == "NPC":
@@ -504,6 +519,7 @@ def fight_enemy(player_stats, enemy, drops, inventory):
             if stat != "Effects":
                 scroll_text(f"{stat}: {value}")
 
+        print("\n")
         scroll_text(f"Enemy: {enemy['Enemy']}")
         scroll_text(f"Health: {enemy['Health']}")
 
@@ -747,7 +763,7 @@ def view_map(current_location, visited_locations, location_area_map, location_en
 
 def initialise_inventory(player_info):
     """
-    Initialise the player's inventory
+    Initialise the player's inventory.
     """
     # Retrieve all item stats from the Google Sheet
     drops_sheet = SHEET.worksheet('Drops')
@@ -769,9 +785,9 @@ def initialise_inventory(player_info):
         "Armours": [],
         "Relics": [],
         "Currently Equipped": {
-            "Weapon": player_info["stats"]["Weapon"],
-            "Armour": player_info["stats"]["Armour"],
-            "Relic": player_info["stats"]["Relic"]
+            "Weapon": player_info["equipment"]["Weapon"],
+            "Armour": player_info["equipment"]["Armour"],
+            "Relic": player_info["equipment"]["Relic"]
         }
     }
 
@@ -780,7 +796,7 @@ def initialise_inventory(player_info):
         if item_name:
             item_stats = items_stats.get(item_name)
             if item_stats:
-                apply_item_stats(player_info["stats"], item_stats)
+                apply_item_stats(player_info["current_stats"], item_stats)
             else:
                 print(f"Warning: {item_name} not found in item stats.")
 
@@ -944,6 +960,7 @@ def apply_item_stats(player_stats, item_stats):
     """
     Apply the stats of an item to the player's stats.
     """
+    player_stats["MaxHealth"] += item_stats["Health"]
     player_stats["Health"] += item_stats["Health"]
     player_stats["Attack"] += item_stats["Attack"]
     player_stats["Speed"] += item_stats["Speed"]
@@ -953,11 +970,11 @@ def apply_item_stats(player_stats, item_stats):
             player_stats["Effects"] = []
         player_stats["Effects"].append(item_stats["Effect"])
 
-
 def remove_item_stats(player_stats, item_stats):
     """
     Remove the stats of an item from the player's stats.
     """
+    player_stats["MaxHealth"] -= item_stats["Health"]
     player_stats["Health"] -= item_stats["Health"]
     player_stats["Attack"] -= item_stats["Attack"]
     player_stats["Speed"] -= item_stats["Speed"]
@@ -967,12 +984,23 @@ def remove_item_stats(player_stats, item_stats):
             player_stats["Effects"].remove(item_stats["Effect"])
 
 
+def heal_player(player_info, percentage):
+    """
+    Heal the player by a certain percentage of their maximum health.
+    """
+    max_health = player_info["base_stats"]["MaxHealth"]
+    healing_amount = int(max_health * (percentage / 100))
+    new_health = player_info["current_stats"]["Health"] + healing_amount
+    player_info["current_stats"]["Health"] = min(new_health, max_health)
+    scroll_text(f"You heal for {healing_amount} health.")
+
+
 def view_stats(player_info):
     scroll_text(f"Player Name: {player_info['name']}")
     scroll_text(f"Player Class: {player_info['class']}")
     scroll_text("\nPlayer Stats:")
-    for stat, value in player_info['stats'].items():
-        if stat != "Effects":
+    for stat, value in player_info['current_stats'].items():
+        if stat != "Effects" and stat != "MaxHealth":
             scroll_text(f"{stat}: {value}")
 
 
