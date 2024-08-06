@@ -669,8 +669,23 @@ def view_map(current_location, visited_locations, location_area_map, location_en
 
 def initialise_inventory(player_info):
     """
-    Initialise the players inventory
+    Initialise the player's inventory.
     """
+    # Retrieve all item stats from the Google Sheet
+    drops_sheet = SHEET.worksheet('Drops')
+    items_data = drops_sheet.get_all_records()
+
+    # Create a dictionary to store item stats
+    items_stats = {}
+    for item in items_data:
+        items_stats[item['Item Name'].strip()] = {
+            "Health": int(item['Health']),
+            "Attack": int(item['Attack']),
+            "Speed": int(item['Speed']),
+            "Effect": item['Effect'],
+            "Description": item['Description']
+        }
+
     inventory = {
         "Weapons": [],
         "Armours": [],
@@ -685,7 +700,11 @@ def initialise_inventory(player_info):
     # Apply the stats of the default equipment to the player's stats
     for equip_slot, item_name in inventory["Currently Equipped"].items():
         if item_name:
-            apply_item_stats(player_info["stats"], get_item_stats(item_name))
+            item_stats = items_stats.get(item_name)
+            if item_stats:
+                apply_item_stats(player_info["stats"], item_stats)
+            else:
+                print(f"Warning: {item_name} not found in item stats.")
 
     return inventory
 
