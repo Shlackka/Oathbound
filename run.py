@@ -19,7 +19,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('Oathbound')
 
-
+# Utility functions
 def clear_terminal():
     """
     Clear the terminal screen
@@ -294,6 +294,7 @@ def game_loop(
                     encounter = get_random_encounter(encounters)
                     location_encounter_map[new_location] = encounter
                     handle_encounter(
+                        player_info,
                         encounter,
                         inventory,
                         drops,
@@ -421,6 +422,7 @@ def check_for_encounter():
 
 
 def handle_encounter(
+    player_info,
     encounter,
     inventory,
     drops,
@@ -457,7 +459,7 @@ def handle_encounter(
                     "Health": 50,
                     "Attack": 12,
                     "Speed": 4}
-                fight_enemy(mimic, drops, inventory)
+                fight_enemy(player_info["stats"], mimic, drops, inventory)
             else:
                 drop = get_random_drop(drops)
                 scroll_text(
@@ -469,7 +471,12 @@ def handle_encounter(
                 "You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
         enemy = get_random_enemy(enemies)
-        fight_enemy(enemy, drops, inventory)
+        result = fight_enemy(player_info["stats"], enemy, drops, inventory)
+        if result == "Victory":
+            drop = get_random_drop(drops)
+            scroll_text(f"The enemy dropped {drop['Item Name']}!"
+            "You pick up the item and continue on your journey.")
+            inventory[drop['Category'] + 's'].append(drop['Item Name'])
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
     elif encounter == "NPC":
         npc = get_unique_npc(npcs, encountered_npcs)
@@ -483,20 +490,92 @@ def handle_encounter(
                 "you carry on your way.")
 
 
-def fight_enemy(enemy, drops, inventory):
+def fight_enemy(player_stats, enemy, drops, inventory):
     """
     Handle the fight with enemy
     """
     print("")
     scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
-    # Add detailed fight mechanics here
-    # Assume enemy is defeated for now
-    drop = get_random_drop(drops)
-    scroll_text(
-        f"You defeat the {enemy['Enemy']}, they drop "
-        f"{drop['Item Name']}! "
-        "You pick up the loot and continue on your journey.")
-    inventory[drop['Category'] + 's'].append(drop['Item Name'])
+    
+    while player_stats["Health"] > 0 and enemy["Health"] > 0:
+        # Display player and enemy stats
+        scroll_text("\nPlayer Stats:")
+        for stat, value in player_stats.items():
+            if stat != "Effects":
+                scroll_text(f"{stat}: {value}")
+
+        scroll_text(f"Enemy: {enemy['Enemy']}")
+        scroll_text(f"Health: {enemy['Health']}")
+
+        # Player action
+        scroll_text("\n1. Attack")
+        scroll_text("2. Flee")
+
+        action = input("Choose your action: \n").strip()
+
+        if action == "1":
+            player_attack(player_stats, enemy)
+        elif action == "2":
+            if attmept_flee(player_stats, enemy):
+                scroll_text("You successfully fled the battle!")
+                return
+            else:
+                scroll_text("You failed to flee!")
+        else:
+            scroll_text("Invalid action. Please choose again.")
+
+        if enemy["Health"] > 0:
+            enemy_attack(player_stats, enemy)
+
+        # Check for player defeat
+        if player_stats["Health"] <= 0:
+            scroll_text("You have been defeated!")
+            if "ReviveWithHalfHealth" in player_stats["Effects"]:
+                scroll_text("Your relic revives you with half health!")
+                player_stats["Health"] = player_stats["MaxHealth"] // 2
+                player_stats["Effects"].remove("ReviveWithHalfHealth")
+            else:
+                return "Defeat"
+
+    scroll_text(f"You have defeated the {enemy['Enemy']}!")
+    return "Victory"
+
+
+def player_attack(player_stats, enemy):
+    """
+    Handle the player's attack on the enemy
+    """
+    damage = player_stats["Attack"]
+
+    # Check for increased critical chance effect
+    if "IncreasedCriticalChance" in player_stats["Effects"]:
+        if random.random() < 0.25:  # Assuming a 25% critical hit chance
+            damage *= 2
+            scroll_text("Critical hit!")
+
+    scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage.")
+    enemy["Health"] -= damage
+
+def enemy_attack(player_stats, enemy):
+    """
+    Handle the enemy's attack on the player
+    """
+    damage = enemy["Attack"]
+    scroll_text(f"\nThe {enemy['Enemy']} attacks you for {damage} damage.")
+    player_stats["Health"] -= damage
+
+
+def attempt_flee(player_stats, enemy):
+    """
+    Attempt to flee from the battle
+    """
+    player_speed = player_stats["Speed"]
+    enemy_speed = enemy["Speed"]
+
+    if player_speed > enemy_speed:
+        return True
+    else:
+        return random.random() < 0.5
 
 
 def initialise_potential_drops():
