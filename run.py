@@ -217,7 +217,7 @@ def initialise_game():
 def start_game():
     title_scroll()
     player_info = get_player_info()
-    print("")
+    clear_terminal()
     scroll_text_slow("Planning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
     scroll_text_slow("Packing all the required provisions...\n")
@@ -342,7 +342,7 @@ def game_loop(
                 else:
                     scroll_text(
                         f"You find yourself at a {area} "
-                        "\n but there appears to be "
+                        "\nbut there appears to be "
                         "nothing of interest here...")
                     location_encounter_map[new_location] = "No Encounter"
 
@@ -472,22 +472,19 @@ def handle_encounter(
 
         if normalise_and_check_input(choice, open_keywords):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
-                # Add logic to handle the fight with the mimic
                 mimic = {
                     "Enemy": "Mimic",
                     "Health": 50,
                     "Attack": 12,
                     "Speed": 4}
-                result = fight_enemy(player_info["current_stats"], mimic, drops, inventory)
+                result = fight_enemy(player_info["current_stats"], get_fresh_enemy(mimic), drops, inventory)
                 if result == "Victory":
                     drop = get_random_drop(drops)
                     scroll_text(f"The enemy dropped {drop['Item Name']}!"
-                    "\n"
-                    "You pick up the item and continue on your journey.")
+                                "\n"
+                                "You pick up the item and continue on your journey.")
                     inventory[drop['Category'] + 's'].append(drop['Item Name'])
-                location_encounter_map[location] = {"type": "Enemy", "details": enemy}
-
-
+                location_encounter_map[location] = {"type": "Enemy", "details": mimic}
             else:
                 drop = get_random_drop(drops)
                 scroll_text(
@@ -498,15 +495,16 @@ def handle_encounter(
             scroll_text(
                 "You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
-        enemy = get_random_enemy(enemies)
+        enemy_template = get_random_enemy(enemies)
+        enemy = get_fresh_enemy(enemy_template)
         result = fight_enemy(player_info["current_stats"], enemy, drops, inventory)
         if result == "Victory":
             drop = get_random_drop(drops)
             scroll_text(f"The enemy dropped {drop['Item Name']}!"
-            "\n"
-            "You pick up the item and continue on your journey.")
+                        "\n"
+                        "You pick up the item and continue on your journey.")
             inventory[drop['Category'] + 's'].append(drop['Item Name'])
-        location_encounter_map[location] = {"type": "Enemy", "details": enemy}
+        location_encounter_map[location] = {"type": "Enemy", "details": enemy_template}
     elif encounter == "NPC":
         npc = get_unique_npc(npcs, encountered_npcs)
         if npc:
@@ -546,9 +544,9 @@ def fight_enemy(player_stats, enemy, drops, inventory):
         if action == "1":
             player_attack(player_stats, enemy)
         elif action == "2":
-            if attmept_flee(player_stats, enemy):
+            if attempt_flee(player_stats, enemy):
                 scroll_text("You successfully fled the battle!")
-                return
+                return "Flee"
             else:
                 scroll_text("You failed to flee!")
         else:
@@ -570,6 +568,18 @@ def fight_enemy(player_stats, enemy, drops, inventory):
     scroll_text(f"You have defeated the {enemy['Enemy']}!"
     "\n")
     return "Victory"
+
+
+def get_fresh_enemy(enemy_template):
+    """
+    Return a fresh copy of an enemy with its initial stats
+    """
+    return {
+        "Enemy": enemy_template["Enemy"],
+        "Health": enemy_template["Health"],
+        "Attack": enemy_template["Attack"],
+        "Speed": enemy_template["Speed"]
+    }
 
 
 def player_attack(player_stats, enemy):
@@ -699,7 +709,7 @@ def talk_to_npc(npc):
                 talked_more = True
             elif normalise_and_check_input(choice, leave_keywords):
                 if talked_more:
-                    print("")
+                    clear_terminal()
                     scroll_text_slow(
                         f"{npc['Name']} has nothing "
                         "more to say, it would seem.")
