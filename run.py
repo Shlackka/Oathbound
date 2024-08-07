@@ -105,6 +105,7 @@ def opening_text():
     Display the opening narrative before the player makes their first move
     """
     opening_narrative = (
+        "\n"
         "You awaken to the first light of dawn, your body still weary from\n"
         "restless dreams. The world outside your shelter is still and quiet,\n"
         "the perfect moment to gather your thoughts. You pack your belongings,"
@@ -371,12 +372,16 @@ def move(location, areas, location_area_map, player_info):
 
     if direction == "north":
         y += 1
+        clear_terminal()
     elif direction == "south":
         y -= 1
+        clear_terminal()
     elif direction == "east":
         x += 1
+        clear_terminal()
     elif direction == "west":
         x -= 1
+        clear_terminal()
     else:
         scroll_text("Invalid direction.")
         return location, None, False
@@ -454,7 +459,7 @@ def handle_encounter(
         scroll_text(
             f"You come across a chest in front of "
             "you, \nthere is no lock on the chest "
-            "and nobody around, what will you do?")
+            "and nobody around, what will you do?\n")
         scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
 
@@ -473,7 +478,16 @@ def handle_encounter(
                     "Health": 50,
                     "Attack": 12,
                     "Speed": 4}
-                fight_enemy(player_info["stats"], mimic, drops, inventory)
+                result = fight_enemy(player_info["current_stats"], mimic, drops, inventory)
+                if result == "Victory":
+                    drop = get_random_drop(drops)
+                    scroll_text(f"The enemy dropped {drop['Item Name']}!"
+                    "\n"
+                    "You pick up the item and continue on your journey.")
+                    inventory[drop['Category'] + 's'].append(drop['Item Name'])
+                location_encounter_map[location] = {"type": "Enemy", "details": enemy}
+
+
             else:
                 drop = get_random_drop(drops)
                 scroll_text(
@@ -489,7 +503,8 @@ def handle_encounter(
         if result == "Victory":
             drop = get_random_drop(drops)
             scroll_text(f"The enemy dropped {drop['Item Name']}!"
-            "\nYou pick up the item and continue on your journey.")
+            "\n"
+            "You pick up the item and continue on your journey.")
             inventory[drop['Category'] + 's'].append(drop['Item Name'])
         location_encounter_map[location] = {"type": "Enemy", "details": enemy}
     elif encounter == "NPC":
@@ -518,7 +533,6 @@ def fight_enemy(player_stats, enemy, drops, inventory):
             if stat != "Effects" and stat != "MaxHealth":
                 scroll_text(f"{stat}: {value}")
 
-        print("\n")
         scroll_text(f"Enemy: {enemy['Enemy']}")
         scroll_text(f"Health: {enemy['Health']}")
 
@@ -552,7 +566,8 @@ def fight_enemy(player_stats, enemy, drops, inventory):
             else:
                 return "Defeat"
 
-    scroll_text(f"You have defeated the {enemy['Enemy']}!")
+    scroll_text(f"You have defeated the {enemy['Enemy']}!"
+    "\n")
     return "Victory"
 
 
@@ -568,7 +583,8 @@ def player_attack(player_stats, enemy):
             damage *= 2
             scroll_text("Critical hit!")
 
-    scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage.")
+    scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage."
+    "\n")
     enemy["Health"] -= damage
 
 
