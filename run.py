@@ -528,7 +528,6 @@ def handle_encounter(
             scroll_text("There appears to be nothing here, you carry on your way.")
 
 
-
 def fight_enemy(player_stats, enemy, drops, inventory):
     """
     Handle the fight with enemy
@@ -575,12 +574,12 @@ def fight_enemy(player_stats, enemy, drops, inventory):
                 player_stats["Health"] = player_stats["MaxHealth"] // 2
                 player_stats["Effects"].remove("ReviveWithHalfHealth")
             else:
-                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n"
-                    "Your journey ends here, but your deeds will be remembered.")
+                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n")
+                scroll_text_slow("Your journey ends here, but your deeds will be remembered.")
                 return "Defeat"
 
-    scroll_text(f"You have defeated the {enemy['Enemy']}!"
-    "\n")
+    scroll_text(f"You have defeated the {enemy['Enemy']}!")
+    scroll_text("\n")
     return "Victory"
 
 
@@ -608,8 +607,8 @@ def player_attack(player_stats, enemy):
             damage *= 2
             scroll_text("Critical hit!")
 
-    scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage."
-    "\n")
+    scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage.")
+    scroll_text("\n")
     enemy["Health"] -= damage
 
 
@@ -1050,8 +1049,8 @@ def view_stats(player_info):
 def main():
     """
     Run all functions
-    """  
-    
+    """
+
     start_game()
 
 
