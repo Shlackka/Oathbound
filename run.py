@@ -181,15 +181,9 @@ def get_player_info():
 
     current_stats = base_stats.copy()
 
-    scroll_text("Outfitting Character")
+    clear_terminal()
 
-    # Display player info
-    scroll_text(f"\nPlayer Name: {name}")
-    scroll_text(f"Player Class: {class_name}")
-    scroll_text("\nPlayer Stats and Equipment:")
-    for stat, value in base_stats.items():
-        if stat != "MaxHealth":
-            scroll_text(f"{stat}: {value}")
+    scroll_text("Outfitting Character...")
 
     return {
         "name": name,
@@ -217,8 +211,7 @@ def initialise_game():
 def start_game():
     title_scroll()
     player_info = get_player_info()
-    clear_terminal()
-    scroll_text_slow("Planning how many days you'll be adventuring...\n")
+    scroll_text_slow("\nPlanning how many days you'll be adventuring...\n")
     turns_until_end, location = initialise_game()
     scroll_text_slow("Packing all the required provisions...\n")
     inventory = initialise_inventory(player_info)
@@ -251,22 +244,21 @@ def start_game():
 
 
 def game_loop(
-        player_info,
-        location,
-        turns_until_end,
-        inventory,
-        areas,
-        location_area_map,
-        encounters,
-        location_encounter_map,
-        drops,
-        enemies,
-        npcs
+    player_info,
+    location,
+    turns_until_end,
+    inventory,
+    areas,
+    location_area_map,
+    encounters,
+    location_encounter_map,
+    drops,
+    enemies,
+    npcs
 ):
     """
     Main game loop where the player will take actions.
     """
-
     visited_locations = [(0, 0)]
     encountered_npcs = set()
 
@@ -275,11 +267,6 @@ def game_loop(
     area = location_area_map[location]
 
     while turns_until_end > 0:
-        # TESTING
-        # scroll_text(visited_locations)
-        # scroll_text(f"\nCurrent Location: {location} ({area})")
-        # scroll_text(f"\nTurns Remaining: {turns_until_end}")
-        # TESTING
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
         scroll_text("3. View Stats")
@@ -300,8 +287,7 @@ def game_loop(
                     visited_locations.append(new_location)
                 if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
-                    location_encounter_map[new_location] = encounter
-                    handle_encounter(
+                    result = handle_encounter(
                         player_info,
                         encounter,
                         inventory,
@@ -312,11 +298,14 @@ def game_loop(
                         npcs,
                         encountered_npcs
                     )
+                    if result == "Defeat":
+                        scroll_text("You have been defeated!")
+                        restart_option()
                 elif new_location in location_encounter_map:
                     previous_encounter = location_encounter_map[new_location]
                     if previous_encounter == "Chest":
                         scroll_text(
-                            f"You see an empty chest. "
+                            "You see an empty chest. "
                             "It seems someone has already looted it.")
                     elif isinstance(previous_encounter, dict) and previous_encounter["type"] == "Enemy":
                         enemy = previous_encounter["details"]
@@ -330,10 +319,10 @@ def game_loop(
                         npc = previous_encounter["details"]
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
-                            "\nbut as you wave 'Hello' to "
+                            "but as you wave 'Hello' to "
                             "them they turn and disappear from sight.")
                         scroll_text(
-                            "\nYou continue on your way "
+                            "You continue on your way "
                             "ignoring their rudeness.")
                     elif previous_encounter == "No Encounter":
                         scroll_text(
@@ -341,8 +330,8 @@ def game_loop(
                             "nothing of interest here...")
                 else:
                     scroll_text(
-                        f"You find yourself at a {area} "
-                        "\nbut there appears to be "
+                        f"You find yourself at a "
+                        f"{area} but there appears to be "
                         "nothing of interest here...")
                     location_encounter_map[new_location] = "No Encounter"
 
@@ -359,6 +348,19 @@ def game_loop(
             print("Invalid action. Please try again.")
 
     return visited_locations
+
+
+def restart_option():
+    """
+    Provide the player with an option to restart the game
+    """
+    scroll_text("\nWould you like to restart the game? (yes/no)")
+    choice = input().strip().lower()
+    if choice in ['yes', 'y']:
+        clear_terminal()
+        main()
+    else:
+        scroll_text("Thank you for playing! Goodbye.")
 
 
 def move(location, areas, location_area_map, player_info):
@@ -450,25 +452,30 @@ def handle_encounter(
     location,
     npcs,
     encountered_npcs
-        ):
+):
     """
-    Handle the encounter logic
+    Handle the encounter logic.
     """
     if encounter == "Chest":
         print("")
         scroll_text(
-            f"You come across a chest in front of "
-            "you, \nthere is no lock on the chest "
-            "and nobody around, what will you do?\n")
+            "You come across a chest in front of you, "
+            "\nthere is no lock on the chest and nobody around, what will you do?\n"
+        )
         scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
 
-        choice = input("")
+        choice = input()
 
         open_keywords = [
             "open",
             "open the chest",
-            "open it", "open up", "look inside", "open chest", "1"]
+            "open it",
+            "open up",
+            "look inside",
+            "open chest",
+            "1"
+        ]
 
         if normalise_and_check_input(choice, open_keywords):
             if random.random() < 0.1:  # 10% chance for the chest to be a mimic
@@ -476,35 +483,41 @@ def handle_encounter(
                     "Enemy": "Mimic",
                     "Health": 50,
                     "Attack": 12,
-                    "Speed": 4}
+                    "Speed": 4
+                }
                 result = fight_enemy(player_info["current_stats"], get_fresh_enemy(mimic), drops, inventory)
                 if result == "Victory":
                     drop = get_random_drop(drops)
-                    scroll_text(f"The enemy dropped {drop['Item Name']}!"
-                                "\n"
-                                "You pick up the item and continue on your journey.")
+                    scroll_text(
+                        f"The enemy dropped {drop['Item Name']}!\n"
+                        "You pick up the item and continue on your journey."
+                    )
                     inventory[drop['Category'] + 's'].append(drop['Item Name'])
-                location_encounter_map[location] = {"type": "Enemy", "details": mimic}
+                    location_encounter_map[location] = {"type": "Enemy", "details": mimic}
+                elif result == "Defeat":
+                    return "Defeat"
             else:
                 drop = get_random_drop(drops)
                 scroll_text(
-                    f"You open the chest and find: {drop['Item Name']}!")
-                # Add logic to add the drop to inventory
+                    f"You open the chest and find: {drop['Item Name']}!"
+                )
                 inventory[drop['Category'] + 's'].append(drop['Item Name'])
         else:
-            scroll_text(
-                "You leave the chest alone and continue on your journey.")
+            scroll_text("You leave the chest alone and continue on your journey.")
     elif encounter == "Enemy":
         enemy_template = get_random_enemy(enemies)
         enemy = get_fresh_enemy(enemy_template)
         result = fight_enemy(player_info["current_stats"], enemy, drops, inventory)
         if result == "Victory":
             drop = get_random_drop(drops)
-            scroll_text(f"The enemy dropped {drop['Item Name']}!"
-                        "\n"
-                        "You pick up the item and continue on your journey.")
+            scroll_text(
+                f"The enemy dropped {drop['Item Name']}!\n"
+                "You pick up the item and continue on your journey."
+            )
             inventory[drop['Category'] + 's'].append(drop['Item Name'])
-        location_encounter_map[location] = {"type": "Enemy", "details": enemy_template}
+            location_encounter_map[location] = {"type": "Enemy", "details": enemy_template}
+        elif result == "Defeat":
+            return "Defeat"
     elif encounter == "NPC":
         npc = get_unique_npc(npcs, encountered_npcs)
         if npc:
@@ -512,9 +525,8 @@ def handle_encounter(
             location_encounter_map[location] = {"type": "NPC", "details": npc}
             encountered_npcs.add(npc['Name'])
         else:
-            scroll_text(
-                "There appears to be nothing here, "
-                "you carry on your way.")
+            scroll_text("There appears to be nothing here, you carry on your way.")
+
 
 
 def fight_enemy(player_stats, enemy, drops, inventory):
@@ -563,6 +575,8 @@ def fight_enemy(player_stats, enemy, drops, inventory):
                 player_stats["Health"] = player_stats["MaxHealth"] // 2
                 player_stats["Effects"].remove("ReviveWithHalfHealth")
             else:
+                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n"
+                    "Your journey ends here, but your deeds will be remembered.")
                 return "Defeat"
 
     scroll_text(f"You have defeated the {enemy['Enemy']}!"
@@ -1036,7 +1050,8 @@ def view_stats(player_info):
 def main():
     """
     Run all functions
-    """
+    """  
+    
     start_game()
 
 
