@@ -130,7 +130,7 @@ def get_player_info():
     clear_terminal()
 
     while True:
-        name = input("Enter your character's name:\n").strip()
+        name = input("\nEnter your character's name:\n").strip()
         if name:
             break
         else:
@@ -147,7 +147,7 @@ def get_player_info():
         "peasant": "Peasant"
     }
 
-    scroll_text("Please pick a class from the following:\n")
+    scroll_text("\nPlease pick a class from the following:\n")
     scroll_text("1 - Warrior")
     scroll_text("2 - Archer")
     scroll_text("3 - Mage")
@@ -330,10 +330,10 @@ def game_loop(
                         npc = previous_encounter["details"]
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
-                            "but as you wave 'Hello' to "
+                            "\nbut as you wave 'Hello' to "
                             "them they turn and disappear from sight.")
                         scroll_text(
-                            "You continue on your way "
+                            "\nYou continue on your way "
                             "ignoring their rudeness.")
                     elif previous_encounter == "No Encounter":
                         scroll_text(
@@ -341,8 +341,8 @@ def game_loop(
                             "nothing of interest here...")
                 else:
                     scroll_text(
-                        f"You find yourself at a "
-                        f"{area} but there appears to be "
+                        f"You find yourself at a {area} "
+                        "\n but there appears to be "
                         "nothing of interest here...")
                     location_encounter_map[new_location] = "No Encounter"
 
@@ -528,11 +528,12 @@ def fight_enemy(player_stats, enemy, drops, inventory):
 
     while player_stats["Health"] > 0 and enemy["Health"] > 0:
         # Display player and enemy stats
-        scroll_text("\nPlayer Stats:")
+        scroll_text("\nPlayer Stats:\n")
         for stat, value in player_stats.items():
             if stat != "Effects" and stat != "MaxHealth":
                 scroll_text(f"{stat}: {value}")
 
+        scroll_text("\n")
         scroll_text(f"Enemy: {enemy['Enemy']}")
         scroll_text(f"Health: {enemy['Health']}")
 
@@ -675,6 +676,7 @@ def talk_to_npc(npc):
     print("")
     scroll_text_slow(
         f"You encounter {npc['Name']}, {npc['Description']}.")
+    scroll_text("\n")
     scroll_text_slow(
         f"{npc['Name']} says: {npc['Dialogue']}")
 
@@ -683,7 +685,7 @@ def talk_to_npc(npc):
 
     while True:
         if has_more_to_say:
-            scroll_text("1. Talk more")
+            scroll_text("\n1. Talk more")
             scroll_text("2. Leave\n")
 
             choice = input("What will you do? \n").strip().lower()
