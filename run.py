@@ -79,7 +79,7 @@ def title_scroll():
 
     for line in title_lines:
         print(line)
-        time.sleep(0.01)
+        time.sleep(0.3)
 
     introduction = (
      "Welcome to Oathbound,\n\n"
@@ -95,7 +95,7 @@ def title_scroll():
      "Press enter to proceed...\n"
     )
 
-    scroll_text(introduction)
+    scroll_text_slow(introduction)
 
     input('\n')
 
@@ -258,7 +258,7 @@ def game_loop(
     npcs
 ):
     """
-    Main game loop where the player will take actions.
+    Main game loop where the player will take actions
     """
     visited_locations = [(0, 0)]
     encountered_npcs = set()
@@ -609,7 +609,7 @@ def get_random_boss():
 
 def fight_boss(player_stats, boss, drops, inventory):
     """
-    Handle the fight with the final boss.
+    Handle the fight with the final boss
     """
     print("")
     scroll_text(f"A {boss['Enemy']} attacks you! Prepare for the final battle.")
@@ -658,13 +658,13 @@ def fight_boss(player_stats, boss, drops, inventory):
                 return "Defeat"
 
     scroll_text(f"You have defeated the {boss['Enemy']}!")
-    scroll_text("\n")
+    scroll_text("")
     return "Victory"
 
 
 def handle_boss_encounter(player_info, inventory, drops, enemies):
     """
-    Handle the final boss encounter.
+    Handle the final boss encounter
     """
     boss = get_random_boss()
 
@@ -702,7 +702,7 @@ def player_attack(player_stats, enemy):
             scroll_text("Critical hit!")
 
     scroll_text(f"\nYou attack the {enemy['Enemy']} for {damage} damage.")
-    scroll_text("\n")
+    scroll_text("")
     enemy["Health"] -= damage
 
 
@@ -717,7 +717,7 @@ def enemy_attack(player_stats, enemy):
 
 def attempt_flee(player_stats, enemy, is_boss_fight=False):
     """
-    Attempt to flee from the battle. Always fail if it's a boss fight.
+    Attempt to flee from the battle. Always fail if it's a boss fight
     """
     if is_boss_fight:
         return False
@@ -901,7 +901,7 @@ def view_map(current_location, visited_locations, location_area_map, location_en
 
 def initialise_inventory(player_info):
     """
-    Initialise the player's inventory.
+    Initialise the player's inventory
     """
     # Retrieve all item stats from the Google Sheet
     drops_sheet = SHEET.worksheet('Drops')
@@ -1096,7 +1096,7 @@ def get_item_stats(item_name):
 
 def apply_item_stats(player_stats, item_stats):
     """
-    Apply the stats of an item to the player's stats.
+    Apply the stats of an item to the player's stats
     """
     player_stats["MaxHealth"] += item_stats["Health"]
     player_stats["Health"] += item_stats["Health"]
@@ -1111,7 +1111,7 @@ def apply_item_stats(player_stats, item_stats):
 
 def remove_item_stats(player_stats, item_stats):
     """
-    Remove the stats of an item from the player's stats.
+    Remove the stats of an item from the player's stats
     """
     player_stats["MaxHealth"] -= item_stats["Health"]
     player_stats["Health"] -= item_stats["Health"]
@@ -1125,7 +1125,7 @@ def remove_item_stats(player_stats, item_stats):
 
 def heal_player(player_info, percentage):
     """
-    Heal the player by a certain percentage of their maximum health.
+    Heal the player by a certain percentage of their maximum health
     """
     max_health = player_info["base_stats"]["MaxHealth"]
     healing_amount = int(max_health * (percentage / 100))
