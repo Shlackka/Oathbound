@@ -199,7 +199,7 @@ def get_player_info():
 
 
 def initialise_game():
-    turns_until_end = random.randint(1, 3)
+    turns_until_end = random.randint(10, 30)
 
     x = 0
     y = 0
