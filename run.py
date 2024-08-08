@@ -267,6 +267,7 @@ def game_loop(
     area = location_area_map[location]
 
     while turns_until_end > 0:
+        clear_terminal()
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
         scroll_text("3. View Stats")
@@ -330,7 +331,9 @@ def game_loop(
                             "nothing of interest here...")
                 else:
                     scroll_text(
+                        "\n"
                         f"You find yourself at a "
+                        "\n"
                         f"{area} but there appears to be "
                         "nothing of interest here...")
                     location_encounter_map[new_location] = "No Encounter"
@@ -361,6 +364,7 @@ def restart_option():
         main()
     else:
         scroll_text("Thank you for playing! Goodbye.")
+        break
 
 
 def move(location, areas, location_area_map, player_info):
@@ -617,7 +621,7 @@ def enemy_attack(player_stats, enemy):
     Handle the enemy's attack on the player
     """
     damage = enemy["Attack"]
-    scroll_text(f"\nThe {enemy['Enemy']} attacks you for {damage} damage.")
+    scroll_text(f"The {enemy['Enemy']} attacks you for {damage} damage.")
     player_stats["Health"] -= damage
 
 
