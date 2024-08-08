@@ -199,7 +199,7 @@ def get_player_info():
 
 
 def initialise_game():
-    turns_until_end = random.randint(10, 30)
+    turns_until_end = random.randint(1, 3)
 
     x = 0
     y = 0
@@ -218,7 +218,7 @@ def start_game():
     scroll_text_slow("Surveying for potential dangers that lie ahead...\n")
     areas = get_areas()
     encounters = get_encounter()
-    scroll_text_slow("Making preperations for combat...\n")
+    scroll_text_slow("Making preparations for combat...\n")
     enemies = get_enemies()
     npcs = get_npcs()
     scroll_text_slow("Settling down for the night before setting out...\n")
@@ -228,7 +228,7 @@ def start_game():
     clear_terminal()
     opening_text()
     clear_terminal()
-    game_loop(
+    result = game_loop(
         player_info,
         location,
         turns_until_end,
@@ -241,6 +241,7 @@ def start_game():
         enemies,
         npcs
     )
+    return result
 
 
 def game_loop(
@@ -261,13 +262,13 @@ def game_loop(
     """
     visited_locations = [(0, 0)]
     encountered_npcs = set()
+    boss_encountered = False
 
     if location not in location_area_map:
         location_area_map[location] = get_random_area(areas)
     area = location_area_map[location]
 
     while turns_until_end > 0:
-        clear_terminal()
         scroll_text("\n1. Move")
         scroll_text("2. View Inventory")
         scroll_text("3. View Stats")
@@ -301,7 +302,7 @@ def game_loop(
                     )
                     if result == "Defeat":
                         scroll_text("You have been defeated!")
-                        restart_option()
+                        return restart_option()
                 elif new_location in location_encounter_map:
                     previous_encounter = location_encounter_map[new_location]
                     if previous_encounter == "Chest":
@@ -332,9 +333,9 @@ def game_loop(
                 else:
                     scroll_text(
                         "\n"
-                        f"You find yourself at a "
+                        f"You find yourself at a {area} "
                         "\n"
-                        f"{area} but there appears to be "
+                        f"but there appears to be "
                         "nothing of interest here...")
                     location_encounter_map[new_location] = "No Encounter"
 
@@ -346,11 +347,21 @@ def game_loop(
             view_map(location, visited_locations, location_area_map, location_encounter_map)
         elif action == "5":
             print("Thank you for playing!")
-            break
+            return "Quit"
         else:
             print("Invalid action. Please try again.")
 
-    return visited_locations
+    if turns_until_end <= 0 and not boss_encountered:
+        result = handle_boss_encounter(player_info, inventory, drops, enemies)
+        if result == "Defeat":
+            scroll_text("You have been defeated by the final boss!")
+            return restart_option()
+        else:
+            scroll_text("Congratulations! You have defeated the final boss and completed the game!")
+            return restart_option()
+        boss_encountered = True
+
+    return "Continue"  # Return continue status to handle end of game loop in start_game
 
 
 def restart_option():
@@ -361,10 +372,10 @@ def restart_option():
     choice = input().strip().lower()
     if choice in ['yes', 'y']:
         clear_terminal()
-        main()
+        return "Restart"
     else:
         scroll_text("Thank you for playing! Goodbye.")
-        break
+        return "Quit"
 
 
 def move(location, areas, location_area_map, player_info):
@@ -373,7 +384,7 @@ def move(location, areas, location_area_map, player_info):
     """
     x, y = location
     direction = input(
-        "Will you go North, South, "
+        "\nWill you go North, South, "
         "East, or West? \n").strip().lower()
 
     if direction == "north":
@@ -541,12 +552,12 @@ def fight_enemy(player_stats, enemy, drops, inventory):
 
     while player_stats["Health"] > 0 and enemy["Health"] > 0:
         # Display player and enemy stats
-        scroll_text("\nPlayer Stats:\n")
+        scroll_text("\nPlayer Stats:")
         for stat, value in player_stats.items():
             if stat != "Effects" and stat != "MaxHealth":
                 scroll_text(f"{stat}: {value}")
 
-        scroll_text("\n")
+        scroll_text("")
         scroll_text(f"Enemy: {enemy['Enemy']}")
         scroll_text(f"Health: {enemy['Health']}")
 
@@ -587,12 +598,91 @@ def fight_enemy(player_stats, enemy, drops, inventory):
     return "Victory"
 
 
+def get_random_boss():
+    """
+    Get a random boss from the Google Sheet
+    """
+    boss_sheet = SHEET.worksheet('Bosses')
+    bosses_data = boss_sheet.get_all_records()
+    return random.choice(bosses_data)
+
+
+def fight_boss(player_stats, boss, drops, inventory):
+    """
+    Handle the fight with the final boss.
+    """
+    print("")
+    scroll_text(f"A {boss['Enemy']} attacks you! Prepare for the final battle.")
+
+    while player_stats["Health"] > 0 and boss["Health"] > 0:
+        # Display player and boss stats
+        scroll_text("\nPlayer Stats:\n")
+        for stat, value in player_stats.items():
+            if stat != "Effects" and stat != "MaxHealth":
+                scroll_text(f"{stat}: {value}")
+
+        scroll_text("\n")
+        scroll_text(f"Boss: {boss['Enemy']}")
+        scroll_text(f"Health: {boss['Health']}")
+
+        # Player action
+        scroll_text("\n1. Attack")
+        scroll_text("2. Flee")
+
+        action = input("Choose your action: \n").strip()
+
+        if action == "1":
+            player_attack(player_stats, boss)
+        elif action == "2":
+            if attempt_flee(player_stats, boss, is_boss_fight=True):
+                scroll_text("You successfully fled the battle!")
+                return "Flee"
+            else:
+                scroll_text("You failed to flee!")
+        else:
+            scroll_text("Invalid action. Please choose again.")
+
+        if boss["Health"] > 0:
+            enemy_attack(player_stats, boss)
+
+        # Check for player defeat
+        if player_stats["Health"] <= 0:
+            scroll_text("You have been defeated!")
+            if "ReviveWithHalfHealth" in player_stats.get("Effects", []):
+                scroll_text("Your relic revives you with half health!")
+                player_stats["Health"] = player_stats["MaxHealth"] // 2
+                player_stats["Effects"].remove("ReviveWithHalfHealth")
+            else:
+                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n")
+                scroll_text_slow("Your journey ends here, but your deeds will be remembered.")
+                return "Defeat"
+
+    scroll_text(f"You have defeated the {boss['Enemy']}!")
+    scroll_text("\n")
+    return "Victory"
+
+
+def handle_boss_encounter(player_info, inventory, drops, enemies):
+    """
+    Handle the final boss encounter.
+    """
+    boss = get_random_boss()
+
+    fresh_boss = get_fresh_enemy(boss)
+    if fresh_boss is None:
+        scroll_text("Error: Failed to load the boss encounter properly.")
+        return "Defeat"
+
+    result = fight_boss(player_info["current_stats"], fresh_boss, drops, inventory)
+    return result
+
+
 def get_fresh_enemy(enemy_template):
     """
     Return a fresh copy of an enemy with its initial stats
     """
     return {
-        "Enemy": enemy_template["Enemy"],
+        "Enemy": enemy_template.get("Boss", enemy_template.get("Enemy")),
         "Health": enemy_template["Health"],
         "Attack": enemy_template["Attack"],
         "Speed": enemy_template["Speed"]
@@ -625,10 +715,13 @@ def enemy_attack(player_stats, enemy):
     player_stats["Health"] -= damage
 
 
-def attempt_flee(player_stats, enemy):
+def attempt_flee(player_stats, enemy, is_boss_fight=False):
     """
-    Attempt to flee from the battle
+    Attempt to flee from the battle. Always fail if it's a boss fight.
     """
+    if is_boss_fight:
+        return False
+
     player_speed = player_stats["Speed"]
     enemy_speed = enemy["Speed"]
 
@@ -1054,8 +1147,10 @@ def main():
     """
     Run all functions
     """
-
-    start_game()
+    while True:
+        result = start_game()
+        if result == "Quit":
+            break
 
 
 main()
