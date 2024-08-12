@@ -4,11 +4,11 @@ A link to the deployed app is **[here](https://oathbound-53135a23d9e9.herokuapp.
 
 Oathbound is a straightforward text-based adventure game that immerses players in a fantasy world where they take on the role of a chosen character class. Players will navigate different environments, face various enemies, and make choices that affect their journey. While the game offers strategic elements like resource management and combat, it’s designed to be accessible and engaging without being overly complex. Oathbound provides a simple yet immersive experience, suitable for players who enjoy a blend of exploration and decision-making in a classic fantasy setting.
 
-## Responsive Mockup
+## Deployed App
 
-  - This mockup image was made using **[Techsini Multi Device Mockup Generator](https://techsini.com/multi-mockup/)**
+  - This image shows the initial page the player sees
 
-![Responsive Mockup](assets/images/readme/guess-the-god-mockup.png)
+![Deployed App](assets/images/readme/deployed-app.png)
 
 **Table of contents:**
 
