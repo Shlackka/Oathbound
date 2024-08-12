@@ -38,30 +38,34 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 ## User Experience (UX)
 
   - ### Expectation
-    - **Clear Instructions**: Users look for clear and concise instructions on how to play the game.
+    - **Clear Instructions**: Users expect straightforward and detailed instructions on how to navigate and engage with the game’s various features.
 
     - **Simple Navigation**: Navigation of the game is simple and intuitive.
 
-    - **Feedback**: Users expect and receive immediate feedback from each and every action performed whilst playing the game.
+    - **Feedback**: Users anticipate immediate and meaningful feedback on their actions during gameplay, helping them understand the impact of their choices and strategies.
 
-    - **Educational**: Users receive new and interesting pieces of information upon playing the game.
-
-    - **Responsive Design**: Whether playing on mobile or desktop the game works well and as expected on both.
+    - **Immersive Experience**: The game is designed to immerse players in a richly detailed fantasy world, with an emphasis on exploration, decision-making, and combat.
 
   - ### User Journey
-    - **Landing Page**: Users are welcomed with a nicely styled door which upon clicking the button in the centre of the screen will open to the main menu.  
-    This experience is slightly different on mobile as the first screen will be the main menu.
+    - **Title Screen**: Upon starting the game, users are introduced to the game’s world with a compelling title screen and an introductory narrative, setting the stage for the adventure ahead.
 
-    - **Main Menu**: A clear choice of either start game or how to play is shown to the user.
+    - **Character Creation**: Users select their character’s name and class, with clear options to help them make a choice.
 
-    - **Question Screens**: Each question displays an 
-    image of a god with multiple-choice options to select the correct pantheon with the option to also get a hint.
+    - **Game Setup**: The game automatically generates the number of turns and starting location, creating a sense of unpredictability and excitement for the journey ahead.
 
-    - **Feedback**: After selecting an answer, users 
-    receive immediate feedback on whether they were correct, with additional information about the god.
+    - **Main Gameplay Loop**: Players navigate through the world, encountering various challenges, enemies, and NPCs.  
+    They are presented with options to move, view inventory, check stats, view the map, or quit the game.  
+    The exploration is dynamic, with each move revealing new areas, encounters, and opportunities for strategic decisions.
 
-    - **Completion**: At the end of the quiz, users are offered an encouraging message on their performance  
-    and offered a choice to play again or to end the game and be returned to the main menu/closed door depending on platform.
+    - **Combat and Encounters**: During encounters, users engage in combat with enemies or interact with NPCs.  
+    The game provides clear choices and immediate feedback on the outcome of each action, whether it be battling a foe or discovering a hidden item.
+
+    - **Boss Battle**: As the game progresses, users will face a final boss encounter, with the stakes clearly outlined.  
+    The battle is a culmination of the player’s journey, testing their accumulated skills and resources.
+
+    - **Completion**: Upon defeating the final boss or meeting an untimely end, users are presented with a concluding narrative and the option to restart the game or exit.
+
+    - **Restart Option**: After the game concludes, users are given a clear option to restart their adventure or exit, ensuring a satisfying end to their experience.
 
 ## Design
 
