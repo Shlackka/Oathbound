@@ -145,73 +145,80 @@ Below I will go into a brief explanation of the features I have encorporated int
       - Fleeing: PLayers can attempt to flee from the battle, though it may not always succeed.
       - Defeat and Revival: If the player is defeated but has a revival item, they are revived with partial health. Otherwise, the game ends.
 
-  - __Final Encounter Features__
+- __Final Encounter Features__
 
-    - Boss Encounter:
-      - Upon reaching the final turn, the player encounters a randomly selected boss.
-      - Boss Battle: The boss battle operates similarly to regular combat but with stronger enemies and no possibility to flee successfully.
-      - Victoy: Upon defeating the boss, the player is presented with a victory screen and congratulatory message.
-      - Defeat: If the player is defeated, they are given the option to restart the game.
+  - Boss Encounter:
+    - Upon reaching the final turn, the player encounters a randomly selected boss.
+    - Boss Battle: The boss battle operates similarly to regular combat but with stronger enemies and no possibility to flee successfully.
+    - Victoy: Upon defeating the boss, the player is presented with a victory screen and congratulatory message.
+    - Defeat: If the player is defeated, they are given the option to restart the game.
 
-  - __Inventory Management Features__
+- __Inventory Management Features__
 
-    - Inventory System:
-      - Players can view their collected items, including weapons, armour and reclics.
-      - Equip Items: Players cna equip new items from their inventory, which will modify their stats.
-      - Unequip Items: Players can remove currently equipped items and store them back in their inventory.
-      - Item Stats: Each item in the inventory effects the player's stats, such as health, attack and speed.
+  - Inventory System:
+    - Players can view their collected items, including weapons, armour and reclics.
+    - Equip Items: Players cna equip new items from their inventory, which will modify their stats.
+    - Unequip Items: Players can remove currently equipped items and store them back in their inventory.
+    - Item Stats: Each item in the inventory effects the player's stats, such as health, attack and speed.
 
-  - __Map and Navigation Features__
+- __Map and Navigation Features__
 
-    - Dynamic Map:
-      - The game features a dynamic map that updates based on the player's exploration.
-      - Map Symbols: Symbols represent different locations: 'P' for player, 'V' for visited locations, 'C' for chests, 'E' for enemies and 'N' for NPCs.
-      - Map Legend: A legend explains the symbols used on the map as above.
+  - Dynamic Map:
+    - The game features a dynamic map that updates based on the player's exploration.
+    - Map Symbols: Symbols represent different locations: 'P' for player, 'V' for visited locations, 'C' for chests, 'E' for enemies and 'N' for NPCs.
+    - Map Legend: A legend explains the symbols used on the map as above.
 
-  - __User Interface and Feedback Features__
+- __User Interface and Feedback Features__
 
-    - Scrolling Text:
-      - Important messages and narrative text are displayed with a scrolling effect, enhancing immersion.
-    - Immediate Feedback:
-      - Players receive immediate feedback on their actions, such as the outcome of battles, successful escapes, or loot from chests.
-    - Restart Option:
-      - Upon game over, players are given the option to restart the game or exit.
+  - Scrolling Text:
+    - Important messages and narrative text are displayed with a scrolling effect, enhancing immersion.
+  - Immediate Feedback:
+    - Players receive immediate feedback on their actions, such as the outcome of battles, successful escapes, or loot from chests.
+  - Restart Option:
+    - Upon game over, players are given the option to restart the game or exit.
 
-  - __Miscellaneous Features__
+- __Miscellaneous Features__
 
-    - Healing Mechanism:
-      - The player heals 10% of their maximum health each time they move to a new location.
-    - Item Drops:
-      - Enemies and chests can drop items that are added to the player's inventory.
-    - Character Stats:
-      - Players can view detailed stats that update as they progress and acquire new items.
-    - Event Logging:
-      - Key events in the game, such as battles and encounters, are logged and influence subsequent gameplay.
+  - Healing Mechanism:
+    - The player heals 10% of their maximum health each time they move to a new location.
+  - Item Drops:
+    - Enemies and chests can drop items that are added to the player's inventory.
+  - Character Stats:
+    - Players can view detailed stats that update as they progress and acquire new items.
+  - Event Logging:
+    - Key events in the game, such as battles and encounters, are logged and influence subsequent gameplay.
 
-  - __Customisation and Randomisation Features__
+- __Customisation and Randomisation Features__
 
-    - Randomised Boss Encounters:
-      - The final boss is selected randomly from a list of potential bosses, adding replayability.
-    - Random Areas and Encounters:
-      - Each playthrough offers a unique experience due to the random generation of areas and encounters.
+  - Randomised Boss Encounters:
+    - The final boss is selected randomly from a list of potential bosses, adding replayability.
+  - Random Areas and Encounters:
+    - Each playthrough offers a unique experience due to the random generation of areas and encounters.
 
-  - __Endgame and Replayability Features__
+- __Endgame and Replayability Features__
 
-    - Endgame Options:
-      - After defeating the boss or dying, the player can choose to restart the game or quit.
-    - Replayability:
-      - With randomised encounters, bosses, and loot, each playthrough offers a different experience.
+  - Endgame Options:
+    - After defeating the boss or dying, the player can choose to restart the game or quit.
+  - Replayability:
+    - With randomised encounters, bosses, and loot, each playthrough offers a different experience.
 
 ### Features Not Yet Implemented
 
-- __Difficulty__
+- __Visuals__
 
-    - If I was to continue adding features at this stage then next would be a difficulty selector  
-    giving the player a limited amount of time or guesses to reach the required score to win.
+  - My intention was to implement ASCII art to improve the storytelling aspect of the game but due to time constraints and complexity of other features this was sidelined.
 
-- __More Pantheons__
+- __Comprehensive Combat__
 
-    - Another feature I may implement is further Pantheons to guess from such as Roman or Hinduism.
+  - The combat aspect was planned to be expanded upon to include an order of battle which would have taken advantage of the already implemented speed attribute.
+
+- __Consumable Items__
+
+  - I had intended to include consumable items such as health potions and enhancement items but I ended up using the heal per move feature that is in the finished game.
+
+- __Expanded NPC Interactions__
+
+  - Inclusion of NPC specific interactions such as unique combat encounters were planned to be included but again had to be dropped due to time constraints.
 
 ## Testing
 
