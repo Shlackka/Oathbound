@@ -19,8 +19,8 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 - [Design](#design)
   - [Colour Scheme](#colour-scheme)
   - [Typography](#typography)
-  - [Imagery](#imagery)
-  - [Wireframes](#wireframes)
+  - [Languages Used](#languages-used)
+  - [Flowcharts](#flowcharts)
 - [Features](#features)
   - [Languages Used](#languages-used)
   - [Existing Features](#existing-features)
@@ -70,46 +70,33 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 ## Design
 
   - ### Colour Scheme
-    - I chose these colours to create a visually striking and immersive experience that reflects the grandeur and mystique of mythology, with the dark red conveying a sense of ancient power, while the black and white provide clear, readable text and elements that stand out against the light, neutral background.
-
-    - The colour palette below was created using **[EightShapes Contrast Grid](https://contrast-grid.eightshapes.com)**
-
-      ![Colour Palette](assets/images/readme/colour-palette.png)
+    - The game is played entirely within a terminal so the colour scheme is simply the white text on a black background.
 
   - ### Typography
-    - The primary font is 'Lato', sans-serif for general text, providing a clean and modern look. 
+    - The game utilizes the default monospace font typically associated with terminal environments.  
     
-    - 'Vollkorn', serif is used for headings to add a touch of elegance and distinction.
-    
-    - All fonts were acquired through **[Google Fonts](https://fonts.google.com/)**.
-
-  - ### Imagery
-    - High-quality images of gods from different mythologies are used to create a visually engaging and educational experience.  
-    The images are central to the quiz, helping users associate visual characteristics with each god.
-    
-    - All god images were created with the help of **[ChatGPT](https://chatgpt.com/?oai-dm=1)**.
+    - This font ensures that the text is easily readable and aligns with the retro, immersive aesthetic commonly associated with text-based adventure games.
 
   - ### Languages Used
-    - **HTML5**: Used for structuring the content of the web pages. HTML5 provides the semantic elements and structure necessary for a well-organized and accessible web application.
+    - **Python**: The game is built entirely in Python, a powerful programming language well-suited for developing interactive text-based games.  
+      - Python's simplicity and readability make it an excellent choice for both game logic and narrative flow.
     
-    - **CSS3**: Used for styling the web pages. CSS3 ensures that the application has a visually appealing and consistent design. It includes the use of Flexbox and Grid for layout, and media queries for responsiveness.
-    
-    - **JavaScript**: Used for adding interactivity to the web application. JavaScript powers the game's logic, user interactions, dynamic content updates, and animations.  
-    As well as the use of modules to improve readability and scalability in the future.
+    - **Google Sheets API**: Google Sheets is used as a database to store and retrieve game data, such as character stats, enemies, items, and more. 
+      - The Google Sheets API allows for dynamic interaction with this data, making the game adaptable and expandable.
     
     - **Markdown**: Used to write the README.
 
-  - ### Wireframes
+  - ### Flowcharts 
 
-Please see below the original wireframes of the site made using Balsamiq Wireframes.
+Please see below the flowcharts for the game, made using **[Miro](https://miro.com/)**.
 
-- #### Main Menu (Desktop)
+- #### Original Flowchart (Simple)
 
-![Main Menu Desktop Wireframe](assets/images/readme/main-menu-desktop-wireframe.png)
+![Simple Flowchart](assets/images/readme/flowchart.png)
 
-- #### Main Menu (Mobile)
+- #### Final Flowchart (Full)
 
-![Main Menu Mobile Wireframe](assets/images/readme/main-menu-mobile-wireframe.png)
+![Full Flowchart](assets/images/readme/main-menu-mobile-wireframe.png)
 
 - #### Game Zone
 
