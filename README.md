@@ -98,10 +98,6 @@ Please see below the flowcharts for the game, made using **[Miro](https://miro.c
 
 ![Full Flowchart](assets/images/readme/main-menu-mobile-wireframe.png)
 
-- #### Game Zone
-
-![Game Zone Wireframe](assets/images/readme/game-zone-wireframe.png)
-
 ## Features
 
 Below I will go into a brief explanation of the features I have encorporated into the game.
