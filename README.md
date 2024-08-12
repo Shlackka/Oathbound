@@ -26,6 +26,7 @@ Oathbound is a straightforward text-based adventure game that immerses players i
   - [Existing Features](#existing-features)
   - [Features Not Yet Implemented](#features-not-yet-implemented)
 - [Testing](#testing)
+  - [Testing Table](#testing-table)
   - [Validator Testing](#validator-testing)
   - [Unfixed Bugs](#unfixed-bugs)
 - [Deployment](#deployment)
@@ -222,44 +223,27 @@ Below I will go into a brief explanation of the features I have encorporated int
 
 ## Testing
 
-Each feature of the game has been tested upon integration and also tested again upon completion of development, these tests will be outlined below.
+### Testing Table
 
-- **Sliding Images**: The sliding images on the landing page were tested to ensure they animate correctly  
-and reveal the main menu upon clicking the "Enter The Pantheon" button. The transition and timing were checked for smoothness and alignment.
+| **Feature**            | **Test Description**                                                   | **Pass/Fail** | **Comments**                                |
+|------------------------|------------------------------------------------------------------------|---------------|---------------------------------------------|
+| Character Creation     | Tested the character creation process, ensuring the user can choose a class and the correct stats are assigned. | Pass          | All classes were selectable, and stats were correctly applied. |
+| Movement System        | Verified that the player can move in all four directions and that the map updates correctly. | Pass          | Movement worked as expected, and the map updated correctly. |
+| Encounter System       | Ensured that encounters trigger correctly and that the correct encounter (enemy, chest, or NPC) appears. | Pass          | All encounters triggered appropriately based on the conditions. |
+| Combat System          | Tested combat mechanics, including attacking, taking damage, and defeating enemies. | Pass          | Combat worked as expected, with correct health deductions and enemy defeat. |
+| Inventory Management   | Verified that the player can view, equip, and unequip items from the inventory. | Pass          | Inventory management functioned correctly, with items equipping/unequipping as expected. |
+| Boss Encounter         | Ensured the final boss fight triggers correctly, and tested the combat mechanics specific to the boss. | Pass          | The boss encounter triggered correctly, and combat mechanics worked as expected. |
+| Chest Encounter        | Tested to check that the interaction with the chest encounter worked correctly, both opening the chest, leaving the chest and also the mimic fight interaction. | Pass          | The chest encounter worked each time without any issues. |  
+| Game Over Sequence     | Tested the game-over sequence, ensuring that the player is prompted to restart or quit the game. | Pass          | The game-over sequence worked as expected, with correct options for restarting or quitting. |
+| Map Display            | Verified that the dynamic map displays correctly, showing visited locations and the player’s current position. | Pass          | The map displayed correctly, with accurate representation of the player’s location and visited areas. |
+| Healing Mechanics      | Tested the healing system, ensuring that health regenerates appropriately after each move. | Pass          | Healing worked as intended, with health regenerating correctly. |
+| NPC Interaction        | Verified that interactions with NPCs trigger dialogue and continue the game loop correctly. | Pass          | NPCs interacted correctly, with appropriate dialogue and effects. |
+| Random Events          | Tested the randomness of encounters and item drops to ensure variability in gameplay. | Pass          | Random events occurred as expected, providing varied gameplay experiences. |
+| Equipment Effects      | Verified that equipping different items changes the player's stats and abilities as intended. | Pass          | Equipment effects applied correctly, with stats adjusting based on the items equipped. |
+| Turn Counter           | Tested the turn counter to ensure the game tracks and limits the number of turns correctly before triggering the boss fight. | Pass          | Turn counter functioned correctly, triggering the boss fight at the appropriate time. |
+| Flee Mechanism         | Verified that the flee option works correctly in normal combat but is disabled or fails during the boss fight. | Pass          | Flee mechanics worked as expected, with fleeing possible in normal encounters but not during the boss fight. |
+| Text and Dialogue Display | Ensured that all text and dialogue throughout the game displays correctly and at the appropriate speed. | Pass          | Text and dialogue displayed as intended, with correct timing and no overflow issues. |
 
-- **Navigation Buttons**: All buttons present within the site have been tested to confirm they perform the correct actions:
-    - The "Start Game" button begins the game.
-
-    - The "How to Play" button displays the instructions.
-
-    - The "Play Again" and "End Game" buttons appear at the end of the game, and they respectively restart the game or return the user to the main menu.
-
-- **Answer Buttons**:  Each answer button was tested to ensure it registers the correct mythology when clicked. The correct feedback message is displayed based on the user's choice.
- 
-- **Hint Button**:  The hint button was tested to ensure it displays the correct hint and deducts points only the first time it is used for each god.  
-The score is adjusted accordingly, and hintsUsed array functions properly to prevent repeated point deduction for the same hint.
-
-- **Score Calculation**:  The scoring system was tested to ensure points are correctly awarded for correct answers and deducted for hints.  
-The score properly resets when the game is restarted.
-
-- **Alert Box**:  The custom alert box was tested to ensure it displays the correct messages for user feedback, and the close button functions as expected.  
-Additionally, the answer buttons are temporarily disabled when the alert box is shown and re-enabled upon closing.
-
-- **Responsive Design**: The layout and functionality was tested across different screen sizes and devices to ensure the game maintains its structural integrity and usability.
-
-- **Accessibility**: All images were tested for appropriate alt text to ensure accessibility. Colour contrast was checked to meet accessibility guidelines.
-
-### Lighthouse Testing
-
-Along with feature testing I have also run lighthouse tests, these have come back very positive as seen below with the screen captures.
-
-- #### Lighthouse report for desktop
-
-![Lighthouse Report Desktop](assets/images/readme/lighthouse-report-desktop.png)
-
-- #### Lighthouse report for mobile
-
-![Lighthouse Report Mobile](assets/images/readme/lighthouse-report-mobile.png)
 
 ### Validator Testing
 
@@ -275,7 +259,7 @@ Along with feature testing I have also run lighthouse tests, these have come bac
 
 ### Unfixed Bugs
 
-To the best of my knowledge after testing all aspects of the site I have been unable to find any unfixed bugs.
+To the best of my knowledge after testing all aspects of the game I have been unable to find any unfixed bugs.
 
 ## Deployment
 
