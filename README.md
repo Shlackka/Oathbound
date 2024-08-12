@@ -104,71 +104,103 @@ Below I will go into a brief explanation of the features I have encorporated int
 
 ### Existing Features
 
-- __Landing Page (Desktop)__
+- __Game Setup Features__
 
-    - Shown upon loading the site on desktop, an attractive image used to introduce the site with minimal wording. 
-    - A central button offering an intriguing message of "Enter the Pantheon" inviting users to click and continue onto the main title screen.
-    - The sliding effect of the main image on the desktop landing page offers a feeling of grandeur as the main title page is unveiled.
+    - Title Screen:
+      - The game starts with a title screen that displays the game's name in a stylized ASCII format, setting the mood for the adventure.
+    
+    - Character Creation: 
+      - Player are prompted to enter their character's name.
+      - Players choose a class from options (e.g. Warrior, Archer, Mage, Peasant), each with its own unique stats and starting equipment.
 
-![Landing Page Desktop](assets/images/readme/landing-page-desktop.png)
+    - Initialisation:
+      - The game randomly determines the number of turns until the final boss encounter.
+      - The player's inventory is intialised with basic equipment based on the chosen class.
 
-- __Main Menu (Desktop)__
+- __Gameplay Features__
 
-    - An intuitive and simple to use main menu with 2 buttons, "Start Game" and "How to Play".
-    - Attractive imagery that supports getting the player into the right mindset for the game.
+    - Game Loop:
+      - The core loop of the game where the player makes decisions each turn until the final encounter.
+      - Actions Menu: 
+        - Move: Players can move their character in one of four directions (North, South, East, West).
+        - View Inventory: Players can view and manage their inventory.
+        - View Stats: Players can check their current stats and equipment.
+        - View Map: Players can view the map of visited locations and encounters.
+        - Quit Game: Players can exit the game at any point.
+    
+    - Exploration:
+      - As the player moves around, the game generates random areas (e.g. forests, lakes, mountains).
+      - The player can revisit areas, and previously encountered locations are stored.
+    
+    - Encounters:
+      - Random Encounters: As the player explores, they  have a chance of encountering chests, enemies, or NPCs.
+      - Chests: Players can choose to open them, which might result in finding items or triggering a mimic battle.
+      - Enemies: Players engage in turn-based combat with various enemies.
+      - NPCs: Players can interact with NPCs to receive hints, lore and items.
 
-![Main Menu Desktop](assets/images/readme/main-menu-desktop.png)
+    - Combat System:
+      - Turn-Based Combat: Players choose to attack or flee. Players and enemies take turns based on their speed stat.
+      - Player Attack: Players attack enemies, with a chance of critical hit if applicable.
+      - Enemy Attack: Enemies retaliate, dealing damage to the player.
+      - Fleeing: PLayers can attempt to flee from the battle, though it may not always succeed.
+      - Defeat and Revival: If the player is defeated but has a revival item, they are revived with partial health. Otherwise, the game ends.
 
-- __Landing Page/Title Page (Mobile)__
+  - __Final Encounter Features__
 
-    - The mobile landing page, although missing the sliding feature image of the desktop version still offers the same asthetic with a identical title page.
-    - A simple to use title page main menu offering the options of "Start Game" and "How to Play" with an attractive hero image to give a distinct feel to the game.
+    - Boss Encounter:
+      - Upon reaching the final turn, the player encounters a randomly selected boss.
+      - Boss Battle: The boss battle operates similarly to regular combat but with stronger enemies and no possibility to flee successfully.
+      - Victoy: Upon defeating the boss, the player is presented with a victory screen and congratulatory message.
+      - Defeat: If the player is defeated, they are given the option to restart the game.
 
-![Landing Page/Title Page Mobile](assets/images/readme/landing-page-mobile.png)
+  - __Inventory Management Features__
 
-- __Instructions__
+    - Inventory System:
+      - Players can view their collected items, including weapons, armour and reclics.
+      - Equip Items: Players cna equip new items from their inventory, which will modify their stats.
+      - Unequip Items: Players can remove currently equipped items and store them back in their inventory.
+      - Item Stats: Each item in the inventory effects the player's stats, such as health, attack and speed.
 
-    - When the "How to Play" button is clicked a message window will open to give all the relevant instrutions the player will need.
-    - The instructions window includes it's own "Start Game" button to avoid needing to return to the main menu.
+  - __Map and Navigation Features__
 
-![Instructions](assets/images/readme/instructions.png)
+    - Dynamic Map:
+      - The game features a dynamic map that updates based on the player's exploration.
+      - Map Symbols: Symbols represent different locations: 'P' for player, 'V' for visited locations, 'C' for chests, 'E' for enemies and 'N' for NPCs.
+      - Map Legend: A legend explains the symbols used on the map as above.
 
-- __Game Zone__
+  - __User Interface and Feedback Features__
 
-    - A stylised image of a god will appear central to the game zone.
-    - A question will display below the god image "To which mythology does this god/goddess belong?".
-    - The answer buttons are displayed clearly below the question each in the same style as the main site.
-    - A hint button is displayed below the answer buttons, clearly stating the repercussion for using a hint.
+    - Scrolling Text:
+      - Important messages and narrative text are displayed with a scrolling effect, enhancing immersion.
+    - Immediate Feedback:
+      - Players receive immediate feedback on their actions, such as the outcome of battles, successful escapes, or loot from chests.
+    - Restart Option:
+      - Upon game over, players are given the option to restart the game or exit.
 
-![Game Zone](assets/images/readme/game-zone.png)
+  - __Miscellaneous Features__
 
-- __Score__
+    - Healing Mechanism:
+      - The player heals 10% of their maximum health each time they move to a new location.
+    - Item Drops:
+      - Enemies and chests can drop items that are added to the player's inventory.
+    - Character Stats:
+      - Players can view detailed stats that update as they progress and acquire new items.
+    - Event Logging:
+      - Key events in the game, such as battles and encounters, are logged and influence subsequent gameplay.
 
-    - A score keeping area is displayed below the buttons.
+  - __Customisation and Randomisation Features__
 
-![Score](assets/images/readme/score.png)
+    - Randomised Boss Encounters:
+      - The final boss is selected randomly from a list of potential bosses, adding replayability.
+    - Random Areas and Encounters:
+      - Each playthrough offers a unique experience due to the random generation of areas and encounters.
 
-- __Alert Box (Answer)__
+  - __Endgame and Replayability Features__
 
-    - For each action the player performs a message box will appear central to the screen.
-    - Uses an "x" in the top right corner as a close button.
-    - Will give the player feedback on their chosen answer whether it was right or wrong.
-
-![Alert Box Answer](assets/images/readme/alert-box-answer.png)
-
-- __Alert Box (Hint)__
-
-    - Will give the player a hint dependant on the current god/goddess displayed.
-    - The hint can be displayed as many times as the player would like for each god/goddess.
-
-![Alert Box Hint](assets/images/readme/alert-box-hint.png)
-
-- __Alert Box (End Game)__
-
-    - The message box will contain 2 buttons upon reaching an end game state "End Game" and "Play Again".
-    - The "x" in the top right will not appear for this message so as not to present an unwanted loop in game.
-
-![Alert Box End Game](assets/images/readme/alert-box-end.png)
+    - Endgame Options:
+      - After defeating the boss or dying, the player can choose to restart the game or quit.
+    - Replayability:
+      - With randomised encounters, bosses, and loot, each playthrough offers a different experience.
 
 ### Features Not Yet Implemented
 
