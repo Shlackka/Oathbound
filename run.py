@@ -53,7 +53,8 @@ def scroll_text_slow(text, delay=0.035):
 
 def normalise_and_check_input(input_text, keywords):
     """
-    Normalise the input text and check if it contains any of the specified keywords
+    Normalise the input text and check if it contains any of the
+    specified keywords
     """
     normalised_input = input_text.strip().lower()
     for keyword in keywords:
@@ -287,7 +288,8 @@ def game_loop(
                 turns_until_end -= 1
                 if new_location not in visited_locations:
                     visited_locations.append(new_location)
-                if new_location != (0, 0) and check_for_encounter() and new_location not in location_encounter_map:
+                if new_location != (0, 0) and check_for_encounter(
+                ) and new_location not in location_encounter_map:
                     encounter = get_random_encounter(encounters)
                     result = handle_encounter(
                         player_info,
@@ -309,7 +311,10 @@ def game_loop(
                         scroll_text(
                             "You see an empty chest. "
                             "It seems someone has already looted it.")
-                    elif isinstance(previous_encounter, dict) and previous_encounter["type"] == "Enemy":
+                    elif isinstance(
+                            previous_encounter,
+                            dict
+                            ) and previous_encounter["type"] == "Enemy":
                         enemy = previous_encounter["details"]
                         scroll_text(
                             "You see signs of a previous "
@@ -317,7 +322,10 @@ def game_loop(
                         scroll_text(
                             "You continue on your way "
                             "as there is nothing else for you here.")
-                    elif isinstance(previous_encounter, dict) and previous_encounter['type'] == "NPC":
+                    elif isinstance(
+                            previous_encounter,
+                            dict
+                            ) and previous_encounter['type'] == "NPC":
                         npc = previous_encounter["details"]
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
@@ -344,7 +352,12 @@ def game_loop(
         elif action == "3":
             view_stats(player_info)
         elif action == "4":
-            view_map(location, visited_locations, location_area_map, location_encounter_map)
+            view_map(
+                location,
+                visited_locations,
+                location_area_map,
+                location_encounter_map
+                )
         elif action == "5":
             print("Thank you for playing!")
             return "Quit"
@@ -357,11 +370,14 @@ def game_loop(
             scroll_text("You have been defeated by the final boss!")
             return restart_option()
         else:
-            scroll_text("Congratulations! You have defeated the final boss and completed the game!")
+            scroll_text(
+                "Congratulations! "
+                "You have defeated the final boss and completed the game!")
             return restart_option()
         boss_encountered = True
 
-    return "Continue"  # Return continue status to handle end of game loop in start_game
+    return "Continue"
+    # Return continue status to handle end of game loop in start_game
 
 
 def restart_option():
@@ -475,7 +491,8 @@ def handle_encounter(
         print("")
         scroll_text(
             "You come across a chest in front of you, "
-            "\nthere is no lock on the chest and nobody around, what will you do?\n"
+            "\nthere is no lock on the chest and nobody around, "
+            "what will you do?\n"
         )
         scroll_text("\n1. Open the chest")
         scroll_text("2. Leave the chest alone")
@@ -500,7 +517,12 @@ def handle_encounter(
                     "Attack": 12,
                     "Speed": 4
                 }
-                result = fight_enemy(player_info["current_stats"], get_fresh_enemy(mimic), drops, inventory)
+                result = fight_enemy(
+                    player_info["current_stats"],
+                    get_fresh_enemy(mimic),
+                    drops,
+                    inventory
+                    )
                 if result == "Victory":
                     drop = get_random_drop(drops)
                     scroll_text(
@@ -508,7 +530,8 @@ def handle_encounter(
                         "You pick up the item and continue on your journey."
                     )
                     inventory[drop['Category'] + 's'].append(drop['Item Name'])
-                    location_encounter_map[location] = {"type": "Enemy", "details": mimic}
+                    location_encounter_map[
+                        location] = {"type": "Enemy", "details": mimic}
                 elif result == "Defeat":
                     return "Defeat"
             else:
@@ -518,11 +541,17 @@ def handle_encounter(
                 )
                 inventory[drop['Category'] + 's'].append(drop['Item Name'])
         else:
-            scroll_text("You leave the chest alone and continue on your journey.")
+            scroll_text("You leave the chest alone "
+                        "and continue on your journey.")
     elif encounter == "Enemy":
         enemy_template = get_random_enemy(enemies)
         enemy = get_fresh_enemy(enemy_template)
-        result = fight_enemy(player_info["current_stats"], enemy, drops, inventory)
+        result = fight_enemy(
+            player_info["current_stats"],
+            enemy,
+            drops,
+            inventory
+            )
         if result == "Victory":
             drop = get_random_drop(drops)
             scroll_text(
@@ -530,7 +559,8 @@ def handle_encounter(
                 "You pick up the item and continue on your journey."
             )
             inventory[drop['Category'] + 's'].append(drop['Item Name'])
-            location_encounter_map[location] = {"type": "Enemy", "details": enemy_template}
+            location_encounter_map[
+                location] = {"type": "Enemy", "details": enemy_template}
         elif result == "Defeat":
             return "Defeat"
     elif encounter == "NPC":
@@ -540,7 +570,8 @@ def handle_encounter(
             location_encounter_map[location] = {"type": "NPC", "details": npc}
             encountered_npcs.add(npc['Name'])
         else:
-            scroll_text("There appears to be nothing here, you carry on your way.")
+            scroll_text("There appears to be nothing here, "
+                        "you carry on your way.")
 
 
 def fight_enemy(player_stats, enemy, drops, inventory):
@@ -589,8 +620,10 @@ def fight_enemy(player_stats, enemy, drops, inventory):
                 player_stats["Health"] = player_stats["MaxHealth"] // 2
                 player_stats["Effects"].remove("ReviveWithHalfHealth")
             else:
-                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n")
-                scroll_text_slow("Your journey ends here, but your deeds will be remembered.")
+                scroll_text_slow("\n*** You have met your end, "
+                                 "brave adventurer. ***\n")
+                scroll_text_slow("Your journey ends here, "
+                                 "but your deeds will be remembered.")
                 return "Defeat"
 
     scroll_text(f"You have defeated the {enemy['Enemy']}!")
@@ -612,7 +645,8 @@ def fight_boss(player_stats, boss, drops, inventory):
     Handle the fight with the final boss
     """
     print("")
-    scroll_text(f"A {boss['Enemy']} attacks you! Prepare for the final battle.")
+    scroll_text(f"A {boss['Enemy']} attacks you! "
+                "Prepare for the final battle.")
 
     while player_stats["Health"] > 0 and boss["Health"] > 0:
         # Display player and boss stats
@@ -653,8 +687,10 @@ def fight_boss(player_stats, boss, drops, inventory):
                 player_stats["Health"] = player_stats["MaxHealth"] // 2
                 player_stats["Effects"].remove("ReviveWithHalfHealth")
             else:
-                scroll_text_slow("\n*** You have met your end, brave adventurer. ***\n")
-                scroll_text_slow("Your journey ends here, but your deeds will be remembered.")
+                scroll_text_slow("\n*** You have met your end, "
+                                 "brave adventurer. ***\n")
+                scroll_text_slow("Your journey ends here, "
+                                 "but your deeds will be remembered.")
                 return "Defeat"
 
     scroll_text(f"You have defeated the {boss['Enemy']}!")
@@ -673,7 +709,12 @@ def handle_boss_encounter(player_info, inventory, drops, enemies):
         scroll_text("Error: Failed to load the boss encounter properly.")
         return "Defeat"
 
-    result = fight_boss(player_info["current_stats"], fresh_boss, drops, inventory)
+    result = fight_boss(
+        player_info["current_stats"],
+        fresh_boss,
+        drops,
+        inventory
+        )
     return result
 
 
@@ -782,7 +823,8 @@ def get_unique_npc(npcs, encountered_npcs):
     """
     Get a unique NPC that has not been encountered yet
     """
-    remaining_npcs = [npc for npc in npcs if npc['Name'] not in encountered_npcs]
+    remaining_npcs = [
+        npc for npc in npcs if npc['Name'] not in encountered_npcs]
     if remaining_npcs:
         return random.choice(remaining_npcs)
     else:
@@ -842,9 +884,15 @@ def talk_to_npc(npc):
             break
 
 
-def view_map(current_location, visited_locations, location_area_map, location_encounter_map):
+def view_map(
+        current_location,
+        visited_locations,
+        location_area_map,
+        location_encounter_map
+        ):
     """
-    Display a dynamic map showing the player's current location and visited locations
+    Display a dynamic map showing the
+    player's current location and visited locations
     """
 
     scroll_text("Map Legend:")
@@ -1004,22 +1052,29 @@ def equip_item(inventory, player_stats):
                 for idx, item in enumerate(inventory[category], 1):
                     scroll_text(f"{idx}. {item}")
 
-                item_choice = input("Choose an item to equip (number): \n").strip()
+                item_choice = input(
+                    "Choose an item to equip (number): \n").strip()
 
-                if item_choice.isdigit() and 1 <= int(item_choice) <= len(inventory[category]):
+                if item_choice.isdigit() and 1 <= int(
+                        item_choice) <= len(inventory[category]):
                     item_choice = int(item_choice) - 1
                     new_item = inventory[category][item_choice]
-                    currently_equipped_item = inventory["Currently Equipped"][equip_slot]
+                    currently_equipped_item = inventory[
+                        "Currently Equipped"][equip_slot]
 
                     if currently_equipped_item:
                         inventory[category].append(currently_equipped_item)
-                        remove_item_stats(player_stats, get_item_stats(currently_equipped_item))
+                        remove_item_stats(
+                                player_stats,
+                                get_item_stats(currently_equipped_item))
 
                     inventory["Currently Equipped"][equip_slot] = new_item
-                    player_stats[equip_slot] = new_item  # Update player stats with the new item name
+                    # Update player stats with the new item name
+                    player_stats[equip_slot] = new_item
                     inventory[category].pop(item_choice)
                     apply_item_stats(player_stats, get_item_stats(new_item))
-                    scroll_text(f"{new_item} has been equipped as your {equip_slot}.")
+                    scroll_text(f"{new_item} has been "
+                                "equipped as your {equip_slot}.")
                     break
                 else:
                     scroll_text("Invalid item choice.")
@@ -1028,13 +1083,16 @@ def equip_item(inventory, player_stats):
                 for idx, item in enumerate(inventory[category], 1):
                     scroll_text(f"{idx}. {item}")
 
-                item_choice = input("Choose an item to view description (number): \n").strip()
+                item_choice = input("Choose an item to view description "
+                                    "(number): \n").strip()
 
-                if item_choice.isdigit() and 1 <= int(item_choice) <= len(inventory[category]):
+                if item_choice.isdigit() and 1 <= int(
+                        item_choice) <= len(inventory[category]):
                     item_choice = int(item_choice) - 1
                     item_name = inventory[category][item_choice]
                     item_stats = get_item_stats(item_name)
-                    scroll_text(f"Description of {item_name}: {item_stats['Description']}")
+                    scroll_text(f"Description of {item_name}: "
+                                f"{item_stats['Description']}")
                 else:
                     scroll_text("Invalid item choice.")
             elif option == "3":
@@ -1071,7 +1129,8 @@ def unequip_item(inventory, player_stats):
         item_to_unequip = inventory["Currently Equipped"][equip_slot]
         inventory[category].append(item_to_unequip)
         inventory["Currently Equipped"][equip_slot] = None
-        player_stats[equip_slot] = "None"  # Update player stats with the unequipped state
+        # Update player stats with the unequipped state
+        player_stats[equip_slot] = "None"
         remove_item_stats(player_stats, get_item_stats(item_to_unequip))
         scroll_text(f"{item_to_unequip} has been unequipped.")
     else:

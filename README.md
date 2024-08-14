@@ -97,7 +97,7 @@ Please see below the flowcharts for the game, made using **[Miro](https://miro.c
 
 - #### Final Flowchart (Full)
 
-The full flowchart can be found **[Here](https://miro.com/app/board/uXjVKq_bneI=/?share_link_id=965597782529)**
+The full flowchart can be found **[Here.](https://miro.com/app/board/uXjVKq_bneI=/?share_link_id=965597782529)**
 
 ## Features
 
