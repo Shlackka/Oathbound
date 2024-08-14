@@ -74,7 +74,7 @@ Oathbound is a straightforward text-based adventure game that immerses players i
     - The game is played entirely within a terminal so the colour scheme is simply the white text on a black background.
 
   - ### Typography
-    - The game utilizes the default monospace font typically associated with terminal environments.  
+    - The game utilises the default monospace font typically associated with terminal environments.  
     
     - This font ensures that the text is easily readable and aligns with the retro, immersive aesthetic commonly associated with text-based adventure games.
 
@@ -257,15 +257,49 @@ To the best of my knowledge after testing all aspects of the game I have been un
 
 ## Deployment
 
-The site has been deployed to GitHub pages, in order to do this the following steps were completed.
+### **Deployment to Heroku**
 
-- From within the guess-the-god repo I navigated to the settings tab
+The "Oathbound" game was deployed to Heroku by following these steps:
 
-- In settings navigate to the Pages section under "Code and automation"
+1. **Log In or Sign Up:** First, log in to your Heroku account. If you don’t have one, you’ll need to sign up.
 
-- Once in Pages, I chose to deploy from a branch as the source and then chose the Main branch before clicking save
+2. **Access the Dashboard:** Click on the dashboard option from the menu in the top-right corner to navigate to the apps page.
 
-- The deployed site can be found at **https://shlackka.github.io/guess-the-god/**
+3. **Create a New App:**
+   - Click on the “New” button located in the top-right corner of the page.
+   - Choose the “Create new app” option from the dropdown menu.
+
+4. **Name Your App:**
+   - Enter a unique name for your app (e.g., “oathbound-game”).
+   - After selecting a name, choose your preferred region.
+
+5. **Create the App:**
+   - Click on the "Create App" button to proceed to the app’s dashboard.
+
+6. **Configure Environment Variables:**
+   - Navigate to the "Settings" tab.
+   - Scroll down to the "Config Vars" section.
+   - Click on "Reveal Config Vars" and add a key-value pair:
+     - Key: `PORT`
+     - Value: `8000`
+   - Click the "Add" button to save the configuration.
+
+7. **Add Buildpacks:**
+   - Still in the "Settings" tab, scroll to the "Buildpacks" section.
+   - Click on "Add buildpack," select Python, and save the changes.
+   - Repeat the process to add Node.js as the second buildpack.
+   - Ensure that Python is listed first, followed by Node.js.
+
+8. **Connect to GitHub:**
+   - Navigate to the "Deploy" tab.
+   - In the "Deployment method" section, select GitHub.
+   - Confirm your connection to GitHub and search for the repository containing the "Oathbound" project.
+   - Click the "Connect" button next to the correct repository.
+
+9. **Deploy the App:**
+   - In the "Manual deploy" section, select the branch you wish to deploy from the dropdown menu.
+   - Click the "Deploy Branch" button to initiate the deployment.
+   - Alternatively, you can enable "Automatic Deploys" to automatically deploy any updates pushed to the connected GitHub branch.
 
 If you wish to fork the repo this can be achieved by using the "Fork" button at the top of the repo and following the onscreen prompts to set up the forked repo as you wish.
 
