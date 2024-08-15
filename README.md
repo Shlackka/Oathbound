@@ -32,7 +32,6 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 - [Deployment](#deployment)
 - [Credits](#credits)
   - [Content](#content)
-  - [Media](#media)
   - [Tools and Libraries](#tools-and-libraries)
   - [Acknowledgements](#acknowledgements)
 
@@ -307,36 +306,30 @@ If you wish to clone the repo this can be achieved by using the drop down on the
 
 ## Credits 
 
-In the below section I will go over all of the external sources where I either drew inspiration or used their tools to assist in the development of Guess the God.
+This section acknowledges the external resources and inspirations that contributed to the development of **Oathbound**.
 
 ### Content
 
-- All text included within Guess the God has been typed out by myself with hint and god facts first being found with the use of **[ChatGPT](https://chatgpt.com/?oai-dm=1)** before being reworded into the game.
+- All narrative text, character descriptions, and gameplay content within **Oathbound** were written and developed by myself. I utilized various resources to brainstorm and refine story elements, character interactions, and game logic.
 
-- **[ChatGPT](https://chatgpt.com/?oai-dm=1)** has been used to help explain certain JavaScript concepts I was struggling with, specifically when I changed the nested if statements into a switch case and exporting and importing the god data from the data file.
+- **[ChatGPT](https://chat.openai.com/)** was used as a resource for resolving coding challenges, particularly in optimizing the game loop, managing player inventory, and implementing combat mechanics. It also provided assistance with brainstorming ideas and refining narrative components.
 
-- All inspiration for this project was taken from my personal interest into ancient civilizations and their respective mythologies and religions.
+- The inspiration for **Oathbound** stemmed from my interest in classic text-based adventure games and tabletop RPGs, where story and strategic decision-making are central to the experience.
 
-- Fonts for the site were found using **[Google Fonts](https://fonts.google.com/)**.
-
-### Media
-
-- All images including those used as backgrounds have been created using the DALL-E AI image creator through **[ChatGPT](https://chatgpt.com/?oai-dm=1)** by OpenAI.
-
-- Favicon was created using **[Red Ketchup](https://redketchup.io/favicon-generator)**.
- 
 ### Tools and Libraries
 
-- **[Gitpod](https://www.gitpod.io/)** was used as the development environment.
+- **[Gitpod](https://www.gitpod.io/)** was the primary development environment, providing a cloud-based workspace for writing and testing the game's code.
 
-- **[Visual Studio Code](https://code.visualstudio.com/)** was the code editor used for writing and editing the project's code within Gitpod.
+- **[Python](https://www.python.org/)** was the programming language used to develop the game, leveraging various standard libraries to manage the game’s flow and logic.
 
-- **[GitHub](https://github.com/)** was used for version control and hosting the project repository.
+- **[Google Sheets API](https://developers.google.com/sheets/api)** was utilized to manage in-game data, including character stats, items, and encounters, facilitating easy updates and management.
+
+- **[GitHub](https://github.com/)** was used for version control and hosting the project's repository.
+
+- **[Heroku](https://www.heroku.com/)** was used for deploying **Oathbound** and making it accessible online.
 
 ### Acknowledgements
 
-- I would like to thank my family, specifically my sister Robyn for helping to playtest Guess the God  
-and highlight any areas of gameplay I may have overlooked during development.
+- I extend my gratitude to my family and friends who provided invaluable feedback during the playtesting phase, helping to identify and fix potential issues to enhance the gameplay experience.
 
-- I would also like to thank my Mentor Harry Dhillon who has been an invaluable source of encouragement.  
-Always helping to guide me in the right direction during development.
+- A special thank you to my mentor, **Harry Dhillon**, for offering continuous support, guidance, and motivation throughout the development of **Oathbound**.

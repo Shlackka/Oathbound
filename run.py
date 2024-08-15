@@ -1075,7 +1075,7 @@ def equip_item(inventory, player_stats):
                     inventory[category].pop(item_choice)
                     apply_item_stats(player_stats, get_item_stats(new_item))
                     scroll_text(f"{new_item} has been "
-                                "equipped as your {equip_slot}.")
+                                f"equipped as your {equip_slot}.")
                     break
                 else:
                     scroll_text("Invalid item choice.")
