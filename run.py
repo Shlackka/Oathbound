@@ -67,7 +67,7 @@ def title_scroll():
     """
     Main title page and introduction
     """
-
+    clear_terminal()
     title = r"""
   ____          _    _      _                               _
  / __ \        | |  | |    | |                             | |
@@ -329,8 +329,8 @@ def game_loop(
                         npc = previous_encounter["details"]
                         scroll_text(
                             f"You see {npc['Name']} just up ahead "
-                            "but as you wave 'Hello' to "
-                            "them they turn and disappear from sight.")
+                            "but as you wave 'Hello' to them "
+                            "\nthey turn and disappear from sight.")
                         scroll_text(
                             "You continue on your way "
                             "ignoring their rudeness.")
@@ -390,6 +390,7 @@ def restart_option():
         clear_terminal()
         return "Restart"
     else:
+        clear_terminal()
         scroll_text("Thank you for playing! Goodbye.")
         return "Quit"
 
