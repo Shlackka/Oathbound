@@ -419,7 +419,7 @@ def game_loop(
 
 def restart_option():
     """
-    Provide the player with an option to restart the game
+    Provides the player with an option to restart the game or quit.
     """
     scroll_text("\nWould you like to restart the game? (yes/no)")
     choice = input().strip().lower()
@@ -434,7 +434,17 @@ def restart_option():
 
 def move(location, areas, location_area_map, player_info):
     """
-    Function to move the player in desired direction
+    Allows the player to move in a specified direction (north, south, east, or west).
+    Automatically heals the player by 10% of their maximum health each move.
+
+    Args:
+        location (tuple): The current coordinates of the player (x, y).
+        areas (list): List of available areas the player can explore.
+        location_area_map (dict): A dictionary mapping locations to specific areas.
+        player_info (dict): The player's current information, including stats.
+
+    Returns:
+        tuple: The new location, the new area, and a boolean indicating if the player moved.
     """
     x, y = location
     direction = input(
@@ -474,7 +484,10 @@ def move(location, areas, location_area_map, player_info):
 
 def get_areas():
     """
-    Retrieve the list of areas from the Google Sheet
+    Retrieves the list of areas from the Google Sheet.
+    
+    Returns:
+        list: A list of area names.
     """
     area_sheet = SHEET.worksheet('Areas')
     areas = area_sheet.col_values(1)
@@ -483,14 +496,23 @@ def get_areas():
 
 def get_random_area(areas):
     """
-    Get a random area from the provided list of areas
+    Selects a random area from the provided list of areas.
+
+    Args:
+        areas (list): A list of area names.
+
+    Returns:
+        str: A randomly selected area name.
     """
     return random.choice(areas)
 
 
 def get_encounter():
     """
-    Get list of encounters from Google Sheet
+    Retrieves the list of encounters from the Google Sheet.
+
+    Returns:
+        list: A list of encounter names.
     """
     encounter_sheet = SHEET.worksheet('Encounters')
     encounters = encounter_sheet.col_values(1)
@@ -499,14 +521,23 @@ def get_encounter():
 
 def get_random_encounter(encounters):
     """
-    Get a random encounter from list of encounters
+    Selects a random encounter from the provided list.
+
+    Args:
+        encounters (list): A list of encounter names.
+
+    Returns:
+        str: A randomly selected encounter name.
     """
     return random.choice(encounters)
 
 
 def check_for_encounter():
     """
-    Determine if an encounter should occur (65% chance)
+    Determines if an encounter should occur based on a 65% chance.
+
+    Returns:
+        bool: True if an encounter occurs, False otherwise.
     """
     return random.random() < 0.65
 
