@@ -23,7 +23,10 @@ SHEET = GSPREAD_CLIENT.open('Oathbound')
 # Utility functions
 def clear_terminal():
     """
-    Clear the terminal screen
+    Clear the terminal screen.
+
+    This function clears the terminal screen using the appropriate command
+    depending on the operating system.
     """
     if os.name == 'nt':
         os.system('cls')
@@ -33,7 +36,10 @@ def clear_terminal():
 
 def scroll_text(text, delay=0.015):
     """
-    Print text with a scrolling effect
+    Display text with a scrolling effect.
+
+    text: str - The text to display.
+    delay: float - The delay between each character in seconds (default is 0.015).
     """
     for char in text:
         print(char, end='', flush=True)
@@ -43,7 +49,10 @@ def scroll_text(text, delay=0.015):
 
 def scroll_text_slow(text, delay=0.035):
     """
-    Print text with a scrolling effect slow
+    Display text with a slower scrolling effect.
+
+    text: str - The text to display.
+    delay: float - The delay between each character in seconds (default is 0.035).
     """
     for char in text:
         print(char, end='', flush=True)
@@ -53,8 +62,13 @@ def scroll_text_slow(text, delay=0.035):
 
 def normalise_and_check_input(input_text, keywords):
     """
-    Normalise the input text and check if it contains any of the
-    specified keywords
+    Normalise input text and check if it contains any of the specified keywords.
+
+    input_text: str - The user's input text.
+    keywords: list - A list of keywords to check against the normalised input.
+    
+    Returns:
+    bool - True if any keyword is found in the input, False otherwise.
     """
     normalised_input = input_text.strip().lower()
     for keyword in keywords:
@@ -65,7 +79,7 @@ def normalise_and_check_input(input_text, keywords):
 
 def title_scroll():
     """
-    Main title page and introduction
+    Display the game's title with a scrolling effect and an introductory message.
     """
     clear_terminal()
     title = r"""
@@ -103,7 +117,7 @@ def title_scroll():
 
 def opening_text():
     """
-    Display the opening narrative before the player makes their first move
+    Display the opening narrative before the player makes their first move.
     """
     opening_narrative = (
         "\n"
@@ -126,7 +140,8 @@ def opening_text():
 
 def get_player_info():
     """
-    Get player name and class
+    Get the player's name and class selection, then retrieve and initialise
+    the player's stats based on their chosen class.
     """
     clear_terminal()
 
@@ -201,6 +216,10 @@ def get_player_info():
 
 
 def initialise_game():
+    """
+    Initialise the game by setting the number of turns until the end
+    and the player's starting location on the map.
+    """
     turns_until_end = random.randint(10, 30)
 
     x = 0
@@ -211,6 +230,10 @@ def initialise_game():
 
 
 def start_game():
+    """
+    Begin the game by setting up the player's character, inventory,
+    game world, and starting the main game loop.
+    """
     title_scroll()
     player_info = get_player_info()
     scroll_text_slow("\nPlanning how many days you'll be adventuring...\n")
@@ -260,7 +283,20 @@ def game_loop(
     npcs
 ):
     """
-    Main game loop where the player will take actions
+    The main game loop where the player takes actions such as moving,
+    viewing inventory, and encountering enemies or NPCs.
+    Args:
+        player_info (dict): Player's stats and equipment.
+        location (tuple): Current coordinates of the player.
+        turns_until_end (int): Number of turns left before the final encounter.
+        inventory (dict): Items and equipment the player has.
+        areas (list): List of possible areas to explore.
+        location_area_map (dict): Mapping of coordinates to areas.
+        encounters (list): List of possible encounters.
+        location_encounter_map (dict): Mapping of coordinates to encounters.
+        drops (list): List of possible item drops.
+        enemies (list): List of enemies that can be encountered.
+        npcs (list): List of NPCs that can be encountered.
     """
     visited_locations = [(0, 0)]
     encountered_npcs = set()
