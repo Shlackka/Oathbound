@@ -971,7 +971,11 @@ def get_random_drop(drops):
 
 def get_enemies():
     """
-    Get list of enemies from worksheet
+     Retrieve the list of enemies from the Google Sheet.
+
+    Returns:
+        list:
+        A list of dictionaries, each representing an enemy with its attributes.
     """
     enemies_sheet = SHEET.worksheet('Enemies')
     enemies_data = enemies_sheet.get_all_records()
@@ -980,14 +984,23 @@ def get_enemies():
 
 def get_random_enemy(enemies):
     """
-    Get a random enemy from the list of enemies
+    Get a random enemy from the provided list of enemies.
+
+    Args:
+        enemies (list): A list of enemy dictionaries to choose from.
+
+    Returns:
+        dict: A dictionary representing the randomly chosen enemy.
     """
     return random.choice(enemies)
 
 
 def get_npcs():
     """
-    Get list of npcs from worksheet
+    Retrieve the list of NPCs from the Google Sheet.
+
+    Returns:
+        list: A list of dictionaries containing NPC data.
     """
     npcs_sheet = SHEET.worksheet("NPCs")
     npcs_data = npcs_sheet.get_all_records()
@@ -1002,7 +1015,17 @@ def get_npcs():
 
 def get_unique_npc(npcs, encountered_npcs):
     """
-    Get a unique NPC that has not been encountered yet
+    Get a unique NPC that has not been encountered yet.
+
+    Args:
+        npcs (list): The list of all NPCs.
+        encountered_npcs (set):
+        A set of NPC names that have already been encountered.
+
+    Returns:
+        dict or None:
+        A dictionary representing a unique NPC,
+        or None if all NPCs have been encountered.
     """
     remaining_npcs = [
         npc for npc in npcs if npc['Name'] not in encountered_npcs]
@@ -1014,7 +1037,12 @@ def get_unique_npc(npcs, encountered_npcs):
 
 def talk_to_npc(npc):
     """
-    Handle the interaction with the NPC
+    Handle the interaction with the NPC.
+
+    Args:
+        npc (dict):
+        A dictionary containing the NPC's details,
+        including name, description, dialogue, and more.
     """
     print("")
     scroll_text_slow(
@@ -1072,8 +1100,18 @@ def view_map(
         location_encounter_map
         ):
     """
-    Display a dynamic map showing the
-    player's current location and visited locations
+    Display a dynamic map showing the player's current location
+    and visited locations.
+
+    Args:
+        current_location (tuple):
+        The player's current coordinates (x, y).
+        visited_locations (list):
+        A list of tuples representing all locations visited by the player.
+        location_area_map (dict):
+        A dictionary mapping locations to area types.
+        location_encounter_map (dict):
+        A dictionary mapping locations to encounter types.
     """
 
     scroll_text("Map Legend:")
@@ -1130,7 +1168,17 @@ def view_map(
 
 def initialise_inventory(player_info):
     """
-    Initialise the player's inventory
+    Initialise the player's inventory with starting equipment and stats.
+
+    Args:
+        player_info (dict):
+        A dictionary containing the player's details,
+        including starting equipment.
+
+    Returns:
+        dict:
+        A dictionary representing the player's inventory
+        with equipped items.
     """
     # Retrieve all item stats from the Google Sheet
     drops_sheet = SHEET.worksheet('Drops')

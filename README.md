@@ -278,9 +278,13 @@ The "Oathbound" game was deployed to Heroku by following these steps:
 6. **Configure Environment Variables:**
    - Navigate to the "Settings" tab.
    - Scroll down to the "Config Vars" section.
-   - Click on "Reveal Config Vars" and add a key-value pair:
-     - Key: `PORT`
-     - Value: `8000`
+   - Click on "Reveal Config Vars" and add two key-value pairs:
+    - First Pair:
+      - Key: `PORT`
+      - Value: `8000`
+    - Second Pair:
+      - Key: `CREDS`
+      - Value: Contents of your creds.json file
    - Click the "Add" button to save the configuration.
 
 7. **Add Buildpacks:**
