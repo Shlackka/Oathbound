@@ -1258,7 +1258,7 @@ def equip_item(inventory, player_stats):
 
     Args:
         inventory (dict):
-        The player's inventory, categorized by item type.
+        The player's inventory, categorised by item type.
         player_stats (dict):
         The player's current stats,
         which will be updated based on the equipped item.
@@ -1359,7 +1359,7 @@ def unequip_item(inventory, player_stats):
 
     Args:
         inventory (dict):
-        The player's inventory, categorized by item type.
+        The player's inventory, categorised by item type.
         player_stats (dict):
         The player's current stats,
         which will be updated based on the unequipped item.
