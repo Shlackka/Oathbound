@@ -554,7 +554,21 @@ def handle_encounter(
     encountered_npcs
 ):
     """
-    Handle the encounter logic.
+    Handles the logic for various types of encounters the player can experience.
+
+    Args:
+        player_info (dict): The player's current information and stats.
+        encounter (str): The type of encounter.
+        inventory (dict): The player's current inventory.
+        drops (list): A list of possible item drops.
+        enemies (list): A list of possible enemies.
+        location_encounter_map (dict): A map of encounters at specific locations.
+        location (tuple): The player's current location.
+        npcs (list): A list of possible NPCs.
+        encountered_npcs (set): A set of NPCs the player has already encountered.
+
+    Returns:
+        str: "Defeat" if the player is defeated, otherwise None.
     """
     if encounter == "Chest":
         print("")
@@ -645,7 +659,16 @@ def handle_encounter(
 
 def fight_enemy(player_stats, enemy, drops, inventory):
     """
-    Handle the fight with enemy
+    Handles the combat between the player and an enemy.
+
+    Args:
+        player_stats (dict): The player's current stats.
+        enemy (dict): The enemy's stats and details.
+        drops (list): A list of possible item drops.
+        inventory (dict): The player's current inventory.
+
+    Returns:
+        str: "Victory" if the player defeats the enemy, "Defeat" if the player is defeated.
     """
     print("")
     scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
@@ -702,7 +725,10 @@ def fight_enemy(player_stats, enemy, drops, inventory):
 
 def get_random_boss():
     """
-    Get a random boss from the Google Sheet
+     Retrieves a random boss from the Google Sheet.
+
+    Returns:
+        dict: A dictionary containing the boss's stats and details.
     """
     boss_sheet = SHEET.worksheet('Bosses')
     bosses_data = boss_sheet.get_all_records()
@@ -711,7 +737,16 @@ def get_random_boss():
 
 def fight_boss(player_stats, boss, drops, inventory):
     """
-    Handle the fight with the final boss
+    Handles the fight between the player and the final boss.
+
+    Args:
+        player_stats (dict): The player's current stats.
+        boss (dict): The boss's stats and details.
+        drops (list): List of potential item drops.
+        inventory (dict): The player's current inventory.
+
+    Returns:
+        str: "Victory" if the player wins, "Defeat" if the player loses.
     """
     print("")
     scroll_text(f"A {boss['Enemy']} attacks you! "
@@ -769,7 +804,16 @@ def fight_boss(player_stats, boss, drops, inventory):
 
 def handle_boss_encounter(player_info, inventory, drops, enemies):
     """
-    Handle the final boss encounter
+     Handles the final boss encounter, including preparation and the fight.
+
+    Args:
+        player_info (dict): Information about the player, including stats and equipment.
+        inventory (dict): The player's current inventory.
+        drops (list): List of potential item drops.
+        enemies (list): List of enemies in the game.
+
+    Returns:
+        str: "Victory" if the player wins, "Defeat" if the player loses.
     """
     boss = get_random_boss()
 
