@@ -107,7 +107,7 @@ Below I will go into a brief explanation of the features I have encorporated int
 - __Game Setup Features__
 
     - Title Screen:
-      - The game starts with a title screen that displays the game's name in a stylized ASCII format, setting the mood for the adventure.
+      - The game starts with a title screen that displays the game's name in a stylised ASCII format, setting the mood for the adventure.
     
     - Character Creation: 
       - Player are prompted to enter their character's name.
@@ -314,9 +314,9 @@ This section acknowledges the external resources and inspirations that contribut
 
 ### Content
 
-- All narrative text, character descriptions, and gameplay content within **Oathbound** were written and developed by myself. I utilized various resources to brainstorm and refine story elements, character interactions, and game logic.
+- All narrative text, character descriptions, and gameplay content within **Oathbound** were written and developed by myself. I utilised various resources to brainstorm and refine story elements, character interactions, and game logic.
 
-- **[ChatGPT](https://chat.openai.com/)** was used as a resource for resolving coding challenges, particularly in optimizing the game loop, managing player inventory, and implementing combat mechanics. It also provided assistance with brainstorming ideas and refining narrative components.
+- **[ChatGPT](https://chat.openai.com/)** was used as a resource for resolving coding challenges, particularly in optimising the game loop, managing player inventory, and implementing combat mechanics. It also provided assistance with brainstorming ideas, refining narrative components and helping to improve and format the functions docstrings.
 
 - The inspiration for **Oathbound** stemmed from my interest in classic text-based adventure games and tabletop RPGs, where story and strategic decision-making are central to the experience.
 
@@ -326,7 +326,7 @@ This section acknowledges the external resources and inspirations that contribut
 
 - **[Python](https://www.python.org/)** was the programming language used to develop the game, leveraging various standard libraries to manage the game’s flow and logic.
 
-- **[Google Sheets API](https://developers.google.com/sheets/api)** was utilized to manage in-game data, including character stats, items, and encounters, facilitating easy updates and management.
+- **[Google Sheets API](https://developers.google.com/sheets/api)** was utilised to manage in-game data, including character stats, items, and encounters, facilitating easy updates and management.
 
 - **[GitHub](https://github.com/)** was used for version control and hosting the project's repository.
 

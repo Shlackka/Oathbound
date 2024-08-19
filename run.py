@@ -1219,6 +1219,15 @@ def initialise_inventory(player_info):
 
 
 def view_inventory(inventory, player_stats):
+    """
+    Display the player's inventory and currently equipped items.
+    Allows the player to equip or unequip items.
+
+    Args:
+        inventory (dict): A dictionary representing the player's inventory.
+        player_stats (dict):
+        A dictionary representing the player's current stats.
+    """
     scroll_text("Your inventory contains:")
     for category, items in inventory.items():
         if category != "Currently Equipped":
@@ -1243,6 +1252,17 @@ def view_inventory(inventory, player_stats):
 
 
 def equip_item(inventory, player_stats):
+    """
+    Allow the player to equip an item from their inventory,
+    updating stats accordingly.
+
+    Args:
+        inventory (dict):
+        The player's inventory, categorized by item type.
+        player_stats (dict):
+        The player's current stats,
+        which will be updated based on the equipped item.
+    """
     scroll_text("\nChoose a category to equip from:")
     scroll_text("1. Weapons")
     scroll_text("2. Armours")
@@ -1334,6 +1354,16 @@ def equip_item(inventory, player_stats):
 
 
 def unequip_item(inventory, player_stats):
+    """
+    Allow the player to unequip an item, updating their stats accordingly.
+
+    Args:
+        inventory (dict):
+        The player's inventory, categorized by item type.
+        player_stats (dict):
+        The player's current stats,
+        which will be updated based on the unequipped item.
+    """
     scroll_text("\nChoose a category to unequip from:")
     scroll_text("1. Weapons")
     scroll_text("2. Armours")
@@ -1368,7 +1398,15 @@ def unequip_item(inventory, player_stats):
 
 def get_item_stats(item_name):
     """
-    Retrieve the stats for a given item, including a description
+    Retrieve the stats for a given item, including a description.
+
+    Args:
+        item_name (str): The name of the item to retrieve stats for.
+
+    Returns:
+        dict:
+        A dictionary containing the item's
+        health, attack, speed, effect, and description.
     """
     drops_sheet = SHEET.worksheet('Drops')
     item_row = drops_sheet.find(item_name).row
@@ -1384,7 +1422,11 @@ def get_item_stats(item_name):
 
 def apply_item_stats(player_stats, item_stats):
     """
-    Apply the stats of an item to the player's stats
+    Apply the stats of an item to the player's current stats.
+
+    Args:
+        player_stats (dict): The player's current stats.
+        item_stats (dict): The stats of the item to be applied.
     """
     player_stats["MaxHealth"] += item_stats["Health"]
     player_stats["Health"] += item_stats["Health"]
@@ -1399,7 +1441,11 @@ def apply_item_stats(player_stats, item_stats):
 
 def remove_item_stats(player_stats, item_stats):
     """
-    Remove the stats of an item from the player's stats
+    Remove the stats of an item from the player's current stats.
+
+    Args:
+        player_stats (dict): The player's current stats.
+        item_stats (dict): The stats of the item to be removed.
     """
     player_stats["MaxHealth"] -= item_stats["Health"]
     player_stats["Health"] -= item_stats["Health"]
@@ -1413,7 +1459,13 @@ def remove_item_stats(player_stats, item_stats):
 
 def heal_player(player_info, percentage):
     """
-    Heal the player by a certain percentage of their maximum health
+    Heal the player by a certain percentage of their maximum health.
+
+    Args:
+        player_info (dict):
+        The player's information, including current stats.
+        percentage (int):
+        The percentage of the player's maximum health to heal.
     """
     max_health = player_info["base_stats"]["MaxHealth"]
     healing_amount = int(max_health * (percentage / 100))
@@ -1423,6 +1475,13 @@ def heal_player(player_info, percentage):
 
 
 def view_stats(player_info):
+    """
+    Display the player's name, class, and current stats.
+
+    Args:
+        player_info (dict):
+        The player's information, including stats and class.
+    """
     scroll_text(f"Player Name: {player_info['name']}")
     scroll_text(f"Player Class: {player_info['class']}")
     scroll_text("\nPlayer Stats:")
@@ -1433,7 +1492,7 @@ def view_stats(player_info):
 
 def main():
     """
-    Run all functions
+    The main function to run the game loop.
     """
     while True:
         result = start_game()
