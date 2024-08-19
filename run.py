@@ -39,7 +39,8 @@ def scroll_text(text, delay=0.015):
     Display text with a scrolling effect.
 
     text: str - The text to display.
-    delay: float - The delay between each character in seconds (default is 0.015).
+    delay: float - The delay between each character in seconds
+    (default is 0.015).
     """
     for char in text:
         print(char, end='', flush=True)
@@ -52,7 +53,8 @@ def scroll_text_slow(text, delay=0.035):
     Display text with a slower scrolling effect.
 
     text: str - The text to display.
-    delay: float - The delay between each character in seconds (default is 0.035).
+    delay: float - The delay between each character in seconds
+    (default is 0.035).
     """
     for char in text:
         print(char, end='', flush=True)
@@ -62,11 +64,12 @@ def scroll_text_slow(text, delay=0.035):
 
 def normalise_and_check_input(input_text, keywords):
     """
-    Normalise input text and check if it contains any of the specified keywords.
+    Normalise input text
+    and check if it contains any of the specified keywords.
 
     input_text: str - The user's input text.
     keywords: list - A list of keywords to check against the normalised input.
-    
+
     Returns:
     bool - True if any keyword is found in the input, False otherwise.
     """
@@ -79,7 +82,8 @@ def normalise_and_check_input(input_text, keywords):
 
 def title_scroll():
     """
-    Display the game's title with a scrolling effect and an introductory message.
+    Display the game's title with a scrolling effect
+    and an introductory message.
     """
     clear_terminal()
     title = r"""
@@ -434,17 +438,23 @@ def restart_option():
 
 def move(location, areas, location_area_map, player_info):
     """
-    Allows the player to move in a specified direction (north, south, east, or west).
+    Allows the player to move in a specified direction
+    (north, south, east, or west).
     Automatically heals the player by 10% of their maximum health each move.
 
     Args:
-        location (tuple): The current coordinates of the player (x, y).
-        areas (list): List of available areas the player can explore.
-        location_area_map (dict): A dictionary mapping locations to specific areas.
-        player_info (dict): The player's current information, including stats.
+        location (tuple):
+        The current coordinates of the player (x, y).
+        areas (list):
+        List of available areas the player can explore.
+        location_area_map (dict):
+        A dictionary mapping locations to specific areas.
+        player_info (dict):
+        The player's current information, including stats.
 
     Returns:
-        tuple: The new location, the new area, and a boolean indicating if the player moved.
+        tuple: The new location, the new area,
+        and a boolean indicating if the player moved.
     """
     x, y = location
     direction = input(
@@ -485,7 +495,7 @@ def move(location, areas, location_area_map, player_info):
 def get_areas():
     """
     Retrieves the list of areas from the Google Sheet.
-    
+
     Returns:
         list: A list of area names.
     """
@@ -554,18 +564,28 @@ def handle_encounter(
     encountered_npcs
 ):
     """
-    Handles the logic for various types of encounters the player can experience.
+    Handles the logic for various types of
+    encounters the player can experience.
 
     Args:
-        player_info (dict): The player's current information and stats.
-        encounter (str): The type of encounter.
-        inventory (dict): The player's current inventory.
-        drops (list): A list of possible item drops.
-        enemies (list): A list of possible enemies.
-        location_encounter_map (dict): A map of encounters at specific locations.
-        location (tuple): The player's current location.
-        npcs (list): A list of possible NPCs.
-        encountered_npcs (set): A set of NPCs the player has already encountered.
+        player_info (dict):
+        The player's current information and stats.
+        encounter (str):
+        The type of encounter.
+        inventory (dict):
+        The player's current inventory.
+        drops (list):
+        A list of possible item drops.
+        enemies (list):
+        A list of possible enemies.
+        location_encounter_map (dict):
+        A map of encounters at specific locations.
+        location (tuple):
+        The player's current location.
+        npcs (list):
+        A list of possible NPCs.
+        encountered_npcs (set):
+        A set of NPCs the player has already encountered.
 
     Returns:
         str: "Defeat" if the player is defeated, otherwise None.
@@ -668,7 +688,8 @@ def fight_enemy(player_stats, enemy, drops, inventory):
         inventory (dict): The player's current inventory.
 
     Returns:
-        str: "Victory" if the player defeats the enemy, "Defeat" if the player is defeated.
+        str: "Victory" if the player defeats the enemy,
+        "Defeat" if the player is defeated.
     """
     print("")
     scroll_text(f"A {enemy['Enemy']} attacks you! Prepare for battle.")
@@ -807,10 +828,14 @@ def handle_boss_encounter(player_info, inventory, drops, enemies):
      Handles the final boss encounter, including preparation and the fight.
 
     Args:
-        player_info (dict): Information about the player, including stats and equipment.
-        inventory (dict): The player's current inventory.
-        drops (list): List of potential item drops.
-        enemies (list): List of enemies in the game.
+        player_info (dict):
+        Information about the player, including stats and equipment.
+        inventory (dict):
+        The player's current inventory.
+        drops (list):
+        List of potential item drops.
+        enemies (list):
+        List of enemies in the game.
 
     Returns:
         str: "Victory" if the player wins, "Defeat" if the player loses.
@@ -833,7 +858,15 @@ def handle_boss_encounter(player_info, inventory, drops, enemies):
 
 def get_fresh_enemy(enemy_template):
     """
-    Return a fresh copy of an enemy with its initial stats
+    Return a fresh copy of an enemy with its initial stats.
+
+    Args:
+        enemy_template (dict):
+        A dictionary containing the template of the enemy with attributes like
+        Health, Attack, and Speed.
+
+    Returns:
+        dict: A new dictionary representing the enemy with its initial stats.
     """
     return {
         "Enemy": enemy_template.get("Boss", enemy_template.get("Enemy")),
@@ -845,7 +878,14 @@ def get_fresh_enemy(enemy_template):
 
 def player_attack(player_stats, enemy):
     """
-    Handle the player's attack on the enemy
+    Handle the player's attack on the enemy.
+
+    Args:
+        player_stats (dict):
+        A dictionary containing the player's current stats,
+        including Attack and Effects.
+        enemy (dict):
+        A dictionary representing the enemy's current stats, including Health.
     """
     damage = player_stats["Attack"]
 
@@ -862,7 +902,13 @@ def player_attack(player_stats, enemy):
 
 def enemy_attack(player_stats, enemy):
     """
-    Handle the enemy's attack on the player
+    Handle the enemy's attack on the player.
+
+    Args:
+        player_stats (dict):
+        A dictionary containing the player's current stats, including Health.
+        enemy (dict):
+        A dictionary representing the enemy's stats, including Attack.
     """
     damage = enemy["Attack"]
     scroll_text(f"The {enemy['Enemy']} attacks you for {damage} damage.")
@@ -871,7 +917,19 @@ def enemy_attack(player_stats, enemy):
 
 def attempt_flee(player_stats, enemy, is_boss_fight=False):
     """
-    Attempt to flee from the battle. Always fail if it's a boss fight
+    Attempt to flee from the battle.
+    Fleeing is always unsuccessful in a boss fight.
+
+    Args
+        player_stats (dict):
+        A dictionary containing the player's current stats, including Speed.
+        enemy (dict):
+        A dictionary representing the enemy's stats, including Speed.
+        is_boss_fight (bool):
+        flag indicating if the fight is against a boss. Defaults to False.
+
+    Returns:
+        bool: True if fleeing is successful, False otherwise.
     """
     if is_boss_fight:
         return False
@@ -887,7 +945,11 @@ def attempt_flee(player_stats, enemy, is_boss_fight=False):
 
 def initialise_potential_drops():
     """
-    Retrieve list of potential drops to use in game
+    Retrieve the list of potential item drops from the Google Sheet.
+
+    Returns:
+        list: A list of dictionaries,
+        each containing data for a potential drop.
     """
     drops_sheet = SHEET.worksheet('Drops')
     drops_data = drops_sheet.get_all_records()
@@ -896,7 +958,13 @@ def initialise_potential_drops():
 
 def get_random_drop(drops):
     """
-    Get a random drop from the list of drops
+     Get a random item from the provided list of drops.
+
+    Args:
+        drops (list): A list of dictionaries, each representing an item drop.
+
+    Returns:
+        dict: A dictionary containing data for the randomly selected drop.
     """
     return random.choice(drops)
 
