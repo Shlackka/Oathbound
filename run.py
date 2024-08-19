@@ -135,7 +135,8 @@ def get_player_info():
         if name:
             break
         else:
-            scroll_text("Name cannot be empty. Please enter a valid name.")
+            clear_terminal()
+            print("Name cannot be empty. Please enter a valid name.")
 
     class_lookup = {
         "1": "Warrior",
