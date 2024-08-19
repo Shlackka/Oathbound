@@ -104,103 +104,166 @@ Below I will go into a brief explanation of the features I have encorporated int
 
 ### Existing Features
 
-- __Game Setup Features__
+- **Game Setup Features**
 
-    - Title Screen:
+    - **Title Screen:**
+
+      ![Title Screen](assets/images/readme/title-screen.png)
+
       - The game starts with a title screen that displays the game's name in a stylised ASCII format, setting the mood for the adventure.
     
-    - Character Creation: 
-      - Player are prompted to enter their character's name.
-      - Players choose a class from options (e.g. Warrior, Archer, Mage, Peasant), each with its own unique stats and starting equipment.
+    - **Character Creation:**
 
-    - Initialisation:
+      ![Character Naming](assets/images/readme/character-naming.png)
+      ![Class Choice](assets/images/readme/class-select.png)
+
+      - Players are prompted to enter their character's name.
+      - Players choose a class from options (e.g., Warrior, Archer, Mage, Peasant), each with its own unique stats and starting equipment.
+
+    - **Initialisation:**
+
+      ![Initialisation](assets/images/readme/initialisation.png)
+
       - The game randomly determines the number of turns until the final boss encounter.
-      - The player's inventory is intialised with basic equipment based on the chosen class.
+      - The player's inventory is initialised with basic equipment based on the chosen class.
 
-- __Gameplay Features__
+- **Gameplay Features**
 
-    - Game Loop:
+    - **Game Loop:**
+
+      ![Main Choice Screen](assets/images/readme/main-choice-screen.png)
+
       - The core loop of the game where the player makes decisions each turn until the final encounter.
-      - Actions Menu: 
-        - Move: Players can move their character in one of four directions (North, South, East, West).
-        - View Inventory: Players can view and manage their inventory.
-        - View Stats: Players can check their current stats and equipment.
-        - View Map: Players can view the map of visited locations and encounters.
-        - Quit Game: Players can exit the game at any point.
+      - **Actions Menu:**
+        - **Move:** Players can move their character in one of four directions (North, South, East, West).
+        - **View Inventory:** Players can view and manage their inventory.
+        - **View Stats:** Players can check their current stats and equipment.
+        - **View Map:** Players can view the map of visited locations and encounters.
+        - **Quit Game:** Players can exit the game at any point.
     
-    - Exploration:
-      - As the player moves around, the game generates random areas (e.g. forests, lakes, mountains).
+    - **Exploration:**
+
+      ![Random Areas](assets/images/readme/random-zones.png)
+      ![Revisiting Areas](assets/images/readme/revisiting-area.png)
+
+      - As the player moves around, the game generates random areas (e.g., forests, lakes, mountains).
       - The player can revisit areas, and previously encountered locations are stored.
     
-    - Encounters:
-      - Random Encounters: As the player explores, they  have a chance of encountering chests, enemies, or NPCs.
-      - Chests: Players can choose to open them, which might result in finding items or triggering a mimic battle.
-      - Enemies: Players engage in turn-based combat with various enemies.
-      - NPCs: Players can interact with NPCs to receive hints, lore and items.
+    - **Encounters:**
 
-    - Combat System:
-      - Turn-Based Combat: Players choose to attack or flee. Players and enemies take turns based on their speed stat.
-      - Player Attack: Players attack enemies, with a chance of critical hit if applicable.
-      - Enemy Attack: Enemies retaliate, dealing damage to the player.
-      - Fleeing: PLayers can attempt to flee from the battle, though it may not always succeed.
-      - Defeat and Revival: If the player is defeated but has a revival item, they are revived with partial health. Otherwise, the game ends.
+      - **Random Encounters:** As the player explores, they have a chance of encountering chests, enemies, or NPCs.
 
-- __Final Encounter Features__
+        ![Chest Encounter](assets/images/readme/chest-encounter.png)
 
-  - Boss Encounter:
+      - **Chests:** Players can choose to open them, which might result in finding items or triggering a mimic battle.
+
+        ![Enemy Encounter](assets/images/readme/normal-combat-encounter.png)
+
+      - **Enemies:** Players engage in turn-based combat with various enemies.
+
+        ![NPC Encounter](assets/images/readme/npc-encounter.png)
+
+      - **NPCs:** Players can interact with NPCs to receive hints, lore, and items.
+
+    - **Combat System:**
+
+      ![Combat Encounter](assets/images/readme/normal-combat-encounter.png)
+
+      - **Turn-Based Combat:** Players choose to attack or flee. Players and enemies take turns based on their speed stat.
+
+        ![Attacking](assets/images/readme/attacking.png)
+
+      - **Player Attack:** Players attack enemies, with a chance of a critical hit if applicable.
+      - **Enemy Attack:** Enemies retaliate, dealing damage to the player.
+
+        ![Fleeing](assets/images/readme/fleeing.png)
+
+      - **Fleeing:** Players can attempt to flee from the battle, though it may not always succeed.
+
+        ![Revival](assets/images/readme/relic-effect.png)
+
+      - **Defeat and Revival:** If the player is defeated but has a revival item, they are revived with partial health. Otherwise, the game ends.
+
+- **Final Encounter Features**
+
+  - **Boss Encounter:**
+
+    ![Boss Encounter](assets/images/readme/boss-encounter.png)
+
     - Upon reaching the final turn, the player encounters a randomly selected boss.
-    - Boss Battle: The boss battle operates similarly to regular combat but with stronger enemies and no possibility to flee successfully.
-    - Victoy: Upon defeating the boss, the player is presented with a victory screen and congratulatory message.
-    - Defeat: If the player is defeated, they are given the option to restart the game.
+    - **Boss Battle:** The boss battle operates similarly to regular combat but with stronger enemies and no possibility to flee successfully.
 
-- __Inventory Management Features__
+      ![Game Over Win](assets/images/readme/game-over-win.png)
+  
+    - **Victory:** Upon defeating the boss, the player is presented with a victory screen and congratulatory message.
 
-  - Inventory System:
-    - Players can view their collected items, including weapons, armour and reclics.
-    - Equip Items: Players cna equip new items from their inventory, which will modify their stats.
-    - Unequip Items: Players can remove currently equipped items and store them back in their inventory.
-    - Item Stats: Each item in the inventory effects the player's stats, such as health, attack and speed.
+      ![Game Over Lose](assets/images/readme/game-over-lose.png)
 
-- __Map and Navigation Features__
+    - **Defeat:** If the player is defeated, they are given the option to restart the game.
 
-  - Dynamic Map:
+- **Inventory Management Features**
+
+  - **Inventory System:**
+
+    ![Inventory](assets/images/readme/view-equipment.png)
+
+    - Players can view their collected items, including weapons, armour, and relics.
+    - **Equip Items:** Players can equip new items from their inventory, which will modify their stats.
+    - **Unequip Items:** Players can remove currently equipped items and store them back in their inventory.
+    - **Item Stats:** Each item in the inventory affects the player's stats, such as health, attack, and speed.
+
+- **Map and Navigation Features**
+
+  - **Dynamic Map:**
+
+    ![Map](assets/images/readme/map.png)
+
     - The game features a dynamic map that updates based on the player's exploration.
-    - Map Symbols: Symbols represent different locations: 'P' for player, 'V' for visited locations, 'C' for chests, 'E' for enemies and 'N' for NPCs.
-    - Map Legend: A legend explains the symbols used on the map as above.
+    - **Map Symbols:** Symbols represent different locations: 'P' for player, 'V' for visited locations, 'C' for chests, 'E' for enemies, and 'N' for NPCs.
+    - **Map Legend:** A legend explains the symbols used on the map as above.
 
-- __User Interface and Feedback Features__
+- **User Interface and Feedback Features**
 
-  - Scrolling Text:
+  - **Scrolling Text:**
     - Important messages and narrative text are displayed with a scrolling effect, enhancing immersion.
-  - Immediate Feedback:
+  - **Immediate Feedback:**
     - Players receive immediate feedback on their actions, such as the outcome of battles, successful escapes, or loot from chests.
-  - Restart Option:
+  - **Restart Option:**
     - Upon game over, players are given the option to restart the game or exit.
 
-- __Miscellaneous Features__
+- **Miscellaneous Features**
 
-  - Healing Mechanism:
+  - **Healing Mechanism:**
     - The player heals 10% of their maximum health each time they move to a new location.
-  - Item Drops:
+  - **Item Drops:**
+
+    ![Item Drop](assets/images/readme/item-drop.png)
+
     - Enemies and chests can drop items that are added to the player's inventory.
-  - Character Stats:
+
+  - **Character Stats:**
+
+    ![View Stats](assets/images/readme/view-stats.png)
+
     - Players can view detailed stats that update as they progress and acquire new items.
-  - Event Logging:
+
+  - **Event Logging:**
     - Key events in the game, such as battles and encounters, are logged and influence subsequent gameplay.
 
-- __Customisation and Randomisation Features__
+- **Customisation and Randomisation Features**
 
-  - Randomised Boss Encounters:
+  - **Randomised Boss Encounters:**
     - The final boss is selected randomly from a list of potential bosses, adding replayability.
-  - Random Areas and Encounters:
+  - **Random Areas and Encounters:**
     - Each playthrough offers a unique experience due to the random generation of areas and encounters.
 
-- __Endgame and Replayability Features__
+- **Endgame and Replayability Features**
 
-  - Endgame Options:
+  - **Endgame Options:**
     - After defeating the boss or dying, the player can choose to restart the game or quit.
-  - Replayability:
+  - **Replayability:**
     - With randomised encounters, bosses, and loot, each playthrough offers a different experience.
+
 
 ### Features Not Yet Implemented
 
