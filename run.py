@@ -1457,23 +1457,6 @@ def remove_item_stats(player_stats, item_stats):
             player_stats["Effects"].remove(item_stats["Effect"])
 
 
-def heal_player(player_info, percentage):
-    """
-    Heal the player by a certain percentage of their maximum health.
-
-    Args:
-        player_info (dict):
-        The player's information, including current stats.
-        percentage (int):
-        The percentage of the player's maximum health to heal.
-    """
-    max_health = player_info["base_stats"]["MaxHealth"]
-    healing_amount = int(max_health * (percentage / 100))
-    new_health = player_info["current_stats"]["Health"] + healing_amount
-    player_info["current_stats"]["Health"] = min(new_health, max_health)
-    scroll_text(f"You heal for {healing_amount} health.")
-
-
 def view_stats(player_info):
     """
     Display the player's name, class, and current stats.
