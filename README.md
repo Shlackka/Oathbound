@@ -387,13 +387,40 @@ This section acknowledges the external resources and inspirations that contribut
 
 - **[Gitpod](https://www.gitpod.io/)** was the primary development environment, providing a cloud-based workspace for writing and testing the game's code.
 
+- **[GitHub](https://github.com/)** was used for version control and hosting the project's repository.
+
+- **[Heroku](https://www.heroku.com/)** was used for deploying **Oathbound** and making it accessible online.
+
+### Programming Language and API
+
 - **[Python](https://www.python.org/)** was the programming language used to develop the game, leveraging various standard libraries to manage the game’s flow and logic.
 
 - **[Google Sheets API](https://developers.google.com/sheets/api)** was utilised to manage in-game data, including character stats, items, and encounters, facilitating easy updates and management.
 
-- **[GitHub](https://github.com/)** was used for version control and hosting the project's repository.
+### Libraries and Packages
 
-- **[Heroku](https://www.heroku.com/)** was used for deploying **Oathbound** and making it accessible online.
+The following Python libraries and modules were essential in the development of **Oathbound**:
+
+- **`random`**: 
+  - **Purpose**: Used for generating random numbers and choices, which are integral to the game's mechanics, such as random encounters, item drops, and enemy behaviour.
+  - **Usage**: Functions like `random.choice()` were used to select random elements from lists, adding variability and replayability to the game.
+
+- **`time`**:
+  - **Purpose**: Managed time-related functions, particularly for creating delays that enhance the narrative experience with scrolling text.
+  - **Usage**: `time.sleep()` was used to introduce pauses in text display, making the game feel more interactive and immersive.
+
+- **`os`**:
+  - **Purpose**: Provided operating system-dependent functionality, such as clearing the terminal screen, which helped maintain a clean and user-friendly interface.
+  - **Usage**: `os.system('clear')` (for Unix-based systems) and `os.system('cls')` (for Windows) were used to clear the terminal screen between different sections of the game.
+
+- **`gspread`**:
+  - **Purpose**: Enabled interaction with Google Sheets, allowing the game to dynamically read and write data from Google Sheets.
+  - **Usage**: `gspread` was used to access and manipulate game-related data stored in Google Sheets, such as player stats, enemy attributes, and item properties.
+
+- **`google.oauth2.service_account.Credentials`**:
+  - **Purpose**: Managed authentication for accessing Google Sheets via the Google Sheets API.
+  - **Usage**: Credentials were configured to securely connect to Google Sheets and perform data operations.
+
 
 ### Acknowledgements
 
