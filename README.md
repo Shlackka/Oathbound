@@ -12,7 +12,7 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 
 **Table of contents:**
 
-- [Title](#guess-the-god)
+- [Title](#oathbound)
 - [User Experience](#user-experience-ux)
   - [Expectation](#expectation)
   - [User Journey](#user-journey)
