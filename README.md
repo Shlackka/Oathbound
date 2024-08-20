@@ -88,15 +88,34 @@ Oathbound is a straightforward text-based adventure game that immerses players i
 
   - ### Flowcharts 
 
-Please see below the flowcharts for the game, made using **[Miro](https://miro.com/)**.
+The flowcharts below visually represent the game's structure and logic, showcasing how different elements and decisions interact throughout the gameplay. These diagrams offer a clear overview of the game's progression, helping players and developers alike to understand the underlying mechanics.
 
-- #### Original Flowchart (Simple)
+#### Original Flowchart (Simple)
 
 ![Simple Flowchart](assets/images/readme/flowchart.png)
 
-- #### Final Flowchart (Full)
+This initial flowchart illustrates the basic flow of the game. It starts with the title screen, followed by character creation. The player then makes a directional choice, leading to one of several possible encounters. The game loop continues through these encounters, with the player making decisions that either advance the game or lead to an end condition, culminating in the final encounter.
 
-The full flowchart can be found **[Here.](https://miro.com/app/board/uXjVKq_bneI=/?share_link_id=965597782529)**
+  **Explanation:**
+  - **Start/Title:** The game begins with the title screen where the player starts their adventure.
+  - **Create Character:** The player creates their character by choosing a name and class, which defines their initial stats and abilities.
+  - **Direction Choice:** At each turn, the player chooses a direction to move in, leading to different encounters.
+  - **Encounters:** The player may encounter various scenarios, such as enemies, NPCs, or treasures, depending on the direction chosen.
+  - **Continue Loop:** The game loop continues until a certain condition is met, either continuing the adventure or leading to the final encounter.
+  - **Final Encounter:** The game culminates in a final encounter, which determines the player's success or failure.
+
+#### Final Flowchart (Full)
+
+The full flowchart can be viewed in detail **[Here.](https://miro.com/app/board/uXjVKq_bneI=/?share_link_id=965597782529)**
+
+The full flowchart provides a detailed view of the game's entire logic, encompassing all possible paths, encounters, and outcomes. This version delves into the complexity of the game, showing how different player decisions influence the game's direction, encounters, and eventual conclusion.
+
+**Explanation:**
+- **Expanded Detail:** Unlike the simple flowchart, this version includes every possible scenario the player might face, from the beginning of the game to the final encounter.
+- **Decision Points:** It shows all the decision points, such as which direction to move, how to interact with NPCs, and whether to fight or flee during encounters.
+- **Game Loop Complexity:** The flowchart highlights the complexity of the game loop, where each choice can lead to different outcomes, affecting the game's progression.
+- **Branching Paths:** Multiple branching paths illustrate the game's replayability, where each playthrough can offer a unique experience based on the player's choices.
+- **Final Encounter:** All paths ultimately lead to the final encounter, which is influenced by the player's previous decisions and actions throughout the game.
 
 ## Features
 
